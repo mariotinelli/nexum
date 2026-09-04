@@ -22,13 +22,13 @@ Use `search-docs` for detailed Livewire 4 patterns and documentation.
 
 # Creates: resources/views/components/⚡create-post.blade.php
 
-vendor/bin/sail artisan make:livewire create-post
+php artisan make:livewire create-post
 
 # Page component (SFC - Full Page in v4)
 
 # Creates: resources/views/pages/⚡create-post.blade.php
 
-vendor/bin/sail artisan make:livewire pages::create-post
+php artisan make:livewire pages::create-post
 
 # Multi-file component (MFC)
 
@@ -36,22 +36,22 @@ vendor/bin/sail artisan make:livewire pages::create-post
 
 #          resources/views/components/⚡create-post/create-post.blade.php
 
-vendor/bin/sail artisan make:livewire create-post --mfc
+php artisan make:livewire create-post --mfc
 
 # Class-based component (v3 style)
 
 # Creates: app/Livewire/CreatePost.php AND resources/views/livewire/create-post.blade.php
 
-vendor/bin/sail artisan make:livewire create-post --class
+php artisan make:livewire create-post --class
 
 # With namespace
 
-vendor/bin/sail artisan make:livewire Posts/CreatePost
+php artisan make:livewire Posts/CreatePost
 ```
 
 ### Converting Between Formats
 
-Use `vendor/bin/sail artisan livewire:convert create-post` to convert between single-file, multi-file, and class-based formats.
+Use `php artisan livewire:convert create-post` to convert between single-file, multi-file, and class-based formats.
 
 ### Choosing a Component Format
 
@@ -136,7 +136,7 @@ These things changed in Livewire 4, but may not have been updated in this applic
 
 - Always use `wire:key` in loops
 - Use `wire:loading` for loading states
-- Use `wire:model.live` for instant updates (default is debounced)
+- Use `wire:model.live` for live updates; `wire:model` is deferred by default
 - Validate and authorize in actions (treat like HTTP requests)
 
 ## Configuration
