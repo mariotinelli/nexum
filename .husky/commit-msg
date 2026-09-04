@@ -1,0 +1,34 @@
+#!/bin/sh
+
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+
+if [ "$BRANCH_NAME" == "main" ] || [ "$BRANCH_NAME" == "develop" ]; then
+    echo -e "---------------------------------------------------------"
+    echo -e "You cannot commit directly to the main or develop branch"
+    echo -e "---------------------------------------------------------"
+    exit 1;
+fi
+
+# Check if the branch name has a Redmine task code and has the correct format
+BRANCH_REGEX='^(feature|epic|bugfix|hotfix|enhancement|task)\/([0-9]+)\-[a-zA-Z0-9\-]+$'
+
+if ! [[ $BRANCH_NAME =~ $BRANCH_REGEX ]]; then
+    echo -e "Branch doesn't have the correct format."
+    echo -e "Expected format: 'feature/1234-task-name', 'epic/5678-task-name', etc."
+    echo -e "Please, see the README file to learn what are the acceptable branch names."
+    exit 1
+fi
+
+# Extract task ID
+TASK_ID=$(echo "$BRANCH_NAME" | sed -E "s/$BRANCH_REGEX/\2/")
+
+# Extract commit message
+COMMIT_MESSAGE=$(cat "$1")
+
+# Prevent adding a Redmine task key in commits that already have a Redmine task key
+# i.g. 984123: 984123: my feature
+if [[ $COMMIT_MESSAGE == $TASK_ID* ]]; then
+    exit 0
+fi
+
+echo "$TASK_ID: $COMMIT_MESSAGE" >$1

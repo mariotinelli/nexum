@@ -1,0 +1,64 @@
+# Project Rules and Guidelines
+
+> Auto-generated from .context/docs on 2026-02-10T16:23:24.325Z
+
+## README
+
+# Documentation Index
+
+Base de conhecimento do Rem Soft Projeto Padrão. Comece pela visão geral e explore os guias específicos conforme necessário.
+
+## Core Guides
+- [Project Overview](./project-overview.md) - Stack, módulos, diretório `context/`
+- [Architecture Notes](./architecture.md) - Camadas, padrões, componentes UI, inputs, design
+- [Development Workflow](./development-workflow.md) - Branching, comandos, fluxo de feature
+- [Testing Strategy](./testing-strategy.md) - Pest, padrões de teste, comandos
+- [Glossary & Domain Concepts](./glossary.md) - Entidades, enums, componentes, traits
+- [Data Flow & Integrations](./data-flow.md) - Fluxo de requisição, Livewire, busca, auth
+- [Security & Compliance Notes](./security.md) - Autenticação, autorização, OWASP, auditoria
+- [Tooling & Productivity Guide](./tooling.md) - Scripts, ferramentas, geradores, ambiente
+
+## Context Directory Reference
+
+O diretório `context/` contém exemplos e documentação de referência:
+
+| Diretório | Conteúdo |
+|-----------|----------|
+| `context/components/` | Documentação de 10 Blade components (badges, buttons, cards, dropdowns, modals, notification, quotes, tables, toasts, tooltips) |
+| `context/inputs/` | Documentação de 8 inputs (input, select, password, money, checkbox, radio, toggle, datepicker) |
+| `context/back-end-exemples/` | 4 exemplos de Livewire components (Create, Index, Show, Update) |
+| `context/views-exemples/` | 4 templates Blade (create, index, show, update) |
+| `context/test-exemples/` | 5 exemplos de testes Pest (Create, Delete, Index, Restore, Update) |
+| `context/design-principles.md` | Checklist de design S-Tier SaaS |
+
+## Document Map
+| Guide | File | Fontes Integradas |
+| --- | --- | --- |
+| Project Overview | `project-overview.md` | CLAUDE.md, context/ directory structure |
+| Architecture Notes | `architecture.md` | context/components/, context/inputs/, design-principles.md |
+| Development Workflow | `development-workflow.md` | context/back-end-exemples/, context/views-exemples/ |
+| Testing Strategy | `testing-strategy.md` | context/test-exemples/ |
+| Glossary & Domain Concepts | `glossary.md` | context/components/, context/inputs/, app/Enums/, app/Traits/ |
+| Data Flow & Integrations | `data-flow.md` | context/back-end-exemples/, context/components/notification.md |
+| Security & Compliance Notes | `security.md` | app/Enums/Can.php, config/sanctum.php |
+| Tooling & Productivity Guide | `tooling.md` | composer.json scripts, package.json, resources/js/components/ |
+
+
+## qa/README
+
+# Q&A Index
+
+Project type: **web-api**
+
+Generated: 2026-02-10T16:01:49.689Z
+
+## Getting-started
+
+- [How do I set up and run this project?](./getting-started.md)
+
+## Architecture
+
+- [How is the codebase organized?](./project-structure.md)
+- [How does routing work?](./routing.md)
+- [How does middleware work?](./middleware.md)
+

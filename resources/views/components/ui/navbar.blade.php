@@ -1,0 +1,46 @@
+<nav @class([
+    'z-10 flex h-(--navbar-height) items-center justify-between bg-primary px-8 shadow-sm sticky' ,
+    'top-(--dev-bar-height)' => withEnvBar(),
+    'top-0'                  => !withEnvBar(),
+])>
+    <a id="home-link" href="{{ route('dashboard') }}" class="hidden lg:block">
+        <x-ui.application-logo class="block h-20 w-auto!" whiteHorizontal />
+    </a>
+
+    <button
+        id="toggle-sidebar"
+        type="button"
+        class="block lg:hidden"
+        aria-label="Abrir menu lateral"
+        aria-controls="mobile-sidebar-panel"
+        x-bind:aria-expanded="mobileAsideOpen ? 'true' : 'false'"
+        @click="mobileAsideOpen = ! mobileAsideOpen"
+    >
+        <x-icons.bars-3 class="h-6 w-6 cursor-pointer text-white" aria-hidden="true" />
+    </button>
+
+    <div class="flex items-center gap-4">
+        <livewire:notifications />
+
+        <x-ui.dropdown end bottom>
+            <x-slot name="trigger">
+                <x-ui.button
+                    id="open-user-menu"
+                    white sm circle
+                    class="border-none!">
+                    <span class="p-0">{{ user()->initials }}</span>
+                </x-ui.button>
+            </x-slot>
+            <x-slot name="header">
+                <div class="flex items-center gap-2">
+                    <x-icons.solid.user-circle class="w-6 h-6" />
+                    <span>{{ user()->name }}</span>
+                </div>
+            </x-slot>
+
+            <x-ui.dropdown.link route="profile.edit" icon="user" name="Perfil" />
+
+            <livewire:auth.logout />
+        </x-ui.dropdown>
+    </div>
+</nav>

@@ -1,0 +1,151 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "permission": {
+        "external_directory": "ask",
+        "doom_loop": "ask",
+        "edit": "ask",
+        "bash": {
+            "*": "ask",
+            "git status*": "allow",
+            "git diff*": "allow",
+            "git log*": "allow",
+            "php artisan test*": "allow",
+            "vendor/bin/pest*": "allow",
+            "vendor/bin/pint*": "allow",
+            "rm *": "deny",
+            "git reset --hard*": "deny"
+        }
+    },
+    "agent": {
+        "plan": {
+            "permission": {
+                "edit": "deny",
+                "bash": {
+                    "*": "ask",
+                    "git status*": "allow",
+                    "git diff*": "allow",
+                    "git log*": "allow"
+                }
+            }
+        },
+        "build": {
+            "permission": {
+                "edit": "allow",
+                "bash": {
+                    "*": "ask",
+                    "php artisan test*": "allow",
+                    "vendor/bin/pest*": "allow",
+                    "vendor/bin/pint*": "allow",
+                    "git status*": "allow",
+                    "git diff*": "allow",
+                    "git log*": "allow",
+                    "rm *": "deny",
+                    "git reset --hard*": "deny"
+                }
+            }
+        },
+        "development": {
+            "permission": {
+                "edit": "allow",
+                "task": {
+                    "*": "deny",
+                    "general": "allow",
+                    "explore": "allow",
+                    "planner": "allow",
+                    "task-manager": "allow",
+                    "plan-writer": "allow",
+                    "backend-test-engineer": "allow",
+                    "browser-test-engineer": "allow",
+                    "browser-tester": "allow",
+                    "reviewer": "allow",
+                    "subagents/planner": "allow",
+                    "subagents/task-manager": "allow",
+                    "subagents/plan-writer": "allow",
+                    "subagents/backend-test-engineer": "allow",
+                    "subagents/browser-test-engineer": "allow",
+                    "subagents/browser-tester": "allow",
+                    "subagents/reviewer": "allow"
+                },
+                "bash": {
+                    "*": "ask",
+                    "php artisan test*": "allow",
+                    "vendor/bin/pest*": "allow",
+                    "vendor/bin/pint*": "allow",
+                    "git status*": "allow",
+                    "git diff*": "allow",
+                    "git log*": "allow",
+                    "rm *": "deny",
+                    "git reset --hard*": "deny"
+                }
+            }
+        },
+        "explore": {
+            "permission": {
+                "edit": "deny",
+                "bash": "deny"
+            }
+        },
+        "code-review": {
+            "permission": {
+                "edit": "deny",
+                "bash": {
+                    "*": "deny",
+                    "git status*": "allow",
+                    "git diff*": "allow",
+                    "git log*": "allow"
+                }
+            }
+        },
+        "reviewer": {
+            "permission": {
+                "edit": "deny",
+                "task": {
+                    "*": "deny",
+                    "browser-tester": "allow",
+                    "subagents/browser-tester": "allow",
+                    "browser-test-engineer": "allow",
+                    "subagents/browser-test-engineer": "allow",
+                    "backend-test-engineer": "allow",
+                    "subagents/backend-test-engineer": "allow"
+                },
+                "bash": {
+                    "*": "deny",
+                    "git status*": "allow",
+                    "git diff*": "allow",
+                    "git log*": "allow"
+                }
+            }
+        }
+    },
+    "mcp": {
+        "playwright": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "npx",
+                "-y",
+                "@playwright/mcp@latest"
+            ]
+        },
+        "laravel-boost": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "php",
+                "artisan",
+                "boost:mcp"
+            ]
+        },
+        "herd": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "php",
+                "C:/Users/seu-usuario/.config/herd/bin/herd-mcp.phar"
+            ],
+            "environment": {
+                "SITE_PATH": "C:\\Users\\seu-usuario\\Herd\\remsoft\\rem-soft-projeto-padrao"
+            }
+        }
+    }
+}

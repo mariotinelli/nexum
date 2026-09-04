@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@source '../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../../storage/framework/views/*.php';
+@source '../../../App/Livewire/**/*.php';
+@source '../../../App/Support/*.php';
+@source '../../../resources/views/**/*.blade.php';
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentcolor);
+    }
+}
+
+.btn {
+    @apply h-10 text-base font-medium min-h-10;
+}
+.join .btn {
+    @apply h-auto;
+}
+.btn-xs {
+    @apply text-xs h-7 min-h-7;
+}
+.btn-sm {
+    @apply h-8 text-sm min-h-8;
+}
+.btn-md {
+    @apply h-9 min-h-9;
+}
+.btn-lg {
+    @apply text-lg h-auto px-4 py-2;
+}
+
+
+.btn-ghost {
+    @apply text-neutral-600;
+
+    &.table-action {
+        @apply px-1!;
+    }
+}
+
+/** Custom classes for daisyUI -> Input */
+.input {
+    @apply focus:outline-hidden disabled:bg-gray-100 disabled:cursor-default placeholder-gray-500!;
+
+    &.input-bordered {
+        @apply border-gray-950/10 focus:border-primary/10 focus:ring-primary
+    }
+
+    &.no-focus {
+        @apply focus:ring-0 focus:border-transparent focus:outline-hidden;
+    }
+}

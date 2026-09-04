@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Brain">
+            <directory>tests/Brain</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+
+    <php>
+        <ini name="memory_limit" value="-1"/>
+        <env name="PHPUNIT_PRETTY_PRINT_PROGRESS" value="true" />
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_KEY" value="base64:wQFAmJrx3nLiCEc8Q6NKpfqhr3N7FFOZ9fqWa2Yvaj8="/>
+        <env name="BCRYPT_ROUNDS" value="12"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="BROADCAST_DRIVER" value="log"/>
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="testing" force="true"/>
+        <env name="MAIL_DRIVER" value="array"/>
+        <env name="MAIL_MAILER" value="array" />
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TESTS_SKIP_LONG" value="false"/>
+        <env name="TESTS_USE_DATABASE_TRUNCATION" value="true"/>
+    </php>
+</phpunit>

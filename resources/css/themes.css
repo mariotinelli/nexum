@@ -1,0 +1,63 @@
+:root {
+    --dev-bar-height: 3.125rem;
+    --navbar-height: 5rem;
+    --open-sidebar-width: 20rem;
+    --closed-sidebar-width: 5.563rem;
+    --mobile-sidebar-width: 18rem;
+
+    --white: #ffffff;
+    --primary: #1988cc;
+    --secondary: #a2a2a2;
+    --neutral: #5e5e62;
+    --accent: #29d76f;
+    --info: #2563eb;
+    --success: #16a34a;
+    --warning: #fbbf24;
+    --error: #b91c1c;
+}
+
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+    name: "remsoft";
+    default: true;
+    prefersdark: false;
+    color-scheme: light;
+
+    --color-base-100: var(--white);
+    --color-base-200: var(--white);
+    --color-base-300: var(--white);
+
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-accent: var(--accent);
+    --color-neutral: var(--neutral);
+    --color-info: var(--info);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-error: var(--error);
+
+    --color-base-content: oklch(20% 0.05 240);
+    --color-primary-content: oklch(1 0 89.876);
+    --color-secondary-content: oklch(98% 0.01 200);
+    --color-accent-content: oklch(98% 0.01 160);
+    --color-neutral-content: oklch(98% 0.01 240);
+    --color-info-content: oklch(98% 0.01 220);
+    --color-success-content: oklch(98% 0.01 140);
+    --color-warning-content: oklch(20% 0.05 80);
+    --color-error-content: oklch(98% 0.01 30);
+}
+
+@theme {
+    --font-sans:
+        Nunito, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-neutral: var(--neutral);
+    --color-accent: var(--accent);
+    --color-info: var(--info);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-error: var(--error);
+}

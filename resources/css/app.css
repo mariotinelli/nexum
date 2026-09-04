@@ -1,0 +1,23 @@
+@import './daisyui/custom.css';
+@import './themes.css';
+
+[x-cloak] {
+    display: none !important;
+}
+
+* {
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent !important;
+    scrollbar-width: thin;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
