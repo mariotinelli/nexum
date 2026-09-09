@@ -12,7 +12,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+sys.dont_write_bytecode = True
+
 from validate_state import validate_source
+from catalog_contract import SCOPE_FIELDS, ITEM_FIELDS, validate_scope, projection
 
 
 PHASES_V1 = ("mode-confirmed", "inputs-normalized", "repository-analyzed", "catalog-proposed", "catalog-approved", "first-item-started", "first-item-completed")
@@ -56,7 +59,9 @@ def validate_catalog(state: dict[str, Any], version: int) -> dict[str, dict[str,
     if not isinstance(catalog, list) or not catalog:
         fail("catalog must contain every classified candidate")
     base = {"id", "type", "name", "human_objective", "actors", "observable_result_or_deviation", "evidence", "dependencies", "separation_reason", "suggested_position", "status"}
-    required = base | ({"candidate_ids", "lifecycle"} if version == 2 else set())
+    required = base | ({"candidate_ids", "lifecycle"} if version >= 2 else set())
+    if version == 3:
+        required |= ITEM_FIELDS
     items: dict[str, dict[str, Any]] = {}
     for index, item in enumerate(catalog):
         if not isinstance(item, dict):
@@ -79,7 +84,7 @@ def validate_catalog(state: dict[str, Any], version: int) -> dict[str, dict[str,
                 text(value, f"catalog[{index}].{field}")
         if version == 1 and item["status"] not in {"catalogued", "first-item-started", "first-item-completed"}:
             fail(f"catalog[{index}].status is invalid")
-        if version == 2:
+        if version >= 2:
             if item["status"] not in {"pending", "in-progress", "blocked", "completed", "retired"}:
                 fail(f"catalog[{index}].status is invalid")
             if item["lifecycle"] not in {"active", "retired"} or (item["status"] == "retired") != (item["lifecycle"] == "retired"):
@@ -244,6 +249,8 @@ def validate_v1(state: dict[str, Any], path: Path) -> dict[str, Any]:
 
 def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
     required = {"schema_version", "run_id", "internal_identity", "mode", "phase", "completed_phases", "identity", "redmine", "sources", "source_allocation", "repository", "candidates", "catalog", "dependency_graph", "parallel_ready_groups", "suggested_order", "approvals", "pauses", "lock", "item_progress", "continuation_decisions", "catalog_changes", "relations", "validations", "final_summary"}
+    if state["schema_version"] == 3:
+        required |= SCOPE_FIELDS
     require_keys(state, required, "state")
     if state.keys() != required:
         fail("state has unknown keys")
@@ -259,7 +266,7 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
             if not isinstance(state[field], list):
                 fail(f"{field} must be an array")
         return state
-    items = validate_catalog(state, 2)
+    items = validate_catalog(state, state["schema_version"])
 
     candidates = state["candidates"]
     if not isinstance(candidates, list) or not candidates:
@@ -297,21 +304,25 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
             fail(f"source is allocated more than once: {source_id}")
         allocated_ids.add(source_id)
         item_ids = entry["item_ids"]
-        if not isinstance(item_ids, list) or not item_ids or any(item_id not in items for item_id in item_ids):
+        if not isinstance(item_ids, list) or (not item_ids and entry["ownership"] != "scope-context") or len(item_ids) != len(set(item_ids)) or any(item_id not in items for item_id in item_ids):
             fail(f"source_allocation[{index}].item_ids is invalid")
         source_path = text(entry["path"], f"source_allocation[{index}].path")
         if entry["ownership"] == "scope-shared":
             if source_id not in scope_source_ids or len(item_ids) < 2 or not source_path.startswith("sources/"):
                 fail("shared sources must exist once in the scope and belong to multiple items")
+        elif entry["ownership"] == "scope-context" and state["schema_version"] == 3:
+            if item_ids or source_id not in scope_source_ids or not source_path.startswith("sources/"):
+                fail("context sources belong to the scope without artificial items")
         elif entry["ownership"] == "item-exclusive":
             if source_id in scope_source_ids or len(item_ids) != 1 or "/sources/" not in source_path:
                 fail("exclusive sources must exist once under their owning item")
         else:
             fail(f"source_allocation[{index}].ownership is invalid")
     evidence_ids = {source_id for item in items.values() for source_id in item["evidence"]}
-    if allocated_ids != evidence_ids:
+    context_ids = {entry["source_id"] for entry in allocation if entry["ownership"] == "scope-context"}
+    if allocated_ids != evidence_ids | context_ids or evidence_ids & context_ids:
         fail("source_allocation must cover every catalog evidence source exactly once")
-    shared_ids = {entry["source_id"] for entry in allocation if entry["ownership"] == "scope-shared"}
+    shared_ids = {entry["source_id"] for entry in allocation if entry["ownership"] in {"scope-shared", "scope-context"}}
     if scope_source_ids != shared_ids:
         fail("scope sources must contain exactly the shared source allocations")
 
@@ -409,11 +420,17 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
     if not isinstance(changes, list):
         fail("catalog_changes must be an array")
     change_fields = {"id", "kind", "affected_item_ids", "source_allocation_impact", "graph_impact", "order_impact", "preserved_issue_ids", "artifact_paths", "approved_by", "approved_at"}
+    if state["schema_version"] == 3:
+        change_fields |= {"names_impact", "audiences_impact", "deliveries_impact", "coverage_impact"}
     for index, change in enumerate(changes):
-        if not isinstance(change, dict) or change.keys() != change_fields or change["kind"] not in {"split", "merge", "add", "remove", "retype", "dependency", "reorder"}:
+        if not isinstance(change, dict) or change.keys() != change_fields or change["kind"] not in {"split", "merge", "add", "remove", "retype", "dependency", "reorder", "rename", "audience", "delivery", "coverage", "convention"}:
             fail(f"catalog_changes[{index}] is invalid")
         if not isinstance(change["preserved_issue_ids"], list):
             fail("catalog changes must record every preserved existing issue")
+        if state["schema_version"] == 3:
+            for field in ("names_impact", "audiences_impact", "deliveries_impact", "coverage_impact", "source_allocation_impact", "graph_impact", "order_impact", "approved_by"):
+                text(change[field], f"catalog_changes[{index}].{field}")
+            timestamp(change["approved_at"], f"catalog_changes[{index}].approved_at")
 
     validations = state["validations"]
     if not isinstance(validations, list):
@@ -446,6 +463,10 @@ def validate(path: Path) -> dict[str, Any]:
         fail("scope state must be a new-scope object")
     if state.get("schema_version") == 1:
         return validate_v1(state, path)
+    if state.get("schema_version") == 3:
+        validate_v2(state, path)
+        validate_scope(state)
+        return state
     if state.get("schema_version") == 2:
         return validate_v2(state, path)
     fail("unsupported scope schema_version")
@@ -485,7 +506,7 @@ def validate_transition(previous: dict[str, Any], current: dict[str, Any]) -> No
             fail("resume must resolve only the latest pause")
     elif new_pauses != old_pauses:
         fail("ordinary transition cannot rewrite pause history")
-    if current["schema_version"] == 2:
+    if current["schema_version"] >= 2:
         for collection, key in (("continuation_decisions", "after_item_id"), ("catalog_changes", "id"), ("relations", "stable_key"), ("item_progress", "catalog_item_id")):
             old_ids = {entry[key] for entry in previous[collection]}
             new_ids = {entry[key] for entry in current[collection]}
@@ -500,18 +521,29 @@ def validate_transition(previous: dict[str, Any], current: dict[str, Any]) -> No
         new_issues = {entry["catalog_item_id"]: entry["issue_id"] for entry in current["item_progress"] if entry["issue_id"] is not None}
         if any(new_issues.get(item_id) != issue_id for item_id, issue_id in old_issues.items()):
             fail("transition removed or rewrote an existing issue")
+    if current["schema_version"] == 3:
+        for collection in ("catalog", "behaviors"):
+            old_ids = {entry["id"] for entry in previous[collection]}
+            if not old_ids <= {entry["id"] for entry in current[collection]}:
+                fail(f"transition removed stable {collection} identities; retain their disposition")
+        for old in previous["item_progress"]:
+            new = next(entry for entry in current["item_progress"] if entry["catalog_item_id"] == old["catalog_item_id"])
+            for field in ("artifact_path", "state_path"):
+                if old[field] is not None and new[field] != old[field]:
+                    fail("transition removed or rewrote an existing artifact path")
     catalog_fields = ("catalog", "dependency_graph", "parallel_ready_groups", "suggested_order")
+    changed_catalog = (projection(current) != projection(previous)) if current["schema_version"] == 3 else any(current[field] != previous[field] for field in catalog_fields)
     previous_catalog_approvals = [approval for approval in previous["approvals"] if approval["kind"] == "complete-catalog-and-order"]
-    if previous_catalog_approvals and any(current[field] != previous[field] for field in catalog_fields):
+    if previous_catalog_approvals and changed_catalog:
         if current["phase"] != "paused" or not current["pauses"] or current["pauses"][-1].get("kind") != "catalog-change":
             fail("catalog changes must pause with their impact recorded")
-        if current["schema_version"] == 2 and len(current["catalog_changes"]) != len(previous["catalog_changes"]) + 1:
+        if current["schema_version"] >= 2 and len(current["catalog_changes"]) != len(previous["catalog_changes"]) + 1:
             fail("catalog changes must append one approved change record")
         old_valid = {approval["id"] for approval in previous_catalog_approvals if approval["status"] == "valid"}
         current_by_id = {approval["id"]: approval for approval in current["approvals"]}
         if any(current_by_id.get(approval_id, {}).get("status") != "invalidated" for approval_id in old_valid):
             fail("catalog changes must invalidate the prior complete approval")
-        if current["schema_version"] == 2:
+        if current["schema_version"] >= 2:
             old_progress = previous["item_progress"]
             old_issue_ids = {entry["issue_id"] for entry in old_progress if entry["issue_id"] is not None}
             old_artifacts = {entry["artifact_path"] for entry in old_progress if entry["artifact_path"] is not None}
@@ -524,11 +556,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("state", type=Path)
     parser.add_argument("--previous", type=Path)
+    parser.add_argument("--review-legacy", action="store_true")
     args = parser.parse_args()
     try:
         current = validate(args.state)
         if args.previous is not None:
-            validate_transition(validate(args.previous), current)
+            previous = validate(args.previous)
+            if args.review_legacy:
+                from review_legacy import validate_review
+                validate_review(previous, current, scope=True)
+            else:
+                validate_transition(previous, current)
+        elif args.review_legacy:
+            fail("legacy review requires --previous")
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
         print(f"invalid: {error}", file=sys.stderr)
         return 1

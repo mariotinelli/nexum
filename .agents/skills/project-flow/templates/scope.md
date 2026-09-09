@@ -2,25 +2,9 @@
 
 ## Objetivo do escopo
 
-## Catálogo aprovado
-
-### <ID estável> — <Feature|Bug>: <Nome>
-
-- Objetivo humano:
-- Atores:
-- Resultado observável ou desvio:
-- Evidências:
-- Dependências diretas:
-- Motivo do limite vertical (independência e coesão interna):
-- Ordem sugerida:
-- Estado:
-- Issue e artefatos:
-
-## Grafo canônico de dependências
-
-## Grupos prontos em paralelo
-
-## Ordem total sugerida
+<!-- project-flow:catalog:start -->
+<!-- Replace this entire marked block with render_catalog.py output. -->
+<!-- project-flow:catalog:end -->
 
 ## Aprovação do catálogo
 

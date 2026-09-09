@@ -1,12 +1,12 @@
 # New issue: shared Feature and Bug cycle
 
-Use this path only after the preflight and context selection in `SKILL.md` pass.
+Use this path only after the preflight and context selection in `SKILL.md` pass. Read [catalog discipline](catalog-discipline.md) for capability boundaries, evidence reconciliation and project title conventions.
 
 ## 1. Normalize and orient
 
 Follow `intake.md` to inventory, fully extract, and separately normalize every declared source. When a source is presented as a design or design evidence, also apply `design-inputs.md` before accepting it. Create the run state, read [pause and resume](pause-resume.md), and acquire its item lock before replacing any state or making a remote call. Inspect the repository for stack, existing behavior, and canonical vocabulary while excluding dependencies, generated output, caches, binaries, and secret-bearing files. Retain only exclusion patterns and non-secret technical context for the state created after classification.
 
-If `new-issue` evidence contains more than one independently acceptable delivery, recommend `new-scope`, explain the proposed split, and wait for confirmation. On confirmation, continue from the existing normalized evidence and repository orientation without restarting intake. If `new-scope` contains one item, continue directly through this shared cycle without restarting.
+If `new-issue` evidence contains more than one product capability after the cohesion assessment, recommend `new-scope`, explain the proposed split, and wait for confirmation. On confirmation, continue from the existing normalized evidence and repository orientation without restarting intake. If `new-scope` contains one item, continue directly through this shared cycle without restarting.
 
 **Complete when:** every retained source is normalized and hashed when applicable, every declared design passes its stricter gate, repository evidence is recorded without secrets, the exact item lock is held, and the input describes exactly one demand.
 
@@ -24,7 +24,7 @@ Create the versioned run state with the source inventory and hashes, repository 
 
 Recommend the closest existing category with evidence from its name and project context. The user must confirm that category or explicitly choose another existing category or no category. Record the attributed decision in state. Category creation is outside this release.
 
-Prepare an initial title, complete initial objective, confirmed tracker, category, and initial status. For a Bug, the objective identifies the observed deviation without inventing a cause or deterministic reproduction. Read the Redmine projection reference, show the complete creation preview, and ask the first meaningful remote confirmation. Do not ask for priority, assignee, version, dates, or estimate.
+In requirement state v4, confirm `title_convention` and `delivery` using the shared discipline, then compose the initial title from those fields. A scope item inherits these exact confirmed fields through `scope_item`; do not ask them again. Include the visible delivery, user result and boundaries in the complete initial objective. Prepare the confirmed tracker, category, and initial status. For a Bug, the objective identifies the observed deviation without inventing a cause or deterministic reproduction. Read the Redmine projection reference, show the complete creation preview, and ask the first meaningful remote confirmation. Do not ask for priority, assignee, version, dates, or estimate.
 
 **Complete when:** a new demand and existing category or no category are confirmed, and the user explicitly approves the exact creation payload.
 

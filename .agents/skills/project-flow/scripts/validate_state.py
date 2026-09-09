@@ -12,6 +12,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+sys.dont_write_bytecode = True
+
 
 PHASES = (
     "mode-confirmed",
@@ -357,12 +359,16 @@ def validate(path: Path) -> dict[str, Any]:
     decision_keys = {"classification", "similarity"}
     required = {"schema_version", "run_id", "internal_identity", "mode", "item_type", "phase", "completed_phases", "identity", "redmine", "sources", "repository", "decisions", "approvals", "deferred_questions", "pauses", "lock", "remote_operations"}
     reconciliation_keys = {"remote_observations", "requirement_divergences"}
+    delivery_keys = {"title_convention", "delivery", "scope_item"}
     allow = required | reconciliation_keys | {"classification", "similarity"}
+    if state.get("schema_version") == 4:
+        allow |= delivery_keys
+        require_keys(state, delivery_keys, "schema v4 state")
     require_keys(state, required, "state")
     allow_keys(state, allow, "state")
-    if state["schema_version"] not in {2, 3}:
-        fail(f"unsupported schema_version: {state['schema_version']!r}; expected 2 or 3")
-    if state["schema_version"] == 3:
+    if state["schema_version"] not in {2, 3, 4}:
+        fail(f"unsupported schema_version: {state['schema_version']!r}; expected 2, 3 or 4")
+    if state["schema_version"] >= 3:
         require_keys(state, reconciliation_keys, "schema v3 state")
     if state["mode"] not in {"new-issue", "new-scope"} or state["item_type"] not in ITEM_TYPES:
         fail("only new-issue or new-scope Feature or Bug state is supported")
@@ -375,6 +381,32 @@ def validate(path: Path) -> dict[str, Any]:
     expected_phase = PHASES[len(completed)] if len(completed) < len(PHASES) else "completed"
     if state["phase"] != "paused" and state["phase"] != expected_phase:
         fail(f"phase must be the first incomplete phase: {expected_phase}")
+    if state["schema_version"] == 4:
+        from catalog_contract import convention, delivery
+        ready = "item-ready" in completed or expected_phase == "item-ready"
+        convention(state["title_convention"], ready)
+        delivery(state["delivery"], state["title_convention"], ready)
+        if state["mode"] == "new-scope" and ready:
+            from validate_scope_state import validate as validate_scope_file
+            link = require_object(state["scope_item"], "scope_item")
+            require_keys(link, {"state_path", "catalog_item_id", "catalog_sha256"}, "scope_item")
+            allow_keys(link, {"state_path", "catalog_item_id", "catalog_sha256"}, "scope_item")
+            scope_path = Path(require_text(link["state_path"], "scope_item.state_path"))
+            if scope_path.is_absolute():
+                fail("scope_item.state_path must be relative")
+            scope = validate_scope_file(path.parent / scope_path)
+            known_catalog = any(a["kind"] == "complete-catalog-and-order" and a["subject_sha256"] == link["catalog_sha256"] for a in scope["approvals"])
+            if scope["schema_version"] != 3 or not known_catalog:
+                fail("scope item must inherit the confirmed catalog projection")
+            if scope["redmine"]["project_id"] != state["redmine"]["project_id"]:
+                fail("scope item must belong to the same project")
+            if not any(a["kind"] == "complete-catalog-and-order" and a["status"] == "valid" for a in scope["approvals"]):
+                fail("scope item requires catalog approval")
+            item = next((i for i in scope["catalog"] if i["id"] == link["catalog_item_id"] and i["lifecycle"] == "active"), None)
+            if item is None or item["delivery"] != state["delivery"] or scope["title_convention"] != state["title_convention"] or item["type"] != state["item_type"]:
+                fail("scope item delivery, type and convention must be inherited exactly")
+        elif state["mode"] == "new-issue" and state["scope_item"] is not None:
+            fail("new-issue cannot inherit a scope item")
     identity = require_object(state["identity"], "identity")
     require_keys(identity, {"redmine_user_id", "display_name", "confirmed_at"}, "identity")
     allow_keys(identity, {"redmine_user_id", "display_name", "confirmed_at"}, "identity")
@@ -471,7 +503,7 @@ def validate(path: Path) -> dict[str, Any]:
     operations = require_object(state["remote_operations"], "remote_operations")
     require_keys(operations, {"create", "publish"}, "remote_operations")
     allow_keys(operations, {"create", "publish", "relations"}, "remote_operations")
-    if state["schema_version"] == 3:
+    if state["schema_version"] >= 3:
         require_keys(operations, {"relations"}, "schema v3 remote_operations")
     create_status = validate_operation(operations["create"], "remote_operations.create")
     publish_status = validate_operation(operations["publish"], "remote_operations.publish")
@@ -485,7 +517,7 @@ def validate(path: Path) -> dict[str, Any]:
         if relation_key in relation_keys:
             fail(f"duplicate relation operation key: {relation_key}")
         relation_keys.add(relation_key)
-    if state["schema_version"] == 3:
+    if state["schema_version"] >= 3:
         for name, operation in (("create", operations["create"]), ("publish", operations["publish"])):
             if operation["status"] in {"approved", "completed", "unknown"} and "payload_sha256" not in operation:
                 fail(f"schema v3 remote operation {name} requires payload_sha256")
@@ -707,6 +739,10 @@ def validate_transition(previous: dict[str, Any], current: dict[str, Any]) -> No
     for key in ("schema_version", "run_id", "internal_identity", "mode", "item_type"):
         if current[key] != previous[key]:
             fail(f"transition changed immutable field: {key}")
+    if current["schema_version"] == 4 and any(current[key] != previous[key] for key in ("title_convention", "delivery", "scope_item")):
+        old_valid = {a["id"] for a in previous["approvals"] if a["status"] == "valid"}
+        if any(a["id"] in old_valid and a["status"] == "valid" for a in current["approvals"]):
+            fail("delivery changes must invalidate prior approvals")
     old_lock = previous["lock"]
     new_lock = current["lock"]
     if new_lock["item_key"] != old_lock["item_key"]:
@@ -813,11 +849,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("state", type=Path)
     parser.add_argument("--previous", type=Path)
+    parser.add_argument("--review-legacy", action="store_true")
     args = parser.parse_args()
     try:
         current = validate(args.state)
         if args.previous is not None:
-            validate_transition(validate(args.previous), current)
+            previous = validate(args.previous)
+            if args.review_legacy:
+                from review_legacy import validate_review
+                validate_review(previous, current)
+            else:
+                validate_transition(previous, current)
+        elif args.review_legacy:
+            fail("legacy review requires --previous")
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
         print(f"invalid: {error}", file=sys.stderr)
         return 1
