@@ -15,6 +15,7 @@ Before planning or editing, find the row whose globs match the file's path and r
 | tests/Feature/Actions/** | .ai/rules/feature-actions.md |
 | tests/Feature/Livewire/** | .ai/rules/feature-livewire.md |
 | ** | .ai/rules/general.md |
+| docs/harness/** | .ai/rules/harness.md |
 | app/Jobs/** | .ai/rules/jobs.md |
 | app/Livewire/** | .ai/rules/livewire.md |
 | database/migrations/** | .ai/rules/migrations.md |

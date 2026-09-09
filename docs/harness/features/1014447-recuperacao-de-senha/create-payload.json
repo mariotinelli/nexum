@@ -1,0 +1,7 @@
+{
+  "project_id": 65221,
+  "tracker_id": 2,
+  "subject": "[WEB] [PUBLICO] Recuperação de Senha",
+  "description": "<!-- project-flow:start -->\nPermitir que uma pessoa sem sessão recupere o acesso à própria conta pela interface WEB responsiva em português, sem revelar se o e-mail informado está cadastrado.\n\nA entrega inclui:\n- Solicitar instruções de recuperação por e-mail.\n- Apresentar confirmação sem expor a existência da conta.\n- Redefinir a senha e sua confirmação mediante link válido.\n- Rejeitar links inválidos ou expirados.\n- Apresentar estados de envio e redefinição, validações e erros acessíveis.\n- Retornar ao login existente após a recuperação.\n\nLogin comum e alteração da senha durante uma sessão pertencem às respectivas Features.\n\nRequisitos em coleta. As regras detalhadas e os critérios de aceite serão definidos na entrevista desta Feature.\n<!-- project-flow:end -->",
+  "status_id": 1
+}

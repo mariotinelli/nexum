@@ -3,7 +3,7 @@
   "run_id": "f14a499f-1674-419d-91e3-db9b5c03326d",
   "internal_identity": "0370e6d4-2c49-4f0c-8157-299d7bcb3eaf",
   "mode": "new-scope",
-  "phase": "items-processing",
+  "phase": "paused",
   "completed_phases": [
     "mode-confirmed",
     "inputs-normalized",
@@ -415,7 +415,7 @@
     {
       "id": "recover-access",
       "type": "Feature",
-      "name": "Recuperação de Acesso",
+      "name": "Recuperação de Senha",
       "human_objective": "Recuperar o acesso à própria conta sem expor a existência do e-mail.",
       "actors": [
         "Pessoas sem sessão"
@@ -429,7 +429,7 @@
       "dependencies": [],
       "separation_reason": "Jornada pública de recuperação, separada do acesso comum e da manutenção de senha durante uma sessão.",
       "suggested_position": 2,
-      "status": "pending",
+      "status": "completed",
       "candidate_ids": [
         "candidate-recover-access"
       ],
@@ -439,8 +439,8 @@
         "audiences": [
           "PUBLICO"
         ],
-        "name": "Recuperação de Acesso",
-        "title": "[WEB] [PUBLICO] Recuperação de Acesso",
+        "name": "Recuperação de Senha",
+        "title": "[WEB] [PUBLICO] Recuperação de Senha",
         "visible_delivery": "Solicitação de instruções, confirmação e formulário para redefinir a senha, com retorno ao login existente.",
         "user_result": "Recuperar o acesso à própria conta sem expor a existência do e-mail.",
         "included": [
@@ -1178,6 +1178,16 @@
       "subject_sha256": "4c82e64741b3207bc726a943dd526b96e15e26283d5e37d93cce64ab94120e34",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-09T22:24:15.557849+00:00",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-09T23:14:54.663437Z",
+      "invalidated_reason": "Renomeação pontual solicitada e aprovada pelo usuário."
+    },
+    {
+      "id": "catalog-rename-recovery-001",
+      "kind": "complete-catalog-and-order",
+      "subject_sha256": "e25773bf2585e7605aa8161b2a4bfe30ad392974327f62bf606b42e251db6d4f",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-09T23:14:54.663437Z",
       "status": "valid"
     }
   ],
@@ -1225,6 +1235,31 @@
       "interaction_rule": "Ao fazer uma pergunta ao usuário, encerrar o turno e aguardar a resposta antes de executar qualquer outra ação.",
       "resumed_at": "2026-09-09T22:24:44.633362+00:00",
       "resume_evidence": "Projeção integral aprovada por Mário Tinelli; validação --previous --review-legacy passou. Aprovação catalog-review-approval-2026-09-09."
+    },
+    {
+      "id": "rename-recovery-001",
+      "status": "resumed",
+      "kind": "catalog-change",
+      "previous_phase": "items-processing",
+      "resume_phase": "items-processing",
+      "reason": "Usuário aprovou a criação condicionada a nome específico de recuperação de senha.",
+      "resume_condition": "Aplicar exclusivamente o nome Recuperação de Senha autorizado, preservando escopo, IDs, ordem, fontes, relações e artefatos.",
+      "paused_at": "2026-09-09T23:14:54.663437Z",
+      "affected_item_ids": [
+        "recover-access"
+      ],
+      "resumed_at": "2026-09-09T23:14:54.663437Z",
+      "resume_evidence": "Renomeação pontual expressamente autorizada aplicada; todo o restante do catálogo aprovado foi preservado."
+    },
+    {
+      "id": "voluntary-stop-after-recovery-001",
+      "kind": "voluntary-stop",
+      "status": "paused",
+      "previous_phase": "items-processing",
+      "resume_phase": "items-processing",
+      "reason": "Usuário solicitou commit e pausa após concluir Recuperação de Senha. Primeiro item não iniciado: maintain-own-profile (Meu Perfil).",
+      "resume_condition": "Usuário solicita retomar; preflight e reconciliação passam, lock do escopo é recuperado conforme o contrato, e o processamento recomeça em maintain-own-profile.",
+      "paused_at": "2026-09-09T23:30:25.162470Z"
     }
   ],
   "lock": {
@@ -1568,15 +1603,15 @@
     },
     {
       "catalog_item_id": "recover-access",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014447,
+      "artifact_path": "docs/harness/features/1014447-recuperacao-de-senha/feature.md",
+      "state_path": "docs/harness/features/1014447-recuperacao-de-senha/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-09T23:16:20.186486Z",
+      "completed_at": "2026-09-09T23:29:08.674627Z"
     },
     {
       "catalog_item_id": "maintain-own-profile",
@@ -1765,6 +1800,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-09T23:11:50.068231Z"
+    },
+    {
+      "after_item_id": "recover-access",
+      "decision": "stop",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-09T23:30:25.162470Z"
     }
   ],
   "catalog_changes": [
@@ -1804,6 +1845,28 @@
       "audiences_impact": "WEB com PUBLICO, ADMIN e OPERACIONAL; criação de tarefas por gestores/membros conforme permissões; painel pessoal para membros e equipe dos projetos gerenciados para gestores.",
       "deliveries_impact": "Quatro operações de projeto reunidas em Gestão de Projeto; criação/edição/detalhe/comentários/histórico em Gestão de Tarefa; Gestão de Tempo e Minhas Tarefas incluídas como capacidades próprias.",
       "coverage_impact": "59 comportamentos cobertos, com um responsável e consumidores explícitos; limites do MVP e integrações entre telas incluídos."
+    },
+    {
+      "id": "rename-recovery-001",
+      "kind": "rename",
+      "affected_item_ids": [
+        "recover-access"
+      ],
+      "names_impact": "Recuperação de Acesso passa a Recuperação de Senha, uma das opções expressamente indicadas pelo usuário ao aprovar a criação.",
+      "audiences_impact": "Preservado PUBLICO em WEB.",
+      "deliveries_impact": "Somente nome e título alterados; objetivo e operações preservados.",
+      "coverage_impact": "Mesmos comportamentos e responsáveis.",
+      "source_allocation_impact": "Mesmas fontes e alocação.",
+      "graph_impact": "Mesmo grafo e relações.",
+      "order_impact": "Mesma segunda posição.",
+      "preserved_issue_ids": [
+        1014446
+      ],
+      "artifact_paths": [
+        "docs/harness/features/1014446-autenticacao/feature.md"
+      ],
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-09T23:14:54.663437Z"
     }
   ],
   "relations": [
