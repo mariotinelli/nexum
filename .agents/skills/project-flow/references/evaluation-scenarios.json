@@ -1,1 +1,112 @@
-{"schema_version":3,"input_kinds":["conversation_text","file","url","image","design"],"shared_remote_mutations":[{"operation":"redmine_create_issue","maximum_unreconciled_calls":1,"confirmation":"create","retry_after":"remote-absence-proven"},{"operation":"redmine_update_issue","maximum_unreconciled_calls":1,"confirmation":"publish","retry_after":"remote-prior-fingerprint-proven"},{"operation":"redmine_create_relation","maximum_unreconciled_calls_per_stable_key":1,"confirmation":"publish","retry_after":"remote-absence-proven"}],"scenarios":[{"scenario":"new-issue-sourced-feature-happy-path","item_type":"Feature","ordered_gates":["mcp-tools-available","redmine-authenticated-identity","read-probes-passed","project-explicitly-selected","sources-fully-extracted","sources-separately-normalized","repository-stack-and-vocabulary-recorded","classification-confirmed","similarity-resolved-as-new-demand","existing-category-confirmed","create-preview-approved","issue-created-once","requirements-grilling-complete","feature-document-approved","remote-issue-reread","managed-divergence-resolved","publish-preview-approved","issue-update-persisted","relations-reconciled","state-completed"],"required_artifacts":["feature.md","feature-state.json","interview.md","sources\/<source-id>-<slug>.md"]},{"scenario":"new-issue-sourced-bug-happy-path","item_type":"Bug","ordered_gates":["mcp-tools-available","redmine-authenticated-identity","read-probes-passed","project-explicitly-selected","sources-fully-extracted","sources-separately-normalized","repository-stack-and-vocabulary-recorded","classification-confirmed","similarity-resolved-as-new-demand","existing-category-confirmed","create-preview-approved","issue-created-once","bug-deviation-interview-complete","bug-document-approved","remote-issue-reread","managed-divergence-resolved","publish-preview-approved","issue-update-persisted","relations-reconciled","state-completed"],"required_artifacts":["bug.md","bug-state.json","interview.md","sources\/<source-id>-<slug>.md"],"approval_without_deterministic_reproduction_requires":["explicit-reproduction-limitation","observable-deviation","clear-supporting-evidence"]},{"scenario":"new-issue-existing-demand","outcome":"stop-without-remote-mutation","ordered_gates":["classification-confirmed","similar-candidates-presented","existing-demand-confirmed"],"forbidden_operations":["redmine_create_issue","redmine_update_issue","redmine_create_relation"]},{"scenario":"new-scope-multi-item-completion","ordered_gates":["mcp-tools-available","redmine-authenticated-identity","read-probes-passed","project-explicitly-selected","sources-fully-extracted","sources-separately-normalized","repository-stack-and-vocabulary-recorded","complete-catalog-proposed","canonical-dependency-graph-validated","total-order-proposed-with-parallel-ready-groups","complete-catalog-and-order-approved","first-incomplete-item-selected","item-create-preview-approved","item-created-once","item-interview-started","item-requirement-approved","item-published","item-reconciled","continue-or-stop-recorded","all-items-completed","native-relations-reconciled","scope-completion-approved","final-summary-complete","scope-completed"],"required_scope_artifacts":["scope.md","scope-state.json","sources\/<source-id>-<slug>.md"],"catalog_item_fields":["type","name","human_objective","actors","observable_result_or_deviation","evidence","dependencies","separation_reason","suggested_position","candidate_ids","lifecycle","status"],"forbidden_before_catalog_approval":["redmine_create_issue"],"after_each_item":["continue","stop"],"resume_selection":"first-incomplete-item-in-approved-order","scope_completion_requires":["all-items-completed","all-relations-reconciled","all-approvals-valid","all-validations-passed","no-open-functional-gap","no-undecided-candidate"],"final_summary_sections":["issues","relations","artifacts","approvals","validations","next_recommendation"],"release_stop":"scope-completed"},{"scenario":"new-scope-catalog-split-or-merge-after-issue","ordered_gates":["catalog-change-paused","prior-approval-invalidated","change-impact-approved","catalog-change-appended","existing-issues-and-artifacts-preserved","complete-catalog-reapproved"],"forbidden_automatic_mutations":["delete-issue","close-issue","reuse-issue","delete-artifact"]},{"scenario":"new-scope-open-functional-gap","outcome":"pause-before-next-item-and-later-flows","resume_requires":["gap-resolved","scope-and-item-state-valid","remote-operations-reconciled"]}],"unsupported_branches":[],"resume_cases":["voluntary-stop","decision-deferred","third-party-question","stale-lock-recovery","resume-first-incomplete-operation","create-unknown-matched-without-retry","create-unknown-absent-safe-retry","publish-human-divergence-confirmation","partial-relation-failure","sanitized-known-failure","multi-item-voluntary-stop","v1-first-item-to-v2-migration","open-functional-gap"]}
+{
+  "schema_version": 4,
+  "input_kinds": ["conversation_text", "file", "url", "image", "design"],
+  "shared_remote_mutations": [
+    { "operation": "redmine_create_issue", "maximum_unreconciled_calls": 1, "confirmation": "create", "retry_after": "remote-absence-proven" },
+    { "operation": "redmine_update_issue", "maximum_unreconciled_calls": 1, "confirmation": "publish", "retry_after": "remote-prior-fingerprint-proven" },
+    { "operation": "redmine_create_relation", "maximum_unreconciled_calls_per_stable_key": 1, "confirmation": "publish", "retry_after": "remote-absence-proven" }
+  ],
+  "scenarios": [
+    {
+      "scenario": "new-issue-sourced-feature-happy-path",
+      "item_type": "Feature",
+      "ordered_gates": [
+        "mcp-tools-available", "redmine-authenticated-identity", "read-probes-passed",
+        "project-explicitly-selected", "sources-fully-extracted", "sources-separately-normalized",
+        "repository-stack-and-vocabulary-recorded", "classification-confirmed",
+        "similarity-resolved-as-new-demand", "existing-category-confirmed", "create-preview-approved",
+        "issue-created-once", "requirements-grilling-complete", "feature-document-approved",
+        "remote-issue-reread", "managed-divergence-resolved", "publish-preview-approved",
+        "issue-update-persisted", "relations-reconciled", "state-completed"
+      ],
+      "required_artifacts": ["feature.md", "feature-state.json", "interview.md", "sources/<source-id>-<slug>.md"]
+    },
+    {
+      "scenario": "new-issue-sourced-bug-happy-path",
+      "item_type": "Bug",
+      "ordered_gates": [
+        "mcp-tools-available", "redmine-authenticated-identity", "read-probes-passed",
+        "project-explicitly-selected", "sources-fully-extracted", "sources-separately-normalized",
+        "repository-stack-and-vocabulary-recorded", "classification-confirmed",
+        "similarity-resolved-as-new-demand", "existing-category-confirmed", "create-preview-approved",
+        "issue-created-once", "bug-deviation-interview-complete", "bug-document-approved",
+        "remote-issue-reread", "managed-divergence-resolved", "publish-preview-approved",
+        "issue-update-persisted", "relations-reconciled", "state-completed"
+      ],
+      "required_artifacts": ["bug.md", "bug-state.json", "interview.md", "sources/<source-id>-<slug>.md"],
+      "approval_without_deterministic_reproduction_requires": [
+        "explicit-reproduction-limitation", "observable-deviation", "clear-supporting-evidence"
+      ]
+    },
+    {
+      "scenario": "new-issue-existing-demand",
+      "outcome": "stop-without-remote-mutation",
+      "ordered_gates": ["classification-confirmed", "similar-candidates-presented", "existing-demand-confirmed"],
+      "forbidden_operations": ["redmine_create_issue", "redmine_update_issue", "redmine_create_relation"]
+    },
+    {
+      "scenario": "new-scope-multi-item-completion",
+      "ordered_gates": [
+        "mcp-tools-available", "redmine-authenticated-identity", "read-probes-passed",
+        "project-explicitly-selected", "sources-fully-extracted", "sources-separately-normalized",
+        "repository-stack-and-vocabulary-recorded", "complete-catalog-proposed",
+        "canonical-dependency-graph-validated", "total-order-proposed-with-parallel-ready-groups",
+        "complete-catalog-and-order-approved", "first-incomplete-item-selected",
+        "item-create-preview-approved", "item-created-once", "item-interview-started",
+        "item-requirement-approved", "item-published", "item-reconciled",
+        "continue-or-stop-recorded", "all-items-completed", "native-relations-reconciled",
+        "scope-completion-approved", "final-summary-complete", "scope-completed"
+      ],
+      "required_scope_artifacts": ["scope.md", "scope-state.json", "sources/<source-id>-<slug>.md"],
+      "catalog_item_fields": [
+        "type", "name", "human_objective", "actors", "observable_result_or_deviation",
+        "evidence", "dependencies", "separation_reason", "suggested_position", "candidate_ids", "lifecycle", "status"
+      ],
+      "forbidden_before_catalog_approval": ["requirements-grilling", "item-functional-interview", "redmine_create_issue"],
+      "after_each_item": ["continue", "stop"],
+      "resume_selection": "first-incomplete-item-in-approved-order",
+      "scope_completion_requires": [
+        "all-items-completed", "all-relations-reconciled", "all-approvals-valid",
+        "all-validations-passed", "no-open-functional-gap", "no-undecided-candidate"
+      ],
+      "final_summary_sections": ["issues", "relations", "artifacts", "approvals", "validations", "next_recommendation"],
+      "release_stop": "scope-completed"
+    },
+    {
+      "scenario": "new-scope-repository-analyzed-without-catalog",
+      "given": ["phase-repository-analyzed", "catalog-empty", "candidates-empty"],
+      "expected_next_action": "build-complete-vertical-catalog",
+      "allowed_questions": ["catalog-shaping-question"],
+      "forbidden_actions": ["requirements-grilling", "item-functional-interview", "record-item-decisions-in-scope", "redmine_create_issue"]
+    },
+    {
+      "scenario": "new-scope-catalog-split-or-merge-after-issue",
+      "ordered_gates": [
+        "catalog-change-paused", "prior-approval-invalidated", "change-impact-approved",
+        "catalog-change-appended", "existing-issues-and-artifacts-preserved", "complete-catalog-reapproved"
+      ],
+      "forbidden_automatic_mutations": ["delete-issue", "close-issue", "reuse-issue", "delete-artifact"]
+    },
+    {
+      "scenario": "new-scope-open-functional-gap",
+      "outcome": "pause-before-next-item-and-later-flows",
+      "resume_requires": ["gap-resolved", "scope-and-item-state-valid", "remote-operations-reconciled"]
+    }
+  ],
+  "unsupported_branches": [],
+  "resume_cases": [
+    "voluntary-stop",
+    "decision-deferred",
+    "third-party-question",
+    "stale-lock-recovery",
+    "resume-first-incomplete-operation",
+    "create-unknown-matched-without-retry",
+    "create-unknown-absent-safe-retry",
+    "publish-human-divergence-confirmation",
+    "partial-relation-failure",
+    "sanitized-known-failure",
+    "multi-item-voluntary-stop",
+    "v1-first-item-to-v2-migration",
+    "open-functional-gap"
+  ]
+}

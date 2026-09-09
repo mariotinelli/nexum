@@ -1,1 +1,56 @@
-{"schema_version":1,"purpose":"Verify that functional gaps prevent premature completion while technical choices remain outside the requirement interview.","cases":[{"id":"blocking-gap","open":{"blocking":1,"deferred":0,"contradictions":0,"third_party":0},"frontier_empty":false,"stakeholder_confirmed":false,"expected_outcome":"continue"},{"id":"deferred-gap","open":{"blocking":0,"deferred":1,"contradictions":0,"third_party":0},"frontier_empty":true,"stakeholder_confirmed":false,"expected_outcome":"deferred"},{"id":"source-contradiction","open":{"blocking":1,"deferred":0,"contradictions":1,"third_party":0},"frontier_empty":false,"stakeholder_confirmed":false,"expected_outcome":"continue"},{"id":"third-party-question","open":{"blocking":0,"deferred":1,"contradictions":0,"third_party":1},"frontier_empty":true,"stakeholder_confirmed":false,"expected_outcome":"deferred"},{"id":"empty-frontier-with-unsettled-prerequisite","open":{"blocking":1,"deferred":0,"contradictions":0,"third_party":0},"frontier_empty":true,"stakeholder_confirmed":false,"expected_outcome":"continue"},{"id":"technical-choice-only","open":{"blocking":0,"deferred":0,"contradictions":0,"third_party":0},"frontier_empty":true,"stakeholder_confirmed":false,"excluded_technical_choices":1,"expected_outcome":"request_confirmation"},{"id":"resolved-and-confirmed","open":{"blocking":0,"deferred":0,"contradictions":0,"third_party":0},"frontier_empty":true,"stakeholder_confirmed":true,"expected_outcome":"complete"}]}
+{
+  "schema_version": 1,
+  "purpose": "Verify that functional gaps prevent premature completion while technical choices remain outside the requirement interview.",
+  "cases": [
+    {
+      "id": "blocking-gap",
+      "open": {"blocking": 1, "deferred": 0, "contradictions": 0, "third_party": 0},
+      "frontier_empty": false,
+      "stakeholder_confirmed": false,
+      "expected_outcome": "continue"
+    },
+    {
+      "id": "deferred-gap",
+      "open": {"blocking": 0, "deferred": 1, "contradictions": 0, "third_party": 0},
+      "frontier_empty": true,
+      "stakeholder_confirmed": false,
+      "expected_outcome": "deferred"
+    },
+    {
+      "id": "source-contradiction",
+      "open": {"blocking": 1, "deferred": 0, "contradictions": 1, "third_party": 0},
+      "frontier_empty": false,
+      "stakeholder_confirmed": false,
+      "expected_outcome": "continue"
+    },
+    {
+      "id": "third-party-question",
+      "open": {"blocking": 0, "deferred": 1, "contradictions": 0, "third_party": 1},
+      "frontier_empty": true,
+      "stakeholder_confirmed": false,
+      "expected_outcome": "deferred"
+    },
+    {
+      "id": "empty-frontier-with-unsettled-prerequisite",
+      "open": {"blocking": 1, "deferred": 0, "contradictions": 0, "third_party": 0},
+      "frontier_empty": true,
+      "stakeholder_confirmed": false,
+      "expected_outcome": "continue"
+    },
+    {
+      "id": "technical-choice-only",
+      "open": {"blocking": 0, "deferred": 0, "contradictions": 0, "third_party": 0},
+      "frontier_empty": true,
+      "stakeholder_confirmed": false,
+      "excluded_technical_choices": 1,
+      "expected_outcome": "request_confirmation"
+    },
+    {
+      "id": "resolved-and-confirmed",
+      "open": {"blocking": 0, "deferred": 0, "contradictions": 0, "third_party": 0},
+      "frontier_empty": true,
+      "stakeholder_confirmed": true,
+      "expected_outcome": "complete"
+    }
+  ]
+}

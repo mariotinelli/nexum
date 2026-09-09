@@ -2,7 +2,7 @@
 
 For `new-scope`, create `docs/harness/scopes/<YYYY-MM-DD>-<scope-slug>/` with:
 
-- `scope.md`: the human-readable objective, complete catalog, canonical dependency graph, parallel-ready groups, suggested order, approval, and progress; start from `templates/scope.md`.
+- `scope.md`: the human-readable objective, complete catalog, canonical dependency graph, parallel-ready groups, suggested order, approval, progress, and item-gap summary; start from `templates/scope.md`. It is not an interview ledger: before an item starts, it contains no numbered functional questions or item-level decisions.
 - `scope-state.json`: operational state conforming to `schemas/scope-state.schema.json` through multi-item `completed`.
 - `sources/*.md`: normalized evidence shared by more than one item or received for the scope as a whole.
 

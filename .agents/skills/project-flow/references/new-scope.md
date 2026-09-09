@@ -14,17 +14,21 @@ Allocate each normalized source once. A source supporting two or more items is `
 
 Account for every observable objective or deviation with a stable candidate record. Mark unresolved classification or allocation as `undecided`; it blocks catalog approval and item work. Each catalog item records its candidate IDs, stable ID, Feature/Bug type, name, complete human objective, actors, observable result or deviation, evidence, direct functional dependencies, separate-acceptance rationale, lifecycle, status, and deterministic position.
 
+Apply a **catalog-first gate** after repository orientation. Turn the evidence into candidate vertical items before starting an exhaustive functional interview. When a catalog field cannot be determined, ask only the smallest product question whose answer can change candidate inclusion, Feature/Bug classification, item boundary, direct dependency, source allocation, or processing order. Then recompute and present the catalog. Preserve every other behavioral uncertainty as input for the future owning item; it does not trigger `requirements-grilling`, a numbered item interview, or a decision ledger in `scope.md` during `repository-analyzed`, `catalog-proposed`, or `catalog-approved`.
+
 Separate by independently acceptable behavior, not architecture layers. Keep one CRUD together when its operations serve one actor, concept, and objective. Split reusable prerequisites, independently acceptable actor goals/outcomes, and independently observable Bug symptoms. A suspected shared technical cause does not merge Bugs. Record every split or merge rationale.
 
 Build the minimal acyclic graph of direct functional prerequisites. Compute a deterministic topological order using evidence sequence and stable ID as tie-breakers. Show independent items as parallel-ready but retain the approved total order as the processing order. Present the complete catalog, candidate decisions, source allocation, separation rationales, graph, parallel-ready groups, planned native relations, and order in one review. Persist one attributed approval and its projection hash before creating any issue.
 
-**Complete when:** every candidate is decided and mapped, every source is allocated once, the graph is valid and minimal, planned `blocks` relations exactly project its edges, and one valid approval covers the complete projection.
+**Complete when:** every candidate is decided and mapped, every source is allocated once, the graph is valid and minimal, planned `blocks` relations exactly project its edges, one valid approval covers the complete projection, and no item-level functional interview has started.
 
 ## 3. Process the first incomplete item
 
 Select the first active item in approved order whose status is not `completed`; all preceding items and direct dependencies must be completed. An open functional gap anywhere earlier blocks this item and every later flow. For a migrated v1 scope, preserve the completed first item and issue in v2 progress, then ask the continue/stop decision before selecting another item.
 
 Initialize the item's separate requirement state with `mode: new-scope`, its catalog item ID, and relative evidence links. Run `new-issue.md` from classification/novelty confirmation through category and creation preview. Create exactly one issue only after preview approval and immediately before the first interview round; move item-exclusive sources once, create the definitive artifacts, and update scope progress atomically.
+
+The **item-interview gate** opens only when `catalog-approved` is in the scope's completed phase prefix and the selected item's completed create operation, issue ID, definitive artifact path, and requirement state are durable. Invoke `requirements-grilling` for that selected item only. If any precondition is absent, resume the first incomplete catalog or creation step instead of asking item-level functional questions.
 
 Execute the complete shared Feature/Bug cycle. If the interview exposes an unresolved functional gap, record it in both histories, mark the item `blocked`, pause with an objective resolution condition, and run no later item or downstream flow. Complete the item only when its requirement state validates at `completed`, its Redmine projection and operations reconcile, and every gap is resolved.
 

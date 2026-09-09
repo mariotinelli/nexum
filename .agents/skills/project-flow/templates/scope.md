@@ -32,7 +32,7 @@
 
 ## Alterações do catálogo
 
-## Gaps funcionais
+## Gaps funcionais dos itens processados
 
 ## Resumo final
 
