@@ -5,17 +5,19 @@ description: Turn readable conversation, file, URL, image, or design evidence in
 
 # Project Flow
 
+Respond in Brazilian Portuguese (pt-BR) from the first announcement, including questions, progress, preflight diagnostics, approval previews, final summaries, and authored requirements in local artifacts and Redmine. Preserve technical identifiers, schema keys, commands, and quoted source text. Apply this language choice when invoking the supporting disciplines unless the user explicitly requests another language.
+
 Deliver approved requirements: `new-scope` discovers an ordered Feature/Bug catalog and completes every item in that order; `new-issue` handles one Feature or Bug. The local Markdown is canonical; Redmine is its human-readable operational projection. Product decisions belong to the user, and implementation decisions belong to later roles.
 
 ## Preflight before intake
 
 Treat the user's demand text as opaque until this phase passes. Create no file and do not interpret, summarize, classify, search for, or quote the demand yet.
 
-1. Confirm that the connected Redmine MCP exposes `redmine_get_context`, `redmine_list_projects`, `redmine_get_project`, `redmine_list_trackers`, `redmine_list_statuses`, `redmine_list_categories`, `redmine_search_issues`, `redmine_get_issue`, `redmine_create_issue`, `redmine_update_issue`, and `redmine_create_relation`.
+1. Discover the Redmine tools available in this session, using the host's tool discovery/search when tools are deferred. Match exposed names and schemas to the capabilities below; host namespace prefixes may differ. Confirm that the connected Redmine MCP exposes `redmine_get_context`, `redmine_list_projects`, `redmine_get_project`, `redmine_list_trackers`, `redmine_list_statuses`, `redmine_list_categories`, `redmine_search_issues`, `redmine_get_issue`, `redmine_create_issue`, `redmine_update_issue`, and `redmine_create_relation`. A connected status or tool count alone does not establish which capabilities exist; an initially hidden tool does not establish absence. If discovery is incomplete or a check fails, read [Redmine preflight diagnostics](references/redmine-preflight.md) before reporting a blocker.
 2. Call `redmine_get_context`. A successful response must identify the server and authenticated user without exposing credentials.
 3. Call the read-only project, tracker, and status list tools to prove access. Do not probe write tools by mutating Redmine.
 
-If a tool is absent, authentication fails, identity is missing, or a read fails, stop with the missing capability and the corrective action (`remsoft install:mcp` or `remsoft redmine login`). The valid outcome is failure before intake: no demand content processed and no artifact written.
+If a required capability remains unavailable, authentication fails, identity is missing, or a read fails, stop before intake and report the observed failure and its evidence-based corrective action using the diagnostic reference. Distinguish a connected server missing a capability from an unconfigured server. The valid outcome is failure before intake: no demand content processed and no artifact written.
 
 **Complete when:** every mandatory tool is present, the authenticated identity is known, and the three read probes succeeded without reading or displaying a credential.
 

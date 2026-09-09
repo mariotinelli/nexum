@@ -1,0 +1,11 @@
+# Redmine preflight diagnostics
+
+Use the session's discovered tools and sanitized read responses as evidence. Connection, capability availability, and Redmine authentication are separate checks. Keep the mandatory preflight gate in `SKILL.md`.
+
+- **Incomplete discovery:** search deferred tools through the host's available discovery mechanism and inspect exposed names, descriptions, and schemas, accounting for namespace prefixes. If the host cannot provide the full inventory, report that capability verification is incomplete and request its detailed tool list. Do not assert that a tool is absent based on a partial list.
+- **Connected but missing a required capability:** identify the exact capability missing from the complete inventory. Explain that the MCP is connected but does not expose that operation. For example: “O MCP Redmine está conectado, mas a lista completa de ferramentas desta sessão não inclui `redmine_create_relation`, exigida por este fluxo.” Refresh or reconnect the server if the executable was already updated; otherwise update the Rem Soft Tools executable used by the host and run `remsoft install:mcp`, then reconnect and repeat discovery. Reinstalling configuration alone does not update an old executable. Tool count alone cannot identify a missing operation or prove an outdated version.
+- **Server absent or disconnected:** report the observed connection state. Use `remsoft install:mcp` when configuration is absent; inspect the host's sanitized connection error when configured but disconnected.
+- **Authentication rejected:** recommend `remsoft redmine login` only when the tool reports a missing, expired, or rejected session. Never request or display credentials.
+- **Identity missing or a read failed:** identify the specific probe and sanitized error. A permission, network, or server error requires its own correction; do not prescribe login or reinstallation without evidence.
+
+Report blockers in pt-BR and state that intake and artifact creation have not begun. Resume only when discovery confirms every mandatory capability, the authenticated identity is known, and all three read probes pass. Never test write capabilities by creating or modifying remote data.
