@@ -11,7 +11,7 @@
 - Resultado observável ou desvio:
 - Evidências:
 - Dependências diretas:
-- Motivo da separação:
+- Motivo do limite vertical (independência e coesão interna):
 - Ordem sugerida:
 - Estado:
 - Issue e artefatos:
