@@ -1,0 +1,6 @@
+interface:
+  display_name: "Requirements Grilling"
+  short_description: "Resolve functional gaps before requirements close"
+  default_prompt: "Use $requirements-grilling to interview me until the functional requirements have no open gaps."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,37 @@
+# Scope and requirement artifact contract
+
+For `new-scope`, create `docs/harness/scopes/<YYYY-MM-DD>-<scope-slug>/` with:
+
+- `scope.md`: the human-readable objective, complete catalog, canonical dependency graph, parallel-ready groups, suggested order, approval, and progress; start from `templates/scope.md`.
+- `scope-state.json`: operational state conforming to `schemas/scope-state.schema.json` through multi-item `completed`.
+- `sources/*.md`: normalized evidence shared by more than one item or received for the scope as a whole.
+
+Use scope schema version `2` for new runs. Its ordered phases are `mode-confirmed`, `inputs-normalized`, `repository-analyzed`, `catalog-proposed`, `catalog-approved`, `items-processing`, `relations-reconciled`, `scope-approved`, and `completed`; `paused` records an interruption without completing a phase. Validate each snapshot with `python <project-flow-skill>/scripts/validate_scope_state.py <scope-state.json>` and each replacement with `--previous`. The validator checks candidate disposition, single source ownership, graph/catalog agreement, deterministic order, sequential item progress, continue/stop decisions, functional gaps, preserved issue identities, native relations, reconciliation, approvals, validations, and final summary.
+
+Version `1` states through `first-item-completed` remain valid. Before a second item, migrate once to version `2`, preserving run/identity, complete catalog approval/history, first-item issue/artifacts, sources, lock lineage, and every completed fact. Validate the v2 candidate with the v1 file as `--previous`; then record the user's continue/stop decision.
+
+The scope directory name uses a deterministic collision suffix (`-02`, `-03`, and so on). `scope.md` links item artifacts and shared sources by relative path. A shared normalized source remains in the scope and an item state may reference it as `../../scopes/<scope-slug>/sources/<source>.md`; do not copy it into each item. Item-exclusive or later evidence stays under that item.
+
+**Scope complete when:** the scope state validates at `completed`; all active items and addressable native relations are completed and reconciled; all requirement/scope validations and approvals are recorded; no candidate or functional gap is open; and the final summary lists issues, relations, artifacts, approvals, validations, and the next recommendation.
+
+## Feature and Bug artifacts
+
+The definitive directory is `docs/harness/features/<REDMINE-ID>-<slug>/` for a Feature and `docs/harness/bugs/<REDMINE-ID>-<slug>/` for a Bug. Until the issue ID exists, use `docs/harness/.runs/<run-id>/`. `.runs/` contains only staging for the current fresh run and should be Git-ignored by the target repository.
+
+Required final files:
+
+- `<type>.md`: canonical, human-readable requirement; use `feature.md` from `templates/feature.md` or `bug.md` from `templates/bug.md`.
+- `<type>-state.json`: operational metadata conforming to `schemas/requirement-state.schema.json`; use `feature-state.json` or `bug-state.json` consistently with `item_type`.
+- `interview.md`: append-only human-readable question and decision history based on `templates/interview.md`.
+- `sources/*.md`: one normalized file per retained source. Conversation input, when present, is `sources/conversation-input-001.md` and contains only the verbatim relevant user input.
+- `pending-questions.md`: append-only deferred-question history based on `templates/pending-questions.md`; create it only after the first deferral and retain it after every question is resolved.
+
+Use schema version `3` for new runs. Generate an immutable UUID for both `run_id` and `internal_identity`. State holds the first incomplete phase and operation, completed phase prefix, Redmine identity, attributed classification and novelty decisions, confirmed project/mappings/category, source inventory and hashes, repository orientation, attributed decisions and approvals, deferred-question and pause history, lock ownership, issue identity, payload fingerprints, append-only attempts and observations, requirement divergences, and create/publish/relation operation statuses. Requirement prose belongs in Markdown, not duplicated in JSON. Classification and similarity become mandatory when the run reaches `item-ready`; earlier snapshots remain valid while those decisions are pending. The validator continues to accept existing version 2 runs so their pause/resume history remains readable; retain their version and add reconciliation records supported by the validator rather than rewriting old history.
+
+Allowed forward phases are `mode-confirmed`, `inputs-normalized`, `repository-analyzed`, `item-ready`, `item-created`, `interviewing`, `requirement-proposed`, `requirement-approved`, `redmine-synchronized`, and `completed`; `paused` is a temporary state, not a completed phase. `completed_phases` is always a contiguous prefix, while `phase` names its first incomplete phase. Persist state atomically after every decision, answer, pause, phase, remote attempt, observation, divergence decision, or completed operation. A later operation or phase cannot start until the previous completion is durable.
+
+Resolve the installed `project-flow` package directory. Validate a new state with `python <project-flow-skill>/scripts/validate_state.py <feature-or-bug-state.json>`. Before replacing an existing state, write the candidate beside it and run `python <project-flow-skill>/scripts/validate_state.py <candidate.json> --previous <feature-or-bug-state.json>`; replace atomically only after success. The comparison refuses deleted or rewritten history, invalid pause/resume, backward or skipped phases, mismatched identities, unsafe unknown-outcome transitions, duplicate relation keys, rewritten attempts or observations, unresolved requirement divergences, and unsanitized error material. Unknown schema versions, malformed JSON, mismatched issue IDs, and completion without create, publish, and planned relations also block progress. Both `new-issue` items and items started by `new-scope` use this validator and contract. The validators are local and deterministic; they neither call Redmine nor read credentials.
+
+Read [pause and resume](pause-resume.md) when an incomplete state, stop request, deferred decision, third-party question, or lock conflict appears.
+
+**Complete when:** every required file exists in its phase-appropriate directory, every normalized source hash matches, no source or evidence reconciliation is pending, and the validator accepts the state without warning.
