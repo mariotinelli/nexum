@@ -220,10 +220,10 @@ def validate_v1(state: dict[str, Any], path: Path) -> dict[str, Any]:
         fail("repository-analyzed requires stack and exclusions")
     if "inputs-normalized" in completed and any(source.get("status") == "unreadable" for source in state["sources"]):
         fail("normalized phases cannot contain unreadable sources")
-    items: dict[str, dict[str, Any]] = {}
-    if "catalog-proposed" in completed or expected in {"catalog-proposed", "catalog-approved", "first-item-started", "first-item-completed"}:
-        items = validate_catalog(state, 1)
     valid_catalog = validate_approvals_and_pauses(state)
+    items: dict[str, dict[str, Any]] = {}
+    if "catalog-proposed" in completed:
+        items = validate_catalog(state, 1)
     catalog_change_pause = state["phase"] == "paused" and state["pauses"] and state["pauses"][-1].get("kind") == "catalog-change"
     if ("catalog-approved" in completed or expected in {"first-item-started", "first-item-completed"}) and not catalog_change_pause and valid_catalog != 1:
         fail("catalog-approved requires exactly one valid complete catalog approval")
@@ -254,7 +254,7 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
         fail("repository-analyzed requires stack and exclusions")
     if "inputs-normalized" in completed and any(source.get("status") == "unreadable" for source in state["sources"]):
         fail("normalized phases cannot contain unreadable sources")
-    if "catalog-proposed" not in completed and expected not in {"catalog-proposed", "catalog-approved", "items-processing", "relations-reconciled", "scope-approved", "completed"}:
+    if "catalog-proposed" not in completed:
         for field in ("candidates", "catalog", "dependency_graph", "parallel_ready_groups", "suggested_order", "item_progress", "continuation_decisions", "catalog_changes", "relations", "validations"):
             if not isinstance(state[field], list):
                 fail(f"{field} must be an array")
@@ -501,12 +501,13 @@ def validate_transition(previous: dict[str, Any], current: dict[str, Any]) -> No
         if any(new_issues.get(item_id) != issue_id for item_id, issue_id in old_issues.items()):
             fail("transition removed or rewrote an existing issue")
     catalog_fields = ("catalog", "dependency_graph", "parallel_ready_groups", "suggested_order")
-    if any(current[field] != previous[field] for field in catalog_fields):
+    previous_catalog_approvals = [approval for approval in previous["approvals"] if approval["kind"] == "complete-catalog-and-order"]
+    if previous_catalog_approvals and any(current[field] != previous[field] for field in catalog_fields):
         if current["phase"] != "paused" or not current["pauses"] or current["pauses"][-1].get("kind") != "catalog-change":
             fail("catalog changes must pause with their impact recorded")
         if current["schema_version"] == 2 and len(current["catalog_changes"]) != len(previous["catalog_changes"]) + 1:
             fail("catalog changes must append one approved change record")
-        old_valid = {approval["id"] for approval in previous["approvals"] if approval["kind"] == "complete-catalog-and-order" and approval["status"] == "valid"}
+        old_valid = {approval["id"] for approval in previous_catalog_approvals if approval["status"] == "valid"}
         current_by_id = {approval["id"]: approval for approval in current["approvals"]}
         if any(current_by_id.get(approval_id, {}).get("status") != "invalidated" for approval_id in old_valid):
             fail("catalog changes must invalidate the prior complete approval")
