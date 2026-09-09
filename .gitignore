@@ -44,3 +44,6 @@ __pycache__/
 /.specs/**/.tmp/
 /.specs/**/cache/
 /.specs/**/logs/
+
+/docs/harness/.runs/
+/docs/harness/.locks/

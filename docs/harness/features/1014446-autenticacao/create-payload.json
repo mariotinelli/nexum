@@ -1,0 +1,7 @@
+{
+  "project_id": 65221,
+  "tracker_id": 2,
+  "subject": "[WEB] [PUBLICO] Autenticação",
+  "description": "<!-- project-flow:start -->\nPermitir que pessoas com uma conta ativa entrem e saiam do Nexum pela interface WEB responsiva, em português.\n\nA entrega inclui:\n- Login com e-mail e senha.\n- Recusa de credenciais inválidas e contas inativas, com mensagens acessíveis.\n- Redirecionamento após login para a entrada autenticada do painel existente.\n- Encerramento da sessão.\n- Navegação autenticada responsiva, respeitando permissões e disponibilizando as entradas das capacidades conforme forem entregues.\n- Estados de carregamento, erro e sucesso e tratamento de foco.\n\nRecuperação de acesso, manutenção do perfil, administração de usuários e indicadores gerenciais pertencem às respectivas Features do catálogo aprovado.\n\nRequisitos em coleta. As regras detalhadas e os critérios de aceite serão definidos na entrevista desta Feature.\n<!-- project-flow:end -->",
+  "status_id": 1
+}

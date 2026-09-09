@@ -252,8 +252,16 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
     if state["schema_version"] == 3:
         required |= SCOPE_FIELDS
     require_keys(state, required, "state")
-    if state.keys() != required:
+    optional = {"legacy_review"} if state["schema_version"] == 3 else set()
+    if state.keys() - required - optional:
         fail("state has unknown keys")
+    if "legacy_review" in state:
+        review = state["legacy_review"]
+        if not isinstance(review, dict) or set(review) != {"previous_state", "reason"}:
+            fail("legacy_review must contain the previous state and a reason")
+        if not isinstance(review["previous_state"], dict) or review["previous_state"].get("schema_version") not in {1, 2}:
+            fail("legacy_review requires a legacy scope snapshot")
+        text(review["reason"], "legacy_review.reason")
     completed, expected = phase_position(state, PHASES_V2)
     validate_common(state, path)
     valid_catalog = validate_approvals_and_pauses(state)
@@ -402,9 +410,17 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
             fail(f"duplicate relation stable key: {key}")
         relation_keys.add(key)
         pair = (relation["from_item_id"], relation["to_item_id"])
-        relation_pairs.add(pair)
         if pair[0] not in items or pair[1] not in items or relation["relation_type"] != "blocks":
             fail("relation must use native blocks and reference known items")
+        if relation["status"] == "retired" and state["schema_version"] == 3:
+            if relation["approval_id"] is not None or relation["completed_at"] is not None or relation["reconciliation_status"] != "pending":
+                fail("only unpublished, unapproved planned relations can be retired locally")
+            continue
+        if relation["status"] not in {"planned", "completed"}:
+            fail("invalid relation status")
+        if pair in relation_pairs:
+            fail("duplicate active relation pair")
+        relation_pairs.add(pair)
         from_issue, to_issue = progress_by_id[pair[0]]["issue_id"], progress_by_id[pair[1]]["issue_id"]
         if from_issue is not None and to_issue is not None:
             if relation["from_issue_id"] != from_issue or relation["to_issue_id"] != to_issue:
@@ -439,7 +455,7 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
     scope_validation = any(isinstance(entry, dict) and entry.get("status") == "passed" and entry.get("kind") == "scope-state" for entry in validations)
     all_complete = all(progress_by_id[item_id]["status"] == "completed" for item_id in order)
     no_open_gaps = not any(gap["status"] == "open" for record in progress for gap in record["functional_gaps"])
-    all_relations = all(relation["status"] == "completed" and relation["reconciliation_status"] == "completed" for relation in relations)
+    all_relations = all(relation["status"] == "retired" or (relation["status"] == "completed" and relation["reconciliation_status"] == "completed") for relation in relations)
     if expected in {"relations-reconciled", "scope-approved", "completed"} or "items-processing" in completed:
         if not all_complete or not no_open_gaps or undecided or set(order) - passed_items:
             fail("items-processing completes only after every item, gap, candidate, reconciliation, and validation is complete")
@@ -522,6 +538,10 @@ def validate_transition(previous: dict[str, Any], current: dict[str, Any]) -> No
         if any(new_issues.get(item_id) != issue_id for item_id, issue_id in old_issues.items()):
             fail("transition removed or rewrote an existing issue")
     if current["schema_version"] == 3:
+        if previous.get("legacy_review") != current.get("legacy_review"):
+            fail("ordinary transitions must preserve the legacy review snapshot")
+        from review_legacy import validate_relation_history
+        validate_relation_history(previous["relations"], current["relations"], allow_progress=True)
         for collection in ("catalog", "behaviors"):
             old_ids = {entry["id"] for entry in previous[collection]}
             if not old_ids <= {entry["id"] for entry in current[collection]}:
@@ -557,14 +577,17 @@ def main() -> int:
     parser.add_argument("state", type=Path)
     parser.add_argument("--previous", type=Path)
     parser.add_argument("--review-legacy", action="store_true")
+    parser.add_argument("--draft", action="store_true", help="Check an unapproved legacy review without authorizing state replacement")
     args = parser.parse_args()
+    if args.draft and (not args.review_legacy or args.previous is None):
+        parser.error("--draft requires --previous and --review-legacy")
     try:
         current = validate(args.state)
         if args.previous is not None:
             previous = validate(args.previous)
             if args.review_legacy:
                 from review_legacy import validate_review
-                validate_review(previous, current, scope=True)
+                validate_review(previous, current, scope=True, draft=args.draft)
             else:
                 validate_transition(previous, current)
         elif args.review_legacy:
@@ -572,7 +595,7 @@ def main() -> int:
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
         print(f"invalid: {error}", file=sys.stderr)
         return 1
-    print("valid")
+    print("valid draft; approval required before replacement" if args.draft else "valid")
     return 0
 
 
