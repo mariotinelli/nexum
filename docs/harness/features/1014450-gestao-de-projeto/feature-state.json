@@ -1,0 +1,589 @@
+{
+  "schema_version": 4,
+  "run_id": "ce4bb5f7-e504-4515-9c5d-9637e04eec3c",
+  "internal_identity": "0c1f6720-209f-48ee-aea9-116ee0ed8c0a",
+  "mode": "new-scope",
+  "item_type": "Feature",
+  "phase": "completed",
+  "completed_phases": [
+    "mode-confirmed",
+    "inputs-normalized",
+    "repository-analyzed",
+    "item-ready",
+    "item-created",
+    "interviewing",
+    "requirement-proposed",
+    "requirement-approved",
+    "redmine-synchronized",
+    "completed"
+  ],
+  "identity": {
+    "redmine_user_id": 131789,
+    "display_name": "Mário Tinelli",
+    "confirmed_at": "2026-09-09T19:14:01.0762355Z"
+  },
+  "redmine": {
+    "project_id": 65221,
+    "project_name": "Nexum",
+    "tracker_id": 2,
+    "tracker_name": "Feature",
+    "initial_status_id": 1,
+    "initial_status_name": "New",
+    "approved_status_id": 4,
+    "approved_status_name": "Approved",
+    "mapping_confirmations": [],
+    "category": {
+      "id": null,
+      "name": null,
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T11:52:00.982009Z"
+    },
+    "issue_id": 1014450
+  },
+  "sources": [
+    {
+      "id": "design-edit-project",
+      "name": "editar-projeto.html",
+      "type": "design HTML da tela Editar projeto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\editar-projeto.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-edit-project.md",
+      "original_sha256": "b4a1046ff0d5d291c766697fbe78c95e48c5240e7ab7ebf3fb581f813138e5aa",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "95bd82a2c96be3a39139e79d3f28684d3f103bb1eac041b237ae04286c82f3d7",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-new-project",
+      "name": "novo-projeto.html",
+      "type": "design HTML da tela Novo projeto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\novo-projeto.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-new-project.md",
+      "original_sha256": "9e2573b4b276ab26f191a019177c24641a862ffc59f80d323d6712c60f2d11a2",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "d22a6338db98566dbc02f412f9b2d2ab829db5c0adbe5aa46052bc1219b68156",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-projects",
+      "name": "projetos.html",
+      "type": "design HTML da tela Projetos",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\projetos.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-projects.md",
+      "original_sha256": "6370083f10a0dc678771a44d6315eeaf4978b43d79b3d4331213e5ffe4951fee",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "ab4fc6f8b9f7b3b6af86e4f5eb8171a64e65a5579d20de31d9cf43daf7024ee5",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-users",
+      "name": "usuarios.html",
+      "type": "design HTML da tela Usuários",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\usuarios.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-users.md",
+      "original_sha256": "900da2a517fdd275860861d8e4a81ad005a1b480372a3ee38999adc698d12814",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "3471bc0797cbf37da870ef32fc2c8877ff761c906b305b629756a9bd3b25c197",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-guide",
+      "name": "guia-de-design.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\guia-de-design.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-guide.md",
+      "original_sha256": "801383f4687ff5c25486f5007341cf625910d75f7c6c9337d552ce3ec29baceb",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "14cd798e9f9cec0b74b5c6f4c53ff8f8a9a9cfe3ab57a16ba0a6df47b0fa696a",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    },
+    {
+      "id": "design-project-detail",
+      "name": "detalhes-projeto.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\detalhes-projeto.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-project-detail.md",
+      "original_sha256": "22a9517dad17b530cade5c4f2ff122d3dd8c6e68bb0353e1b2229f9ee251730f",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "d03d702e3d1f38286fc783511291f90e0f65a198f075e6c1d3bc60a72107dee2",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    },
+    {
+      "id": "design-task-detail",
+      "name": "detalhes-tarefa.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\detalhes-tarefa.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-task-detail.md",
+      "original_sha256": "ae9042401a12d605aba55416b8a867f85380782d2d5cb52bd7398727918b8c1f",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "7e3d61eb714e36630590ff11a71de51a1703260fa125fe3f49dafe076a672f14",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    }
+  ],
+  "repository": {
+    "stack": [
+      "PHP 8.4",
+      "Laravel 13",
+      "Livewire 4",
+      "Tailwind CSS 4, DaisyUI 5 e Alpine.js 3",
+      "MySQL e Eloquent",
+      "Pest 5 e PHPUnit 12",
+      "r2luna/brain 4.1",
+      "Laravel Auditing 14"
+    ],
+    "vocabulary": [
+      {
+        "term": "Usuário",
+        "evidence_paths": [
+          "app/Models/User.php",
+          "docs/agents/domain_rules.md",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Administrador",
+        "evidence_paths": [
+          "app/Enums/TypeUsers.php",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Gestor",
+        "evidence_paths": [
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Membro",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-dashboard.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Projeto",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md"
+        ]
+      },
+      {
+        "term": "Tarefa",
+        "evidence_paths": [
+          "sources/design-tasks.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Situação da tarefa",
+        "evidence_paths": [
+          "sources/design-board.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Prioridade da tarefa",
+        "evidence_paths": [
+          "sources/design-new-task.md",
+          "sources/design-tasks.md"
+        ]
+      },
+      {
+        "term": "Projeto arquivado",
+        "evidence_paths": [
+          "sources/design-edit-project.md",
+          "sources/design-board.md",
+          "sources/design-projects.md"
+        ]
+      }
+    ],
+    "exclusions": [
+      "vendor/** e node_modules/**",
+      ".git/**",
+      "storage/logs/**, caches e arquivos temporários",
+      "public/build/**, artefatos Vite e relatórios de cobertura",
+      ".env*, credenciais, chaves privadas e tokens",
+      "binários e conteúdo gerado sem relevância funcional"
+    ]
+  },
+  "classification": {
+    "suggested_type": "Feature",
+    "rationale": "Gestão do ciclo de vida de projetos aprovada como Feature no catálogo.",
+    "confirmed_type": "Feature",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T11:52:00.982009Z"
+  },
+  "similarity": {
+    "searched_at": "2026-09-10T11:52:00.982009Z",
+    "candidates": [],
+    "decision": "new-demand",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T11:52:00.982009Z"
+  },
+  "decisions": [
+    {
+      "id": "creation-confirmation",
+      "statement": "Mário Tinelli respondeu sim à prévia completa de Gestão de Projeto. Nova Feature sem categoria; busca encontrou somente as quatro Features anteriores, sem duplicidade.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:52:00.982009Z",
+      "status": "valid"
+    },
+    {
+      "id": "q21",
+      "statement": "Somente administradores podem criar projetos; substitui a recomendação de criação por qualquer usuário ativo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q22",
+      "statement": "Um gestor principal obrigatório e outros participantes Gestor com as mesmas permissões de gestão.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q23",
+      "statement": "Identificador automático a partir do nome, com exemplos RSP e RST. Algoritmo, colisões e mutabilidade ainda precisam de definição; a resposta não aprova as demais partes da recomendação anterior.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q24",
+      "statement": "Remover datas do MVP; alcance entre projeto e tarefas precisa ser esclarecido antes de revisar o catálogo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q25",
+      "statement": "Lista inicia em Todos, ordem alfabética por nome e filtro persistido durante a sessão.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q26",
+      "statement": "Modal administrativo mostra projetos ativos e arquivados com nome, estado e papel, sem abrir detalhes sem participação.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q27",
+      "statement": "Preservar vínculos/papéis de contas desativadas, marcá-las inativas e impedir novas inclusões; administrador reativa gestor quando todos estiverem inativos, sem ganhar acesso ao projeto.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q28",
+      "statement": "Remoção de participante responsável por tarefas exige aviso e confirmação, sem impedimento absoluto; destino das atribuições ainda precisa ser definido.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:04:52.107096Z",
+      "status": "valid"
+    },
+    {
+      "id": "q29",
+      "statement": "Retirar somente Data inicial e Prazo dos projetos; preservar datas de tarefas e seus filtros e indicadores.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q30",
+      "statement": "Identificador automático segue a ideia das iniciais, mas deve sempre conter exatamente três letras. Completar nomes curtos e escolher letras alternativas ainda exige definição.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q31",
+      "statement": "Colisões devem ser resolvidas escolhendo outra combinação de três letras, sem sufixo numérico. A resposta não confirma separadamente edição manual ou estabilidade ao renomear.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q32",
+      "statement": "Ao confirmar remoção do participante, suas tarefas ficam sem responsável, preservando comentários, horas e histórico; avisar a consequência antes da confirmação e revogar acesso ao projeto.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q33",
+      "statement": "Administrador criador que escolhe outro gestor principal somente participa se marcado; se não participar, concluir com sucesso e retornar à lista acessível sem abrir detalhes.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q34",
+      "statement": "Ao trocar gestor principal, o anterior permanece Gestor salvo alteração explícita de papel ou remoção; novo principal é participante Gestor obrigatório.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q35",
+      "statement": "Gestor pode remover a própria participação ou virar Membro mediante confirmação, mantendo outro principal ativo; se for principal, indicar substituto ativo na mesma alteração. Aplicar novo acesso imediatamente.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:13:40.519549Z",
+      "status": "valid"
+    },
+    {
+      "id": "q36",
+      "statement": "Identificador sempre com três letras maiúsculas sem acento. Para três ou mais palavras significativas, iniciais das três primeiras, ignorando de/da/do/das/dos/e. Para menos palavras, completar com letras da última palavra; se faltarem letras no nome inteiro, completar com X. Exemplos: RSP, RST, Portal Cliente → PCL, Financeiro → FIN, TI → TIX.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:16:36.027828Z",
+      "status": "valid"
+    },
+    {
+      "id": "q37",
+      "statement": "Colisões usam outras letras do nome, alterando primeiro a terceira posição, como RSP → RSR → RSO. Esgotadas as combinações do nome, usar outras letras A–Z até encontrar sigla livre, sempre com três letras. Códigos de arquivados continuam ocupados. Se todas as combinações estiverem ocupadas, informar indisponibilidade e não criar.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:16:36.027828Z",
+      "status": "valid"
+    },
+    {
+      "id": "q38",
+      "statement": "Identificador exclusivamente automático, sem edição manual e imutável após criação, inclusive ao renomear o projeto.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:16:36.027828Z",
+      "status": "valid"
+    },
+    {
+      "id": "understanding-confirmation-001",
+      "statement": "Mário Tinelli respondeu sim à síntese completa de Gestão de Projeto, confirmando Q21–Q38 e o entendimento para refletir as mudanças no catálogo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:20:18.296259Z",
+      "status": "valid"
+    },
+    {
+      "id": "catalog-reconciliation-001",
+      "statement": "Mário Tinelli aprovou integralmente o catálogo revisado. Entrega herdada reconciliada; operações de criação e relação concluídas preservadas, sem repetição.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:23:22.938319Z",
+      "status": "valid"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "create-project-001",
+      "kind": "create-payload",
+      "subject_sha256": "0ac3c86d37267d21526b6c293f20e99965b4c2f734bbb3a612d1b75144351407",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:52:00.982009Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T12:23:22.938319Z",
+      "invalidated_reason": "Entrega reconciliada com catálogo revisado; aprovação anterior não autoriza novas operações. Criação e relação já concluídas permanecem preservadas no histórico, sem repetição."
+    },
+    {
+      "id": "relation-users-project-001",
+      "kind": "relation-payload",
+      "subject_sha256": "869d63566b263f81845e317e34a09f8638a8d62f5b4c6bcf938d253af561b829",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:54:04.644345Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T12:23:22.938319Z",
+      "invalidated_reason": "Entrega reconciliada com catálogo revisado; aprovação anterior não autoriza novas operações. Criação e relação já concluídas permanecem preservadas no histórico, sem repetição."
+    },
+    {
+      "id": "requirement-project-001",
+      "kind": "requirement",
+      "subject_sha256": "236564ce36d22cdf9ce49428d912e597b2b04df6fdb5e11e7cf8a2b925756a19",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:33:13.733023Z",
+      "status": "valid"
+    },
+    {
+      "id": "publish-project-001",
+      "kind": "publish-payload",
+      "subject_sha256": "2a1961332a177f4cbe3d2f2fc1aa48b6b55e08e9dc28f401a439a9032be147ad",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:35:10.259851Z",
+      "status": "valid"
+    }
+  ],
+  "deferred_questions": [
+    {
+      "id": "catalog-reapproval-project-001",
+      "question": "Aprovação do catálogo revisado após esclarecer o alcance da retirada de datas e a remoção de responsáveis.",
+      "responsible_role": "Mário Tinelli",
+      "reason": "Etapa posterior de aprovação do catálogo exigida pelo fluxo; aguarda a definição do impacto. Não representa pedido de adiamento pelo usuário.",
+      "blocked_decisions": [
+        "requirement-approval",
+        "publication",
+        "next-scope-item"
+      ],
+      "status": "resolved",
+      "asked_at": "2026-09-10T12:04:52.107096Z",
+      "resolution": {
+        "answer": "Catálogo completo revisado aprovado por Mário Tinelli nesta conversa.",
+        "source": "Resposta sim à prévia completa catalog-project-review.md",
+        "resolved_at": "2026-09-10T12:23:22.938319Z"
+      }
+    }
+  ],
+  "pauses": [
+    {
+      "id": "project-catalog-revision-001",
+      "status": "resumed",
+      "kind": "decision-deferred",
+      "previous_phase": "interviewing",
+      "resume_phase": "interviewing",
+      "reason": "Respostas Q21, Q23, Q24 e Q28 alteram a entrega aprovada: criação administrativa, identificador automático, retirada de datas e remoção confirmada de responsáveis. Alcance da retirada de datas e atribuições pendentes exigem reconciliação do catálogo.",
+      "resume_condition": "Esclarecer o impacto e aprovar o catálogo completo revisado, preservando identidades, issues, relações e ordem compatível.",
+      "paused_at": "2026-09-10T12:04:52.107096Z",
+      "resumed_at": "2026-09-10T12:23:22.938319Z",
+      "resume_evidence": "Catálogo revisado aprovado, hash 776aa602d7e45a2adce0a36c69a1ac15dba290e45cc8fb15f87aa2f9604f89e9; identidade 1014450 e entrega herdada preservadas/reconciliadas."
+    }
+  ],
+  "lock": {
+    "acquired_at": "2026-09-10T11:52:01.082521Z",
+    "item_key": "nexum:manage-project",
+    "lock_id": "cf4038a5-a5fb-4b9c-b27f-dce3089328fc",
+    "path": "docs/harness/.locks/32fe0156996d1504d7b0f8d89aed8aabd77836d482e300c6219e686a7766a928.lock.json"
+  },
+  "remote_operations": {
+    "create": {
+      "status": "completed",
+      "payload_sha256": "0ac3c86d37267d21526b6c293f20e99965b4c2f734bbb3a612d1b75144351407",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:52:00.982009Z",
+      "attempts": [
+        {
+          "id": "create-attempt-001",
+          "attempted_at": "2026-09-10T11:52:12Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T11:52:46.127106Z",
+      "observation_id": "create-response-001"
+    },
+    "publish": {
+      "status": "completed",
+      "payload_sha256": "2a1961332a177f4cbe3d2f2fc1aa48b6b55e08e9dc28f401a439a9032be147ad",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:35:10.259851Z",
+      "attempts": [
+        {
+          "id": "publish-attempt-001",
+          "attempted_at": "2026-09-10T12:35:28.773696Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T12:35:28.773696Z",
+      "observation_id": "publish-response-001"
+    },
+    "relations": []
+  },
+  "remote_observations": [
+    {
+      "id": "create-response-001",
+      "operation_key": "create",
+      "observed_at": "2026-09-10T11:52:46.127106Z",
+      "outcome": "matched",
+      "remote_sha256": "14720c5b3d1f8db22205ec3bf0dadaa7de2f55f159ddd2dadbc0f4d2f302c0df",
+      "summary": "Redmine confirmou issue 1014450, Feature New e descrição aprovada; hash do conteúdo gerenciado em CRLF."
+    },
+    {
+      "id": "prepublication-read-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T12:33:55.294418Z",
+      "outcome": "matched",
+      "remote_sha256": "14720c5b3d1f8db22205ec3bf0dadaa7de2f55f159ddd2dadbc0f4d2f302c0df",
+      "summary": "Releitura da issue 1014450 confirmou descrição inicial intacta, um par de delimitadores e nenhum conteúdo externo. Status New e relação 661 preservados. Sem divergências humanas; mudanças da entrevista e catálogo constam no requisito aprovado."
+    },
+    {
+      "id": "publish-response-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T12:35:28.773696Z",
+      "outcome": "matched",
+      "summary": "Redmine confirmou atualização da descrição aprovada da issue 1014450; nenhum status enviado. Resultado persistido antes da releitura."
+    },
+    {
+      "id": "publish-verification-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T12:36:06.281484Z",
+      "outcome": "matched",
+      "remote_sha256": "bb818b9ae39dc87b1b4dee0a2803bb720d547190588adc2b7d2ea016d84ed126",
+      "summary": "Releitura confirmou descrição aprovada, status New, relação 661 preservada e nenhum conteúdo externo. Hash do conteúdo gerenciado em CRLF."
+    }
+  ],
+  "requirement_divergences": [],
+  "title_convention": {
+    "surfaces": [
+      "WEB"
+    ],
+    "audiences": [
+      "PUBLICO",
+      "ADMIN",
+      "OPERACIONAL"
+    ],
+    "audience_mode": "aggregate",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
+    "confirmation": {
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
+    }
+  },
+  "delivery": {
+    "surface": "WEB",
+    "audiences": [
+      "OPERACIONAL"
+    ],
+    "name": "Gestão de Projeto",
+    "title": "[WEB] [OPERACIONAL] Gestão de Projeto",
+    "visible_delivery": "Lista, cadastro, consulta de dados/participantes, edição e arquivamento/reativação de projetos, mais consulta dos vínculos na gestão de usuários. Tarefas, horas e indicadores nessas telas entram pelas capacidades que os produzem.",
+    "user_result": "Organizar projetos, participantes e papéis durante seu ciclo de vida.",
+    "included": [
+      "Consultar somente projetos de que participa, filtrar ativos/arquivados, paginar e abrir dados e participantes.",
+      "Somente administradores criam projetos, com nome e gestor principal obrigatórios e descrição opcional; identificador automático de três letras, sem Data inicial ou Prazo do projeto.",
+      "Incluir o gestor principal como participante Gestor obrigatório e permitir outros Gestores com as mesmas permissões; o administrador criador só participa quando incluído explicitamente.",
+      "Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
+      "Arquivar com confirmação, manter somente consulta e reativar; a Gestão de Tempo acrescenta o impedimento quando houver cronômetro aberto.",
+      "Consultar os projetos e papéis de uma pessoa no modal da tela de usuários; somente o administrador acessa essa consulta administrativa.",
+      "Oferecer resumo e participantes no detalhe e navegação às tarefas, quadro e horas quando as respectivas entregas estiverem disponíveis.",
+      "Gerar identificador automático, único e imutável de três letras maiúsculas sem acento: iniciais, complemento por letras do nome ou X, alternativas do nome em colisões e depois A–Z; arquivados reservam códigos. Não permitir edição manual nem regenerar ao renomear.",
+      "Respeitar autorização de gestor, confirmações, foco, estados vazios e formulários responsivos.",
+      "Preservar o MVP de projeto sem subprojetos, Gantt/roadmap, sprints/backlog ou dependências entre tarefas; essas extensões não entram nesta entrega.",
+      "Preservar vínculos e papéis de contas inativas, identificá-las como inativas e impedir novas inclusões enquanto inativas; recuperação de acesso de gestores via reativação administrativa da conta."
+    ],
+    "boundary_reason": "Reúne o ciclo de vida de projeto. Gestão de Tarefa entrega tarefas e progresso por quantidade; Gestão de Tempo entrega horas e bloqueios por execução aberta; Painel Gerencial entrega comparações agregadas. Cada integração tem responsável explícito."
+  },
+  "scope_item": {
+    "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
+    "catalog_item_id": "manage-project",
+    "catalog_sha256": "776aa602d7e45a2adce0a36c69a1ac15dba290e45cc8fb15f87aa2f9604f89e9"
+  }
+}

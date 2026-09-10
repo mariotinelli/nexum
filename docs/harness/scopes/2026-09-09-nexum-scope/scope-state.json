@@ -904,7 +904,7 @@
       "name": "Gestão de Projeto",
       "human_objective": "Organizar projetos, participantes e papéis durante seu ciclo de vida.",
       "actors": [
-        "Gestores e membros conforme permissões; administrador nas funções pessoais comuns"
+        "Administradores criam projetos; participantes consultam e Gestores do projeto gerenciam conforme seus papéis."
       ],
       "observable_result_or_deviation": "Lista, cadastro, consulta de dados/participantes, edição e arquivamento/reativação de projetos, mais consulta dos vínculos na gestão de usuários. Tarefas, horas e indicadores nessas telas entram pelas capacidades que os produzem.",
       "evidence": [
@@ -921,7 +921,7 @@
       ],
       "separation_reason": "Reúne o ciclo de vida de projeto. Gestão de Tarefa entrega tarefas e progresso por quantidade; Gestão de Tempo entrega horas e bloqueios por execução aberta; Painel Gerencial entrega comparações agregadas. Cada integração tem responsável explícito.",
       "suggested_position": 5,
-      "status": "pending",
+      "status": "completed",
       "lifecycle": "active",
       "delivery": {
         "surface": "WEB",
@@ -934,15 +934,16 @@
         "user_result": "Organizar projetos, participantes e papéis durante seu ciclo de vida.",
         "included": [
           "Consultar somente projetos de que participa, filtrar ativos/arquivados, paginar e abrir dados e participantes.",
-          "Criar projeto com nome, identificador e gestor obrigatórios; descrição, data inicial e prazo opcionais.",
-          "Incluir o gestor como participante obrigatório e atribuir papéis Membro/Gestor aos participantes ativos.",
-          "Editar dados, gestor e participantes; o usuário pode exercer papéis diferentes em projetos diferentes.",
+          "Somente administradores criam projetos, com nome e gestor principal obrigatórios e descrição opcional; identificador automático de três letras, sem Data inicial ou Prazo do projeto.",
+          "Incluir o gestor principal como participante Gestor obrigatório e permitir outros Gestores com as mesmas permissões; o administrador criador só participa quando incluído explicitamente.",
+          "Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
           "Arquivar com confirmação, manter somente consulta e reativar; a Gestão de Tempo acrescenta o impedimento quando houver cronômetro aberto.",
           "Consultar os projetos e papéis de uma pessoa no modal da tela de usuários; somente o administrador acessa essa consulta administrativa.",
           "Oferecer resumo e participantes no detalhe e navegação às tarefas, quadro e horas quando as respectivas entregas estiverem disponíveis.",
-          "Validar identificador em uso e prazo anterior ao início conforme evidência do protótipo; confirmar detalhes na entrevista do item.",
+          "Gerar identificador automático, único e imutável de três letras maiúsculas sem acento: iniciais, complemento por letras do nome ou X, alternativas do nome em colisões e depois A–Z; arquivados reservam códigos. Não permitir edição manual nem regenerar ao renomear.",
           "Respeitar autorização de gestor, confirmações, foco, estados vazios e formulários responsivos.",
-          "Preservar o MVP de projeto sem subprojetos, Gantt/roadmap, sprints/backlog ou dependências entre tarefas; essas extensões não entram nesta entrega."
+          "Preservar o MVP de projeto sem subprojetos, Gantt/roadmap, sprints/backlog ou dependências entre tarefas; essas extensões não entram nesta entrega.",
+          "Preservar vínculos e papéis de contas inativas, identificá-las como inativas e impedir novas inclusões enquanto inativas; recuperação de acesso de gestores via reativação administrativa da conta."
         ],
         "boundary_reason": "Reúne o ciclo de vida de projeto. Gestão de Tarefa entrega tarefas e progresso por quantidade; Gestão de Tempo entrega horas e bloqueios por execução aberta; Painel Gerencial entrega comparações agregadas. Cada integração tem responsável explícito."
       }
@@ -992,7 +993,7 @@
           "Consultar detalhe, autor, responsável, datas, estimativa e situação; arquivar tarefa com confirmação sem inventar reativação de tarefa.",
           "Adicionar e listar comentários cronológicos com autor/horário, editar/excluir os próprios e preservar formatação básica e quebras; sem comentários privados ou menções.",
           "Registrar criação, situação, responsável, prioridade, prazo, estimativa, conclusão/reabertura com usuário, data/hora e valores anterior/novo; consultar histórico no detalhe.",
-          "Integrar tarefas do projeto, atraso e progresso por quantidade nas listas/detalhe de projeto; bloquear remoção de participante enquanto responsável por tarefas até reatribuição.",
+          "Integrar tarefas, atraso e progresso por quantidade nas listas/detalhe de projeto. Ao remover participante responsável, avisar e pedir confirmação; se confirmado, deixar suas tarefas sem responsável, preservando comentários, horas e histórico anteriores.",
           "Validar campos e datas, preservar estado de consulta sem permissão e apresentar loading/vazio/erro/sucesso em desktop e mobile.",
           "Manter tarefas sem anexos, campos personalizados, workflow configurável, comentários privados, menções ou notificações de negócio; conservar as situações e prioridades fixas."
         ],
@@ -1188,6 +1189,16 @@
       "subject_sha256": "e25773bf2585e7605aa8161b2a4bfe30ad392974327f62bf606b42e251db6d4f",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-09T23:14:54.663437Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T12:20:18.296259Z",
+      "invalidated_reason": "Revisão da entrega de Gestão de Projeto e integração de remoção de participantes em Gestão de Tarefa, conforme Q21–Q38 e entendimento confirmado."
+    },
+    {
+      "id": "catalog-project-review-001",
+      "kind": "complete-catalog-and-order",
+      "subject_sha256": "776aa602d7e45a2adce0a36c69a1ac15dba290e45cc8fb15f87aa2f9604f89e9",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:23:22.938319Z",
       "status": "valid"
     }
   ],
@@ -1262,6 +1273,21 @@
       "paused_at": "2026-09-09T23:30:25.162470Z",
       "resumed_at": "2026-09-10T10:58:52.528129Z",
       "resume_evidence": "Usuário solicitou Vamos para a proxima. Preflight passou; issues #1014446 e #1014447 relidas, ambas New e sem relações. Única diferença nas descrições: remoção dos títulos repetidos, sem alteração de requisitos, preservada. Primeiro item pendente: maintain-own-profile."
+    },
+    {
+      "id": "project-catalog-revision-001",
+      "status": "resumed",
+      "kind": "catalog-change",
+      "previous_phase": "items-processing",
+      "resume_phase": "items-processing",
+      "reason": "Respostas Q21, Q23, Q24 e Q28 alteram a entrega aprovada: criação administrativa, identificador automático, retirada de datas e remoção confirmada de responsáveis. Alcance da retirada de datas e atribuições pendentes exigem reconciliação do catálogo.",
+      "resume_condition": "Esclarecer o impacto e aprovar o catálogo completo revisado, preservando identidades, issues, relações e ordem compatível.",
+      "paused_at": "2026-09-10T12:04:52.107096Z",
+      "affected_item_ids": [
+        "manage-project"
+      ],
+      "resumed_at": "2026-09-10T12:23:22.938319Z",
+      "resume_evidence": "Catálogo revisado aprovado e requisito de Gestão de Projeto reconciliado."
     }
   ],
   "lock": {
@@ -1749,15 +1775,15 @@
     },
     {
       "catalog_item_id": "manage-project",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014450,
+      "artifact_path": "../../features/1014450-gestao-de-projeto/feature.md",
+      "state_path": "../../features/1014450-gestao-de-projeto/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T11:52:46.127106Z",
+      "completed_at": "2026-09-10T12:36:06.281484Z"
     },
     {
       "catalog_item_id": "manage-task",
@@ -1826,6 +1852,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T11:48:11.490539Z"
+    },
+    {
+      "after_item_id": "manage-project",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:46:54.610007Z"
     }
   ],
   "catalog_changes": [
@@ -1887,6 +1919,37 @@
       ],
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-09T23:14:54.663437Z"
+    },
+    {
+      "id": "project-delivery-revision-001",
+      "kind": "delivery",
+      "affected_item_ids": [
+        "manage-project",
+        "manage-task"
+      ],
+      "names_impact": "Nomes e títulos preservados.",
+      "audiences_impact": "Criação de projetos exclusiva de administradores; consulta e gestão por participação/papel. OPERACIONAL continua o prefixo agregado da capacidade compartilhada.",
+      "deliveries_impact": "Projeto sem datas, com identificador automático de três letras e papéis confirmados. Gestão de Tarefa integra remoção confirmada do responsável deixando tarefas sem responsável.",
+      "coverage_impact": "Atualizar comportamentos de projetos e remoção de responsáveis; excluir apenas datas de projetos, mantendo datas e indicadores de tarefas.",
+      "source_allocation_impact": "Fontes e sua alocação preservadas; decisões atribuídas à entrevista de Gestão de Projeto.",
+      "graph_impact": "Grafo e relações existentes preservados; sem novos bloqueios.",
+      "order_impact": "Mesma ordem dos onze itens; Gestão de Projeto permanece em quinto e Gestão de Tarefa em sexto.",
+      "preserved_issue_ids": [
+        1014446,
+        1014447,
+        1014448,
+        1014449,
+        1014450
+      ],
+      "artifact_paths": [
+        "docs/harness/features/1014446-autenticacao/feature.md",
+        "docs/harness/features/1014447-recuperacao-de-senha/feature.md",
+        "docs/harness/features/1014448-meu-perfil/feature.md",
+        "docs/harness/features/1014449-gestao-de-usuario/feature.md",
+        "../../features/1014450-gestao-de-projeto/feature.md"
+      ],
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:20:18.296259Z"
     }
   ],
   "relations": [
@@ -2027,12 +2090,12 @@
       "from_item_id": "administer-users",
       "to_item_id": "manage-project",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014449,
+      "to_issue_id": 1014450,
+      "status": "completed",
+      "approval_id": "relation-users-project-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T11:54:39.495134Z"
     },
     {
       "stable_key": "blocks:manage-project:manage-task",
@@ -2720,7 +2783,7 @@
     },
     {
       "id": "manage-project-02",
-      "description": "Criar projeto com nome, identificador e gestor obrigatórios; descrição, data inicial e prazo opcionais.",
+      "description": "Somente administradores criam projetos, com nome e gestor principal obrigatórios e descrição opcional; identificador automático de três letras, sem Data inicial ou Prazo do projeto.",
       "evidence": [
         {
           "source_id": "design-new-project",
@@ -2729,7 +2792,7 @@
       ],
       "evidence_kind": "demonstrated",
       "audiences": [
-        "OPERACIONAL"
+        "ADMIN"
       ],
       "disposition": "covered",
       "owner": "manage-project",
@@ -2743,11 +2806,15 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": null
+      "decision": {
+        "statement": "Decisão de Mário Tinelli na entrevista Q21–Q38 de Gestão de Projeto, confirmada nesta conversa: Somente administradores criam projetos, com nome e gestor principal obrigatórios e descrição opcional; identificador automático de três letras, sem Data inicial ou Prazo do projeto.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
     },
     {
       "id": "manage-project-03",
-      "description": "Incluir o gestor como participante obrigatório e atribuir papéis Membro/Gestor aos participantes ativos.",
+      "description": "Incluir o gestor principal como participante Gestor obrigatório e permitir outros Gestores com as mesmas permissões; o administrador criador só participa quando incluído explicitamente.",
       "evidence": [
         {
           "source_id": "design-new-project",
@@ -2770,11 +2837,15 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": null
+      "decision": {
+        "statement": "Decisão de Mário Tinelli na entrevista Q21–Q38 de Gestão de Projeto, confirmada nesta conversa: Incluir o gestor principal como participante Gestor obrigatório e permitir outros Gestores com as mesmas permissões; o administrador criador só participa quando incluído explicitamente.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
     },
     {
       "id": "manage-project-04",
-      "description": "Editar dados, gestor e participantes; o usuário pode exercer papéis diferentes em projetos diferentes.",
+      "description": "Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -2797,7 +2868,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": null
+      "decision": {
+        "statement": "Decisão de Mário Tinelli na entrevista Q21–Q38 de Gestão de Projeto, confirmada nesta conversa: Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
     },
     {
       "id": "manage-project-05",
@@ -2884,7 +2959,7 @@
     },
     {
       "id": "manage-project-08",
-      "description": "Validar identificador em uso e prazo anterior ao início conforme evidência do protótipo; confirmar detalhes na entrevista do item.",
+      "description": "Gerar identificador automático, único e imutável de três letras maiúsculas sem acento: iniciais, complemento por letras do nome ou X, alternativas do nome em colisões e depois A–Z; arquivados reservam códigos. Não permitir edição manual nem regenerar ao renomear.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -2907,7 +2982,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": null
+      "decision": {
+        "statement": "Decisão de Mário Tinelli na entrevista Q21–Q38 de Gestão de Projeto, confirmada nesta conversa: Gerar identificador automático, único e imutável de três letras maiúsculas sem acento: iniciais, complemento por letras do nome ou X, alternativas do nome em colisões e depois A–Z; arquivados reservam códigos. Não permitir edição manual nem regenerar ao renomear.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
     },
     {
       "id": "manage-project-09",
@@ -3135,7 +3214,7 @@
     },
     {
       "id": "manage-task-08",
-      "description": "Integrar tarefas do projeto, atraso e progresso por quantidade nas listas/detalhe de projeto; bloquear remoção de participante enquanto responsável por tarefas até reatribuição.",
+      "description": "Integrar tarefas, atraso e progresso por quantidade nas listas/detalhe de projeto. Ao remover participante responsável, avisar e pedir confirmação; se confirmado, deixar suas tarefas sem responsável, preservando comentários, horas e histórico anteriores.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -3161,7 +3240,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": null
+      "decision": {
+        "statement": "Decisão de Mário Tinelli na entrevista Q21–Q38 de Gestão de Projeto, confirmada nesta conversa: Integrar tarefas, atraso e progresso por quantidade nas listas/detalhe de projeto. Ao remover participante responsável, avisar e pedir confirmação; se confirmado, deixar suas tarefas sem responsável, preservando comentários, horas e histórico anteriores.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
     },
     {
       "id": "manage-task-09",
@@ -3984,6 +4067,68 @@
         "proposed_change": "Respeitar os limites da entrega de produto; o contexto técnico do guia não autoriza decisões de implementação."
       },
       "decision": null
+    },
+    {
+      "id": "manage-project-11",
+      "description": "Preservar vínculos e papéis de contas inativas, identificá-las como inativas e impedir novas inclusões enquanto inativas; recuperação de acesso de gestores via reativação administrativa da conta.",
+      "evidence": [
+        {
+          "source_id": "design-guide",
+          "locator": "F02, F03 e RN12; decisões Q27 e confirmação do entendimento em interview.md da issue 1014450"
+        }
+      ],
+      "evidence_kind": "annotation",
+      "audiences": [
+        "OPERACIONAL"
+      ],
+      "disposition": "covered",
+      "owner": "manage-project",
+      "consumers": [],
+      "repository": {
+        "status": "absent",
+        "evidence": [
+          "routes/auth.php",
+          "routes/web.php",
+          "docs/agents/domain_rules.md"
+        ],
+        "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
+      },
+      "decision": {
+        "statement": "Preservar vínculos e papéis de contas inativas, identificá-las como inativas e impedir novas inclusões enquanto inativas; recuperação de acesso de gestores via reativação administrativa da conta.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
+    },
+    {
+      "id": "excluded-project-dates",
+      "description": "Data inicial e Prazo dos projetos, incluindo sua exibição e validação, ficam fora do MVP. Datas, filtros e indicadores de tarefas permanecem no escopo.",
+      "evidence": [
+        {
+          "source_id": "design-new-project",
+          "locator": "Campos e ações: datas opcionais, substituídas pela decisão Q24/Q29 da entrevista 1014450"
+        }
+      ],
+      "evidence_kind": "annotation",
+      "audiences": [
+        "OPERACIONAL"
+      ],
+      "disposition": "excluded",
+      "owner": null,
+      "consumers": [],
+      "repository": {
+        "status": "absent",
+        "evidence": [
+          "routes/auth.php",
+          "routes/web.php",
+          "docs/agents/domain_rules.md"
+        ],
+        "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
+      },
+      "decision": {
+        "statement": "Mário Tinelli determinou remover datas apenas dos projetos em Q24/Q29 e confirmou o entendimento.",
+        "confirmed_by": "Mário Tinelli",
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
+      }
     }
   ],
   "dependency_reasons": [
