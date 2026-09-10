@@ -1,0 +1,21 @@
+{
+  "issue_id": 1014550,
+  "description": "<!-- project-flow:start -->\r\n## Objetivo\r\nAcompanhar progresso, atrasos e esforço pela interface WEB em português, conforme o papel do usuário em cada projeto.\r\n\r\n## Escopo\r\n- Membros consultam suas próprias tarefas e horas; gestores consultam a equipe dos projetos gerenciados; administradores consultam equipes e indicadores de todos os projetos.\r\n- Apresentar projetos ativos, distribuição de tarefas pelas situações vigentes, tarefas atrasadas e finalizadas no período, com filtro de finalizações.\r\n- Comparar horas estimadas e realizadas e apresentar horas por membro.\r\n- Calcular progresso por Finalizadas / (Pendentes + Em andamento + Pausadas + Finalizadas), com 0% no conjunto vazio. Canceladas e arquivadas não compõem progresso nem atraso.\r\n- Abrir projetos, tarefas filtradas e Minhas Tarefas pelos links e indicadores correspondentes.\r\n- Apresentar gráficos rotulados, estados de vazio, carregamento, erro e sucesso e conteúdo empilhado no mobile, respeitando o recorte autorizado.\r\n\r\n## Dependências e limites\r\nDepende de Consulta de Tarefas (#1014465) e Minhas Tarefas (#1014547). Agrega dados existentes de projetos, tarefas e apontamentos, sem duplicar sua criação nem redefinir permissões e regras de tempo.\r\n\r\n## Coleta\r\nRequisito em coleta. Os detalhes funcionais e critérios de aceite serão definidos na entrevista deste item.\r\n<!-- project-flow:end -->",
+  "status": "New",
+  "relations": [
+    {
+      "id": 669,
+      "issue_id": 1014465,
+      "issue_to_id": 1014550,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 670,
+      "issue_id": 1014547,
+      "issue_to_id": 1014550,
+      "relation_type": "blocks",
+      "delay": null
+    }
+  ]
+}

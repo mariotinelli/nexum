@@ -867,7 +867,7 @@
       ],
       "separation_reason": "Gestor vê dados da equipe nos projetos que gerencia; membro vê somente suas tarefas e horas; administrador consulta equipes de todos os projetos. O painel agrega dados e abre as consultas já entregues, sem duplicar a produção de tarefas ou horas.",
       "suggested_position": 11,
-      "status": "pending",
+      "status": "completed",
       "candidate_ids": [
         "candidate-view-management-dashboard"
       ],
@@ -1868,15 +1868,15 @@
     },
     {
       "catalog_item_id": "view-management-dashboard",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014550,
+      "artifact_path": "../../features/1014550-painel-gerencial/feature.md",
+      "state_path": "../../features/1014550-painel-gerencial/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T20:29:51.387475Z",
+      "completed_at": "2026-09-10T20:46:11.399188Z"
     },
     {
       "catalog_item_id": "manage-project",
@@ -1993,6 +1993,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T20:19:49.550772Z"
+    },
+    {
+      "after_item_id": "view-management-dashboard",
+      "decision": "finish",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T20:47:30.142329Z"
     }
   ],
   "catalog_changes": [
@@ -2446,24 +2452,24 @@
       "from_item_id": "my-tasks",
       "to_item_id": "view-management-dashboard",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014547,
+      "to_issue_id": 1014550,
+      "status": "completed",
+      "approval_id": "relation-my-tasks-dashboard-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T20:29:15.336126Z"
     },
     {
       "stable_key": "blocks:search-tasks:view-management-dashboard",
       "from_item_id": "search-tasks",
       "to_item_id": "view-management-dashboard",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014465,
+      "to_issue_id": 1014550,
+      "status": "completed",
+      "approval_id": "relation-search-dashboard-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T20:28:43.052083Z"
     }
   ],
   "validations": [
@@ -2647,6 +2653,14 @@
       "status": "passed",
       "checked_at": "2026-09-10T20:17:09.403941Z",
       "summary": "Requisito aprovado, publicado e relido com status New e relação 668 preservados; estado completed validado. Aguarda escolha continuar/parar para consolidar o catálogo."
+    },
+    {
+      "id": "dashboard-completed-001",
+      "kind": "requirement-state",
+      "item_id": "view-management-dashboard",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:46:11.399188Z",
+      "summary": "Requisito aprovado, publicado e relido com status New e relações 669/670 preservados; estado completed validado. Aguarda escolha finish/stop para consolidar o catálogo e iniciar fechamento do escopo."
     }
   ],
   "final_summary": null,
