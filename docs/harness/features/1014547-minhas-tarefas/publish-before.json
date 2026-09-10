@@ -1,0 +1,16 @@
+{
+  "issue_id": 1014547,
+  "status": "New",
+  "subject": "[WEB] [OPERACIONAL] Minhas Tarefas",
+  "description": "<!-- project-flow:start -->\r\n## Objetivo\r\nOrganizar o trabalho pessoal pela interface WEB em português, permitindo consultar e executar as tarefas atribuídas ao próprio usuário, inclusive quando administrador.\r\n\r\n## Escopo\r\n- Agrupar tarefas em Em execução, Atrasadas, Para hoje, Próximas, Sem prazo e Finalizadas recentemente, apresentando situação e atraso.\r\n- Buscar, filtrar por projeto, situação, prioridade e prazo, ordenar e limpar filtros, mantendo o recorte pessoal.\r\n- Abrir detalhes e executar as ações permitidas Iniciar, Pausar e Finalizar, integradas ao cronômetro. Pausar salva as horas e encerra a execução; um novo início abre outra execução.\r\n- Apresentar grupos vazios, retorno das operações e cards adequados ao uso mobile.\r\n\r\n## Dependência e limites\r\nDepende de Gestão de Tempo (#1014493). Respeita as permissões e transições aprovadas em Gestão de Tarefa. Não inclui Retomar, Reabrir, Devolver à Fila, Bloquear nem alteração manual de situação.\r\n\r\n## Coleta\r\nRequisito em coleta. Os detalhes funcionais e critérios de aceite serão definidos na entrevista deste item.\r\n<!-- project-flow:end -->",
+  "relations": [
+    {
+      "id": 667,
+      "issue_id": 1014493,
+      "issue_to_id": 1014547,
+      "relation_type": "blocks",
+      "delay": null
+    }
+  ],
+  "updated_on": "2026-09-10T19:18:25Z"
+}

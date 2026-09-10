@@ -1,0 +1,24 @@
+{
+  "key": "blocks:1014493:1014547",
+  "payload": {
+    "issue_id": 1014493,
+    "issue_to_id": 1014547,
+    "relation_type": "blocks"
+  },
+  "payload_sha256": "ea7bce3e5c940af35821d7b72e5ad2c9ed8819fb3aa754e4a56c72f2cd57bdfb",
+  "status": "completed",
+  "approval_id": "relation-time-my-tasks-001",
+  "approved_by": "Mário Tinelli",
+  "approved_at": "2026-09-10T19:24:53.568267Z",
+  "attempts": [
+    {
+      "id": "relation-attempt-001",
+      "attempted_at": "2026-09-10T19:25:16.237744Z",
+      "outcome": "completed"
+    }
+  ],
+  "reconciliation_status": "completed",
+  "relation_id": 667,
+  "completed_at": "2026-09-10T19:25:16.237744Z",
+  "observation": "Releitura confirmou relação 667, endpoints #1014493 -> #1014547 e tipo blocks; status New preservado."
+}

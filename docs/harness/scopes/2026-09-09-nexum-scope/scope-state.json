@@ -1072,7 +1072,7 @@
       ],
       "separation_reason": "Recorte pessoal para execução diária, separado da busca transversal. A regra de situação e o registro de tempo permanecem nas capacidades que os produzem.",
       "suggested_position": 9,
-      "status": "pending",
+      "status": "completed",
       "lifecycle": "active",
       "delivery": {
         "surface": "WEB",
@@ -1916,15 +1916,15 @@
     },
     {
       "catalog_item_id": "my-tasks",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014547,
+      "artifact_path": "../../features/1014547-minhas-tarefas/feature.md",
+      "state_path": "../../features/1014547-minhas-tarefas/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T19:25:59.116648Z",
+      "completed_at": "2026-09-10T19:56:31.422440Z"
     }
   ],
   "continuation_decisions": [
@@ -1981,6 +1981,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T19:14:17.981375Z"
+    },
+    {
+      "after_item_id": "my-tasks",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:58:01.564985Z"
     }
   ],
   "catalog_changes": [
@@ -2410,12 +2416,12 @@
       "from_item_id": "manage-time",
       "to_item_id": "my-tasks",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014493,
+      "to_issue_id": 1014547,
+      "status": "completed",
+      "approval_id": "relation-time-my-tasks-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T19:25:16.237744Z"
     },
     {
       "stable_key": "blocks:manage-time:manage-project-board",
@@ -2619,6 +2625,14 @@
       "status": "passed",
       "checked_at": "2026-09-10T19:09:37.970937Z",
       "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
+    },
+    {
+      "id": "my-tasks-completed-001",
+      "kind": "requirement-state",
+      "item_id": "my-tasks",
+      "status": "passed",
+      "checked_at": "2026-09-10T19:56:47.791515Z",
+      "summary": "Requisito aprovado, publicado e relido com status New e relação 667 preservados; estado completed validado. Aguarda escolha continuar/parar para consolidar o catálogo."
     }
   ],
   "final_summary": null,

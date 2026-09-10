@@ -2988,3 +2988,17 @@ Catálogo completo e quatro requisitos aprovados e aplicados localmente. Estados
 ## Gestão de Tempo e correções publicadas
 
 Publicadas e conferidas as descrições de Projeto #1014450, Tarefa #1014454, Consulta #1014465 e Gestão de Tempo #1014493, todas New e com relações preservadas. Catálogo e requisitos reconciliados. Oito requisitos concluídos; restam Minhas Tarefas, Quadro do Projeto e Painel Gerencial. A escolha continuar/parar após Gestão de Tempo está pendente; nenhum próximo item foi iniciado.
+
+## Minhas Tarefas criada — 2026-09-10T19:19:30.226353Z
+
+Continuidade após Gestão de Tempo autorizada por Mário Tinelli e consolidada no catálogo; commit 5ea7128 concluído. Issue #1014547, Feature New, sem categoria, criada após aprovação explícita da prévia. Identidade, aprovação e operação concluída persistidas em ../../features/1014547-minhas-tarefas/feature-state.json; releitura confirmou a descrição. Relação proposta: #1014493 bloqueia #1014547 (blocks:manage-time:my-tasks). Entrevista ainda não iniciada; consolidar item_progress após aprovação/publicação da relação, conforme validação do escopo. Não repetir a criação.
+
+## Minhas Tarefas em entrevista — 2026-09-10T19:25:59.116648Z
+
+Relação nativa 667 criada e conferida após aprovação relation-time-my-tasks-001: Gestão de Tempo #1014493 bloqueia Minhas Tarefas #1014547. Estado New preservado. Nono item em entrevista; oito requisitos concluídos. Progresso e estados validados.
+
+## Minhas Tarefas concluída — 2026-09-10T19:56:31.422440Z
+
+Requisito #1014547 aprovado, publicado e conferido. Status New e relação 667 preservados. Nove requisitos individuais concluídos de onze; restam Quadro do Projeto e Painel Gerencial. A consolidação de Minhas Tarefas no catálogo aguarda a escolha explícita de continuar ou parar. Documento: ../../features/1014547-minhas-tarefas/feature.md. Aprovações requirement-my-tasks-001 e publish-my-tasks-001 registradas; requisito e escopo validados. Pronto para planejamento técnico.
+
+Mário Tinelli autorizou commit e continuidade para Quadro do Projeto em 2026-09-10T19:58:01.564985Z. Minhas Tarefas consolidada como concluída no catálogo.
