@@ -1,0 +1,7 @@
+{
+  "project_id": 65221,
+  "tracker_id": 2,
+  "subject": "[WEB] [OPERACIONAL] Meu Perfil",
+  "description": "<!-- project-flow:start -->\nPermitir que usuários autenticados, incluindo administradores nas funções pessoais, mantenham seus próprios dados e alterem sua senha pela interface WEB responsiva em português.\n\nA entrega inclui:\n- Consultar e editar nome e e-mail, ambos obrigatórios.\n- Salvar alterações dos próprios dados pessoais.\n- Alterar opcionalmente a senha, informando senha atual, nova senha e confirmação, com o conjunto preenchido e válido.\n- Apresentar validações, mensagens acessíveis e tratamento de foco.\n- Manter navegação e adaptação para dispositivos móveis.\n\nA entrega depende da autenticação. Não permite administrar outras contas nem concede novas permissões ou acesso a projetos. Recuperação de senha sem sessão pertence à Feature Recuperação de Senha.\n\nRequisitos em coleta. As regras detalhadas e os critérios de aceite serão definidos na entrevista desta Feature.\n<!-- project-flow:end -->",
+  "status_id": 1
+}

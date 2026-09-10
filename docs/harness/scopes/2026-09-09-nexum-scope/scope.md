@@ -2702,3 +2702,17 @@ Issue #1014447: requisito aprovado, descrição publicada e conferida; status Ne
 Mário Tinelli solicitou commit e pausa após Recuperação de Senha. Autenticação (#1014446) e Recuperação de Senha (#1014447) possuem requisitos concluídos; nove Features permanecem pendentes. Nenhuma nova issue ou entrevista foi iniciada.
 
 Retomar em **[WEB] [OPERACIONAL] Meu Perfil** (`maintain-own-profile`), após solicitação do usuário, preflight, validação, recuperação do lock e reconciliação. Preservar o status das issues ao publicar requisitos. O escopo permanece pausado, com histórico, aprovações, fontes, relações planejadas e progresso preservados.
+
+## Retomada — 2026-09-10T11:00:54.145791Z
+
+Usuário solicitou continuar para Meu Perfil. Pausa resolvida e decisão de continuação acrescentada, preservando a decisão histórica de parar. Preflight válido; issues #1014446 e #1014447 em New, sem relações. As únicas edições nas descrições são remoções dos títulos repetidos; regras, fluxos e critérios permanecem iguais, e as edições foram preservadas. Nenhuma duplicidade de Meu Perfil ou categoria encontrada.
+
+Validador corrigido para aceitar continuação explícita após pausa retomada sem reescrever o histórico; 30 testes passaram, incluindo retomada válida e rejeição de histórico alterado ou autorização ausente.
+
+## Conclusão de Meu Perfil — 2026-09-10T11:21:41.899729Z
+
+Issue #1014448: requisito aprovado, dois cards explicitados nos fluxos e descrição publicada; status New e relação 659 com Autenticação preservados. Três requisitos concluídos e oito ainda não iniciados. Próximo item: Gestão de Usuário, após escolha explícita de continuar ou parar.
+
+## Continuação após Meu Perfil
+
+Mário Tinelli autorizou o commit das alterações e a continuação para [WEB] [ADMIN] Gestão de Usuário, quarto item da ordem aprovada. Meu Perfil está concluído no catálogo; três requisitos concluídos, oito ainda não iniciados.

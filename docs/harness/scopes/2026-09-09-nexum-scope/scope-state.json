@@ -3,7 +3,7 @@
   "run_id": "f14a499f-1674-419d-91e3-db9b5c03326d",
   "internal_identity": "0370e6d4-2c49-4f0c-8157-299d7bcb3eaf",
   "mode": "new-scope",
-  "phase": "paused",
+  "phase": "items-processing",
   "completed_phases": [
     "mode-confirmed",
     "inputs-normalized",
@@ -469,7 +469,7 @@
       ],
       "separation_reason": "Autogestão do cadastro; não concede administração de outras contas nem novos acessos a projetos.",
       "suggested_position": 3,
-      "status": "pending",
+      "status": "completed",
       "candidate_ids": [
         "candidate-maintain-own-profile"
       ],
@@ -1254,21 +1254,23 @@
     {
       "id": "voluntary-stop-after-recovery-001",
       "kind": "voluntary-stop",
-      "status": "paused",
+      "status": "resumed",
       "previous_phase": "items-processing",
       "resume_phase": "items-processing",
       "reason": "Usuário solicitou commit e pausa após concluir Recuperação de Senha. Primeiro item não iniciado: maintain-own-profile (Meu Perfil).",
       "resume_condition": "Usuário solicita retomar; preflight e reconciliação passam, lock do escopo é recuperado conforme o contrato, e o processamento recomeça em maintain-own-profile.",
-      "paused_at": "2026-09-09T23:30:25.162470Z"
+      "paused_at": "2026-09-09T23:30:25.162470Z",
+      "resumed_at": "2026-09-10T10:58:52.528129Z",
+      "resume_evidence": "Usuário solicitou Vamos para a proxima. Preflight passou; issues #1014446 e #1014447 relidas, ambas New e sem relações. Única diferença nas descrições: remoção dos títulos repetidos, sem alteração de requisitos, preservada. Primeiro item pendente: maintain-own-profile."
     }
   ],
   "lock": {
     "item_key": "nexum:nexum-scope",
-    "lock_id": "53ef707d-2590-4beb-bd65-1a55bf23641f",
-    "path": "docs/harness/.locks/e433acb46bda60f766595380787c4f3f7535928f87dec5ceab5655da77c2584f.lock.json",
-    "acquired_at": "2026-09-09T20:58:35.941046Z",
-    "recovered_from": "c9fbc2cd-cc66-4149-a9e4-61468488919c",
-    "recovery_reason": "Usuário confirmou em 2026-09-09 que a execução anterior foi encerrada e autorizou recuperar o lock para revisão explícita do catálogo."
+    "lock_id": "7cc83f0d-52bb-446f-a79d-636cb1cbaa8c",
+    "acquired_at": "2026-09-10T10:58:27.198620Z",
+    "recovered_from": "53ef707d-2590-4beb-bd65-1a55bf23641f",
+    "recovery_reason": "Retomada solicitada pelo mesmo usuário após pausa voluntária concluída nesta conversa; execução anterior encerrada, retomando o lock conhecido para Meu Perfil.",
+    "path": "docs/harness/.locks/e433acb46bda60f766595380787c4f3f7535928f87dec5ceab5655da77c2584f.lock.json"
   },
   "source_allocation": [
     {
@@ -1615,15 +1617,15 @@
     },
     {
       "catalog_item_id": "maintain-own-profile",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014448,
+      "artifact_path": "docs/harness/features/1014448-meu-perfil/feature.md",
+      "state_path": "docs/harness/features/1014448-meu-perfil/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T11:03:56.208770Z",
+      "completed_at": "2026-09-10T11:21:41.899729Z"
     },
     {
       "catalog_item_id": "administer-users",
@@ -1806,6 +1808,18 @@
       "decision": "stop",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-09T23:30:25.162470Z"
+    },
+    {
+      "after_item_id": "recover-access",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:00:54.145791Z"
+    },
+    {
+      "after_item_id": "maintain-own-profile",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:23:12.377091Z"
     }
   ],
   "catalog_changes": [
@@ -1875,12 +1889,12 @@
       "from_item_id": "authenticate",
       "to_item_id": "maintain-own-profile",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014446,
+      "to_issue_id": 1014448,
+      "status": "completed",
+      "approval_id": "relation-authenticate-profile-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T11:06:32.239155Z"
     },
     {
       "stable_key": "blocks:authenticate:administer-users",

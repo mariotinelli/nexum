@@ -383,8 +383,21 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
         if not isinstance(decision, dict) or decision.keys() != {"after_item_id", "decision", "decided_by", "decided_at"}:
             fail(f"continuation_decisions[{index}] is invalid")
         item_id = decision["after_item_id"]
-        if item_id in decision_by_item or item_id not in progress_by_id or progress_by_id[item_id]["status"] != "completed":
-            fail("continuation decision must follow one completed item exactly once")
+        if item_id not in progress_by_id or progress_by_id[item_id]["status"] != "completed":
+            fail("continuation decision must follow a completed item")
+        if item_id in decision_by_item:
+            previous_decision = next(entry for entry in reversed(decisions[:index]) if entry["after_item_id"] == item_id)
+            resumed = any(
+                pause.get("kind") == "voluntary-stop"
+                and pause.get("status") == "resumed"
+                and datetime.fromisoformat(previous_decision["decided_at"].replace("Z", "+00:00"))
+                <= datetime.fromisoformat(pause["paused_at"].replace("Z", "+00:00"))
+                <= datetime.fromisoformat(pause["resumed_at"].replace("Z", "+00:00"))
+                <= datetime.fromisoformat(decision["decided_at"].replace("Z", "+00:00"))
+                for pause in state["pauses"]
+            )
+            if previous_decision["decision"] != "stop" or decision["decision"] not in {"continue", "finish"} or not resumed:
+                fail("repeated continuation requires an explicitly resumed voluntary stop")
         if decision["decision"] not in {"continue", "stop", "finish"}:
             fail(f"continuation_decisions[{index}].decision is invalid")
         text(decision["decided_by"], f"continuation_decisions[{index}].decided_by")
@@ -528,7 +541,9 @@ def validate_transition(previous: dict[str, Any], current: dict[str, Any]) -> No
             new_ids = {entry[key] for entry in current[collection]}
             if not old_ids <= new_ids:
                 fail(f"transition removed {collection} history")
-        for collection, key in (("continuation_decisions", "after_item_id"), ("catalog_changes", "id")):
+        if current["continuation_decisions"][:len(previous["continuation_decisions"])] != previous["continuation_decisions"]:
+            fail("transition rewrote continuation_decisions history")
+        for collection, key in (("catalog_changes", "id"),):
             old_by_id = {entry[key]: entry for entry in previous[collection]}
             new_by_id = {entry[key]: entry for entry in current[collection]}
             if any(new_by_id[entry_id] != entry for entry_id, entry in old_by_id.items()):
