@@ -424,13 +424,6 @@
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T14:08:05.421145Z",
       "status": "valid"
-    },
-    {
-      "id": "catalog-time-reconciliation-001",
-      "statement": "Metadados reconciliados com catalog-time-review-001 aprovado por Mário Tinelli. Documento revisado aprovado nesta conversa; nova publicação pendente em requirements-time-review.json. Não reutilizar nem reescrever operações remotas concluídas do run inicial.",
-      "decided_by": "Mário Tinelli",
-      "decided_at": "2026-09-10T18:57:55.794421Z",
-      "status": "valid"
     }
   ],
   "approvals": [
@@ -460,9 +453,7 @@
       "subject_sha256": "177bf15d5ad696debaaf5d93261998b004e8f1cef5f9f6918b74ebd4660145d4",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T14:14:32.187427Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+      "status": "valid"
     },
     {
       "id": "publish-task-001",
@@ -470,24 +461,6 @@
       "subject_sha256": "89b99b34f37500e0742409d76df12a2b9e2c6fcdc2462538b2293cd3f32c5989",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T14:19:39.686734Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
-    },
-    {
-      "id": "requirement-time-review-1014454-001",
-      "kind": "requirement",
-      "subject_sha256": "5e758dcfb4faa537d6870fb600d9d57a693fe2741550e5bfd0006755424564a7",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T18:55:05.870661Z",
-      "status": "valid"
-    },
-    {
-      "id": "publish-time-review-1014454-001",
-      "kind": "publish-payload",
-      "subject_sha256": "dd053cbd1d7051b60858d126797d86eacad113bf5e45d5cc80753aab6f59257e",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T19:05:24.933185Z",
       "status": "valid"
     }
   ],
@@ -625,21 +598,6 @@
       "outcome": "matched",
       "remote_sha256": "d6a016ba56c41888237e19ef76d30cc62b20842d8aaea3e34f39d47a1dceca4a",
       "summary": "Releitura confirmou descrição aprovada, status New, relação 662 preservada e nenhum conteúdo externo. Requisito e operações reconciliados."
-    },
-    {
-      "id": "time-review-publish-response-1014454-001",
-      "operation_key": "time-review-publish-1014454-001",
-      "observed_at": "2026-09-10T19:07:50.066090Z",
-      "outcome": "matched",
-      "summary": "Redmine confirmou a atualização da descrição aprovada; resultado persistido antes da releitura. Nenhum outro campo enviado."
-    },
-    {
-      "id": "time-review-publish-verification-1014454-001",
-      "operation_key": "time-review-publish-1014454-001",
-      "observed_at": "2026-09-10T19:07:53.949996Z",
-      "outcome": "matched",
-      "remote_sha256": "81d7a3438c47354df84098c176574cf32d56444eb9b350207c908f3ce681a35a",
-      "summary": "Releitura confirmou descrição aprovada, status New, relações e conteúdo externo preservados. Hash gerenciado conforme retornado pelo Redmine."
     }
   ],
   "requirement_divergences": [],
@@ -653,11 +611,11 @@
       "OPERACIONAL"
     ],
     "audience_mode": "aggregate",
-    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
     "confirmation": {
-      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
       "confirmed_by": "Mário Tinelli",
-      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
     }
   },
   "delivery": {
@@ -667,28 +625,28 @@
     ],
     "name": "Gestão de Tarefa",
     "title": "[WEB] [OPERACIONAL] Gestão de Tarefa",
-    "visible_delivery": "Criação e edição por gestores do projeto e administradores, consulta, atribuição, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
+    "visible_delivery": "Criação e edição por gestores, consulta, atribuição por participantes, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
     "user_result": "Planejar e acompanhar uma tarefa, colaborar no seu detalhe e preservar a rastreabilidade.",
     "included": [
-      "Gestores do projeto e administradores criam tarefas e editam seus dados. Participantes ativos e administradores podem atribuir a qualquer participante ativo, inclusive a si quando participante, ou deixar sem responsável, respeitando as situações de somente consulta.",
+      "Somente gestores do projeto criam tarefas e editam seus dados. Qualquer participante ativo pode atribuir a qualquer participante ativo, inclusive a si, ou deixar sem responsável, respeitando as situações de somente consulta.",
       "Cadastrar projeto fixo após criação, título, situação inicial Pendente, prioridade Média e autor automático; descrição, responsável, datas e estimativa opcionais. Estimativa em horas decimais até duas casas, maior que zero e até seis, convertida ao minuto mais próximo; aceitar ponto ou vírgula.",
-      "Restringir criação a projeto ativo gerenciado ou administrado; consultas dependem de participação ou acesso administrativo. Somente o responsável atual pode Iniciar, Pausar e Finalizar, inclusive quando gestor ou administrador. Gestores do projeto e administradores podem Cancelar, Arquivar e Desarquivar quando permitido. Preservar responsável inativo existente, sem novas atribuições a inativos.",
+      "Restringir criação a projeto ativo gerenciado e consultas à participação. Somente o responsável atual pode Iniciar, Pausar e Finalizar; gestor apenas quando também responsável; somente gestores Cancelar, Arquivar e Desarquivar, quando permitidos. Preservar responsável inativo existente, sem novas atribuições a inativos.",
       "Manter prioridades Baixa/Média/Alta/Urgente. Situação muda somente por ações: Iniciar → Em andamento; Pausar → Pausada; Finalizar → Finalizada; Cancelar → Cancelada; Arquivar → Arquivada; Desarquivar → Pendente. Finalizar registra data. Não oferecer edição direta, Bloquear, Retomar, Reabrir ou Devolver à fila.",
-      "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores do projeto e administradores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
-      "Permitir a participantes ativos e administradores comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
+      "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
+      "Permitir a participantes ativos comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
       "Registrar criação e alterações de situação por ação, responsável, prioridade, prazo, estimativa, título, descrição, data inicial e arquivamento/desarquivamento, com autoria, data/hora e valores anterior/novo quando aplicáveis; histórico cronológico sem evento ao salvar sem mudanças.",
       "Integrar tarefas, atraso e progresso no projeto. Progresso = Finalizadas/(Pendentes + Em andamento + Pausadas + Finalizadas), com 0% no conjunto vazio. Canceladas/arquivadas excluídas; atraso somente nas três situações não finalizadas. Remoção confirmada de participante deixa tarefas sem responsável e preserva comentários, horas e histórico.",
       "Validar campos e datas opcionais, permitindo passado e prazo igual/posterior ao início. Impedir sobrescrita silenciosa em edição simultânea, preservando texto para revisão. Oferecer estados acessíveis de consulta, loading, vazio, erro e sucesso em desktop/mobile.",
       "Manter campos personalizados, workflow configurável, comentários privados, menções e notificações de negócio fora do MVP. Imagens no editor e anexos da tarefa estão incluídos por decisão explícita; situações e prioridades são fixas.",
       "Aplicar as transições: Pendente → Iniciar/Finalizar/Cancelar/Arquivar; Em andamento → Pausar/Finalizar; Pausada → Iniciar/Finalizar/Cancelar/Arquivar; Finalizada → nenhuma ação de situação; Cancelada → Arquivar; Arquivada → Desarquivar para Pendente. Ações funcionam sem cronômetro nesta entrega.",
-      "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos e administradores podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
-      "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor do projeto ou administrador; arquivadas permitem consulta/download e Desarquivar por gestor do projeto ou administrador em projeto ativo. Projeto arquivado impede mutações."
+      "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
+      "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor; arquivadas permitem consulta/download e Desarquivar por gestor em projeto ativo. Projeto arquivado impede mutações."
     ],
     "boundary_reason": "Criação, manutenção, colaboração e rastreabilidade pertencem ao mesmo detalhe de tarefa. Consulta transversal, organização diária e quadro têm entregas próprias; consomem a mesma regra de transição sem duplicar sua responsabilidade."
   },
   "scope_item": {
     "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
     "catalog_item_id": "manage-task",
-    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+    "catalog_sha256": "5a44b77c45bbcddee99611edea7794445158880512e1782c794023dda059608d"
   }
 }

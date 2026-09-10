@@ -253,13 +253,6 @@
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-09T22:57:46.413921Z",
       "status": "valid"
-    },
-    {
-      "id": "catalog-time-reconciliation-001",
-      "statement": "Metadados reconciliados com catalog-time-review-001 aprovado por Mário Tinelli. Conteúdo canônico byte a byte preservado. Aprovação requirement-authenticate-001 revalidada para o mesmo hash, com autor e data originais; não representa nova aprovação ou publicação.",
-      "decided_by": "Mário Tinelli",
-      "decided_at": "2026-09-10T18:57:55.794421Z",
-      "status": "valid"
     }
   ],
   "approvals": [
@@ -269,9 +262,7 @@
       "subject_sha256": "a851d83011f754e5e2cbefa9011f925c7816a07f464958e71a6f147660145add",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-09T22:48:44.457183Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+      "status": "valid"
     },
     {
       "id": "requirement-authenticate-001",
@@ -279,9 +270,7 @@
       "subject_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-09T23:04:58.421945Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+      "status": "valid"
     },
     {
       "id": "publish-authenticate-001",
@@ -289,16 +278,6 @@
       "subject_sha256": "b1bf3258253d34f92ca07d19af4f8bad691e8bc778fe7326d587d736864b2ad3",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-09T23:07:40.982981Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
-    },
-    {
-      "id": "requirement-authenticate-001-preserved-time-review",
-      "kind": "requirement",
-      "subject_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-09T23:04:58.421945Z",
       "status": "valid"
     }
   ],
@@ -387,11 +366,11 @@
       "OPERACIONAL"
     ],
     "audience_mode": "aggregate",
-    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
     "confirmation": {
-      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
       "confirmed_by": "Mário Tinelli",
-      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
     }
   },
   "delivery": {
@@ -414,6 +393,6 @@
   "scope_item": {
     "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
     "catalog_item_id": "authenticate",
-    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+    "catalog_sha256": "4c82e64741b3207bc726a943dd526b96e15e26283d5e37d93cce64ab94120e34"
   }
 }

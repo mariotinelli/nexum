@@ -300,3 +300,7 @@ Resposta literal: sim. Mário Tinelli confirmou a síntese integral de Gestão d
 ## Catálogo revisado aprovado — 2026-09-10T12:23:22.938319Z
 
 Resposta literal: sim. Mário Tinelli aprovou a projeção integral. Pendência resolvida, pausa retomada e entrega reconciliada. Entrevista concluída com entendimento confirmado, sem lacunas funcionais. Requisito completo segue para aprovação.
+
+## Revisão publicada após Gestão de Tempo
+
+Mário Tinelli aprovou o catálogo completo, os quatro documentos e as quatro publicações em etapas explícitas. A descrição de #1014450 foi publicada e relida: status New e relações preservados, sem divergência ou conteúdo externo alterado. Registro da revisão em ../../scopes/2026-09-09-nexum-scope/requirements-time-review.json; operações remotas anteriores preservadas como histórico. Concluído em 2026-09-10T19:09:37.970937Z.

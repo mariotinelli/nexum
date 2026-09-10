@@ -424,3 +424,7 @@ Descrição completa em publication-preview.md; payload exato em publish-payload
 ## Publicação e conclusão — 2026-09-10T14:22:13.587559Z
 
 Mário Tinelli respondeu "sim" à prévia completa. Aprovação publish-task-001 persistida antes da atualização; Redmine confirmou, e a releitura verificou descrição aprovada, status New e relação 662. Operações e fases concluídas, estados e transições válidos; nenhuma pendência funcional. Requisito pronto para planejamento técnico.
+
+## Revisão publicada após Gestão de Tempo
+
+Mário Tinelli aprovou o catálogo completo, os quatro documentos e as quatro publicações em etapas explícitas. A descrição de #1014454 foi publicada e relida: status New e relações preservados, sem divergência ou conteúdo externo alterado. Registro da revisão em ../../scopes/2026-09-09-nexum-scope/requirements-time-review.json; operações remotas anteriores preservadas como histórico. Concluído em 2026-09-10T19:09:37.970937Z.

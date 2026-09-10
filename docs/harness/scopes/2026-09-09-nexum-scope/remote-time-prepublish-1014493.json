@@ -1,0 +1,28 @@
+{
+  "id": 1014493,
+  "project": {
+    "id": 65221,
+    "name": "Nexum"
+  },
+  "tracker": {
+    "id": 2,
+    "name": "Feature"
+  },
+  "status": {
+    "id": 1,
+    "name": "New",
+    "is_closed": false
+  },
+  "subject": "[WEB] [OPERACIONAL] Gestão de Tempo",
+  "description": "<!-- project-flow:start -->\r\nPermitir registrar, corrigir e consultar o esforço realizado nas tarefas, manualmente ou por cronômetro, pela interface WEB responsiva em português.\r\n\r\nA entrega inclui:\r\n- Criar apontamentos com tarefa, usuário, data, duração positiva, descrição opcional e origem Manual/Cronômetro.\r\n- Editar e excluir somente os próprios apontamentos, com confirmação, e consultar registros das tarefas e projetos acessíveis.\r\n- Filtrar por projeto, pessoa e período, paginar e apresentar totais de horas.\r\n- Disponibilizar cronômetro global, com início, pausa, continuidade, encerramento com apontamento e descarte confirmado.\r\n- Impedir mais de uma execução aberta por pessoa, incluindo pausadas, mantendo a contagem após recarregar ou fechar a página.\r\n- Integrar as permissões e ações da Gestão de Tarefa e os impedimentos por execução aberta.\r\n- Atualizar horas realizadas nas tarefas, projetos e consultas, respeitando os estados de somente leitura.\r\n- Apresentar formulários, cards no mobile, validações e estados de carregamento, vazio, erro e sucesso.\r\n\r\nDepende de Gestão de Tarefa (#1014454). Não inclui aprovação de horas, faturamento, centros de custo ou integração externa.\r\n\r\nRequisitos em coleta. Os detalhes da integração, arredondamento e critérios de aceite serão definidos na entrevista desta Feature.\r\n<!-- project-flow:end -->",
+  "relations": [
+    {
+      "id": 666,
+      "issue_id": 1014454,
+      "issue_to_id": 1014493,
+      "relation_type": "blocks",
+      "delay": null
+    }
+  ],
+  "updated_on": "2026-09-10T16:00:05Z"
+}

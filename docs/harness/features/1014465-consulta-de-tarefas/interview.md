@@ -141,3 +141,7 @@ Descrição completa em publication-preview.md; payload em publish-payload.json,
 ## Publicação e conclusão — 2026-09-10T15:09:11.823972Z
 
 Mário Tinelli respondeu "sim" à prévia completa. Aprovação publish-search-001 registrada antes da atualização; resultado persistido e releitura confirmou descrição aprovada, status New e relação 665. Hash gerenciado 4f2d1c60ac5c5b4a8a583bcf98ae3aadf7969ff0eba03e29f7b86aacf6df2126. Estados e transições válidos; nenhuma pendência funcional. Requisito pronto para planejamento técnico.
+
+## Revisão publicada após Gestão de Tempo
+
+Mário Tinelli aprovou o catálogo completo, os quatro documentos e as quatro publicações em etapas explícitas. A descrição de #1014465 foi publicada e relida: status New e relações preservados, sem divergência ou conteúdo externo alterado. Registro da revisão em ../../scopes/2026-09-09-nexum-scope/requirements-time-review.json; operações remotas anteriores preservadas como histórico. Concluído em 2026-09-10T19:09:37.970937Z.

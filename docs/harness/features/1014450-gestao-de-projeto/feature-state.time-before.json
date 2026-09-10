@@ -393,13 +393,6 @@
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T12:23:22.938319Z",
       "status": "valid"
-    },
-    {
-      "id": "catalog-time-reconciliation-001",
-      "statement": "Metadados reconciliados com catalog-time-review-001 aprovado por Mário Tinelli. Documento revisado aprovado nesta conversa; nova publicação pendente em requirements-time-review.json. Não reutilizar nem reescrever operações remotas concluídas do run inicial.",
-      "decided_by": "Mário Tinelli",
-      "decided_at": "2026-09-10T18:57:55.794421Z",
-      "status": "valid"
     }
   ],
   "approvals": [
@@ -429,9 +422,7 @@
       "subject_sha256": "236564ce36d22cdf9ce49428d912e597b2b04df6fdb5e11e7cf8a2b925756a19",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T12:33:13.733023Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+      "status": "valid"
     },
     {
       "id": "publish-project-001",
@@ -439,24 +430,6 @@
       "subject_sha256": "2a1961332a177f4cbe3d2f2fc1aa48b6b55e08e9dc28f401a439a9032be147ad",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T12:35:10.259851Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
-    },
-    {
-      "id": "requirement-time-review-1014450-001",
-      "kind": "requirement",
-      "subject_sha256": "3b4ef5cf44920c4c96579ce233518a986095c702671d1196da82223aa58abc9d",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T18:55:05.870661Z",
-      "status": "valid"
-    },
-    {
-      "id": "publish-time-review-1014450-001",
-      "kind": "publish-payload",
-      "subject_sha256": "53e6d30d5ab85d875db5381474451de36b8a6f7968e59447600d04e249c1e42b",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T19:05:24.933185Z",
       "status": "valid"
     }
   ],
@@ -564,21 +537,6 @@
       "outcome": "matched",
       "remote_sha256": "bb818b9ae39dc87b1b4dee0a2803bb720d547190588adc2b7d2ea016d84ed126",
       "summary": "Releitura confirmou descrição aprovada, status New, relação 661 preservada e nenhum conteúdo externo. Hash do conteúdo gerenciado em CRLF."
-    },
-    {
-      "id": "time-review-publish-response-1014450-001",
-      "operation_key": "time-review-publish-1014450-001",
-      "observed_at": "2026-09-10T19:06:43.583578Z",
-      "outcome": "matched",
-      "summary": "Redmine confirmou a atualização da descrição aprovada; resultado persistido antes da releitura. Nenhum outro campo enviado."
-    },
-    {
-      "id": "time-review-publish-verification-1014450-001",
-      "operation_key": "time-review-publish-1014450-001",
-      "observed_at": "2026-09-10T19:07:31.517251Z",
-      "outcome": "matched",
-      "remote_sha256": "75dbb07630b7c44cdd3009a79e9dede389d4f899434f9690d905569263c7263e",
-      "summary": "Releitura confirmou descrição aprovada, status New, relações e conteúdo externo preservados. Hash gerenciado conforme retornado pelo Redmine."
     }
   ],
   "requirement_divergences": [],
@@ -592,11 +550,11 @@
       "OPERACIONAL"
     ],
     "audience_mode": "aggregate",
-    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
     "confirmation": {
-      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
       "confirmed_by": "Mário Tinelli",
-      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
     }
   },
   "delivery": {
@@ -609,15 +567,15 @@
     "visible_delivery": "Lista, cadastro, consulta de dados/participantes, edição e arquivamento/reativação de projetos, mais consulta dos vínculos na gestão de usuários. Tarefas, horas e indicadores nessas telas entram pelas capacidades que os produzem.",
     "user_result": "Organizar projetos, participantes e papéis durante seu ciclo de vida.",
     "included": [
-      "Consultar projetos de que participa; administradores consultam qualquer projeto sem participação. Filtrar ativos/arquivados, paginar e abrir dados e participantes.",
+      "Consultar somente projetos de que participa, filtrar ativos/arquivados, paginar e abrir dados e participantes.",
       "Somente administradores criam projetos, com nome e gestor principal obrigatórios e descrição opcional; identificador automático de três letras, sem Data inicial ou Prazo do projeto.",
       "Incluir o gestor principal como participante Gestor obrigatório e permitir outros Gestores com as mesmas permissões; o administrador criador só participa quando incluído explicitamente.",
-      "Gestores do projeto e administradores editam dados, gestor e participantes. Troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo. Administrador não precisa participar para administrar.",
-      "Gestores do projeto e administradores podem arquivar com confirmação e reativar, respeitando somente consulta enquanto arquivado. Gestão de Tempo impede arquivar enquanto houver cronômetro rodando; tarefa pausada já salvou seu tempo e não mantém execução aberta.",
+      "Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
+      "Arquivar com confirmação, manter somente consulta e reativar; a Gestão de Tempo acrescenta o impedimento quando houver cronômetro aberto.",
       "Consultar os projetos e papéis de uma pessoa no modal da tela de usuários; somente o administrador acessa essa consulta administrativa.",
       "Oferecer resumo e participantes no detalhe e navegação às tarefas, quadro e horas quando as respectivas entregas estiverem disponíveis.",
       "Gerar identificador automático, único e imutável de três letras maiúsculas sem acento: iniciais, complemento por letras do nome ou X, alternativas do nome em colisões e depois A–Z; arquivados reservam códigos. Não permitir edição manual nem regenerar ao renomear.",
-      "Respeitar autorização de gestor do projeto ou administrador, confirmações, foco, estados vazios e formulários responsivos.",
+      "Respeitar autorização de gestor, confirmações, foco, estados vazios e formulários responsivos.",
       "Preservar o MVP de projeto sem subprojetos, Gantt/roadmap, sprints/backlog ou dependências entre tarefas; essas extensões não entram nesta entrega.",
       "Preservar vínculos e papéis de contas inativas, identificá-las como inativas e impedir novas inclusões enquanto inativas; recuperação de acesso de gestores via reativação administrativa da conta."
     ],
@@ -626,6 +584,6 @@
   "scope_item": {
     "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
     "catalog_item_id": "manage-project",
-    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+    "catalog_sha256": "776aa602d7e45a2adce0a36c69a1ac15dba290e45cc8fb15f87aa2f9604f89e9"
   }
 }

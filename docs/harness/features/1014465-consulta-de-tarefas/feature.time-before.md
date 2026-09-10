@@ -1,10 +1,10 @@
 # [WEB] [OPERACIONAL] Consulta de Tarefas
 
-Issue: #1014465.
+Issue #1014465. Requisito aprovado por Mário Tinelli.
 
 ## Objetivo
 
-Permitir que participantes encontrem tarefas entre os projetos aos quais têm acesso, combinando busca, filtros, ordenação e paginação pela interface WEB em português. A consulta oferece acesso ao detalhe e preserva o contexto da navegação, respeitando a participação vigente ou o acesso administrativo e as regras de situação e atraso da Gestão de Tarefa.
+Permitir que participantes encontrem tarefas entre os projetos aos quais têm acesso, combinando busca, filtros, ordenação e paginação pela interface WEB em português. A consulta oferece acesso ao detalhe e preserva o contexto da navegação, respeitando a participação vigente e as regras de situação e atraso da Gestão de Tarefa.
 
 ## Resultado esperado
 
@@ -13,21 +13,21 @@ Encontrar tarefas não arquivadas por trechos de título ou descrição e pelos 
 ## Atores e permissões
 
 - Participantes autenticados e ativos, com papel Membro ou Gestor: consultam somente tarefas dos projetos dos quais participam.
-- Administradores ativos: consultam tarefas de qualquer projeto, mesmo sem participação. Projetos arquivados continuam somente para consulta e tarefas arquivadas permanecem fora dos resultados.
-- Gestores de projeto ativo e administradores: acessam Nova tarefa conforme a Gestão de Tarefa. A consulta não concede novas permissões de criação, edição, atribuição ou execução.
+- Administradores: têm a mesma limitação de participação; acesso administrativo não libera conteúdo de outros projetos.
+- Gestores de projeto ativo: acessam Nova tarefa conforme a Gestão de Tarefa. A consulta não concede novas permissões de criação, edição, atribuição ou execução.
 - Conta inativa ou pessoa sem acesso vigente: não pode consultar o conteúdo restrito, inclusive por acesso direto ou tela já aberta.
 
 Projetos arquivados mantêm consulta; tarefas arquivadas não entram nos resultados. A abertura de detalhes aplica as permissões e limitações da Gestão de Tarefa.
 
 ## Histórias de usuário
 
-1. Como participante ou administrador, quero buscar trechos do título ou da descrição para localizar uma tarefa mesmo sem lembrar seu nome completo.
-2. Como participante ou administrador, quero combinar filtros de projeto, responsável, situação, prioridade, prazo e atraso para reduzir os resultados ao trabalho procurado.
-3. Como participante ou administrador, quero localizar tarefas sem responsável e atribuições antigas a pessoas inativas para consultar sua distribuição.
-4. Como participante ou administrador, quero ordenar por criação, atualização, prazo ou prioridade para examinar os resultados na sequência adequada.
-5. Como participante ou administrador, quero percorrer os resultados paginados e voltar do detalhe ao mesmo contexto para continuar a consulta.
-6. Como participante ou administrador, quero abrir Ver tarefas de um projeto com esse contexto aplicado para encontrar suas tarefas sem interferência de filtros anteriores.
-7. Como gestor autorizado ou administrador, quero acessar Nova tarefa pela consulta para iniciar o cadastro entregue pela Gestão de Tarefa.
+1. Como participante, quero buscar trechos do título ou da descrição para localizar uma tarefa mesmo sem lembrar seu nome completo.
+2. Como participante, quero combinar filtros de projeto, responsável, situação, prioridade, prazo e atraso para reduzir os resultados ao trabalho procurado.
+3. Como participante, quero localizar tarefas sem responsável e atribuições antigas a pessoas inativas para consultar sua distribuição.
+4. Como participante, quero ordenar por criação, atualização, prazo ou prioridade para examinar os resultados na sequência adequada.
+5. Como participante, quero percorrer os resultados paginados e voltar do detalhe ao mesmo contexto para continuar a consulta.
+6. Como participante, quero abrir Ver tarefas de um projeto com esse contexto aplicado para encontrar suas tarefas sem interferência de filtros anteriores.
+7. Como gestor autorizado, quero acessar Nova tarefa pela consulta para iniciar o cadastro entregue pela Gestão de Tarefa.
 
 ## Fluxo principal
 
@@ -47,13 +47,13 @@ Projetos arquivados mantêm consulta; tarefas arquivadas não entram nos resulta
 
 **Limpeza e continuidade:** Limpar remove busca e filtros, restaura a ordenação padrão e volta à primeira página. Preservar filtros e ordenação ao navegar e atualizar a página durante o acesso atual. Sair da conta e entrar novamente restaura o padrão.
 
-**Nova tarefa:** oferecer o acesso conforme a permissão de gestor do projeto ativo ou administrador. Cadastro, validações e resultado da criação pertencem à Gestão de Tarefa; esta Feature oferece a navegação para esse fluxo.
+**Nova tarefa:** oferecer o acesso conforme a permissão de gestão de projeto ativo. Cadastro, validações e resultado da criação pertencem à Gestão de Tarefa; esta Feature oferece a navegação para esse fluxo.
 
 ## Fluxos alternativos e exceções
 
 - Busca ou combinação de filtros sem correspondência: apresentar nenhum resultado e permitir Limpar filtros.
 - Nenhuma tarefa acessível: apresentar estado vazio; acesso a Nova tarefa segue as permissões existentes.
-- Pessoa perde participação sem possuir acesso administrativo, perde o acesso administrativo sem participação ou conta fica inativa: a consulta e a abertura direta de detalhes não mantêm acesso ao conteúdo que deixou de ser permitido.
+- Pessoa perde participação ou conta fica inativa: a consulta e a abertura direta de detalhes não mantêm acesso ao conteúdo que deixou de ser permitido.
 - Projeto arquivado: manter suas tarefas não arquivadas disponíveis para consulta; abrir detalhe respeita somente leitura.
 - Tarefa arquivada após aparecer na consulta: ela deixa de compor novos resultados; seu detalhe segue a regra de consulta da Gestão de Tarefa.
 - Responsável inválido após trocar o projeto: redefinir somente esse filtro para Todos. Entrar por Ver tarefas do projeto continua seguindo a limpeza contextual própria desse fluxo.
@@ -63,7 +63,7 @@ Projetos arquivados mantêm consulta; tarefas arquivadas não entram nos resulta
 
 ## Regras de negócio
 
-R1. Consultar somente tarefas não arquivadas de projetos com participação vigente; administradores ativos consultam qualquer projeto, independentemente de participação. Projetos arquivados continuam acessíveis para consulta; administração não concede participação automática. As restrições também valem para acessos diretos.
+R1. Consultar somente tarefas não arquivadas de projetos com participação vigente. Projetos arquivados continuam acessíveis para consulta; administração não concede participação automática. As restrições também valem para acessos diretos.
 
 R2. A busca considera qualquer trecho do título ou da descrição, ignorando maiúsculas/minúsculas, acentos e espaços nas extremidades. Basta corresponder em um desses campos. Busca vazia não restringe a consulta.
 
@@ -79,7 +79,7 @@ R7. Ordenação padrão por criação decrescente. Outras opções: atualizaçã
 
 R8. Paginação fixa de oito tarefas, com total encontrado e controles Anterior/Próxima. Aplicar ou limpar filtros volta à primeira página. Retorno do detalhe preserva filtros e página; página inexistente passa à última disponível, ou estado vazio quando não houver resultados.
 
-R9. Entrada por Ver tarefas do projeto aplica somente esse projeto e limpa o contexto anterior. Limpar remove busca/filtros, restaura ordenação padrão e primeira página. As opções de projeto respeitam participação vigente ou acesso administrativo.
+R9. Entrada por Ver tarefas do projeto aplica somente esse projeto e limpa o contexto anterior. Limpar remove busca/filtros, restaura ordenação padrão e primeira página. O projeto continua limitado à participação vigente.
 
 R10. Preservar filtros e ordenação ao navegar e atualizar durante o acesso atual. Sair e entrar novamente restaura os valores iniciais. Entrada contextual pelo projeto e Limpar são exceções explícitas à preservação.
 
@@ -91,7 +91,7 @@ Campo de busca, seleções de projeto, situação, prioridade e responsável, Pr
 
 ## Critérios de aceite
 
-CA1 — Com participante ativo em diferentes projetos, ao abrir a consulta, apresentar somente suas tarefas não arquivadas, incluindo as de projetos arquivados. Projetos sem participação permanecem inacessíveis para usuários comuns; administradores consultam tarefas de todos os projetos, respeitando as exclusões de situação. [R1]
+CA1 — Com participante ativo em diferentes projetos, ao abrir a consulta, apresentar somente suas tarefas não arquivadas, incluindo as de projetos arquivados. Projetos sem participação permanecem inacessíveis, inclusive para administrador. [R1]
 
 CA2 — Sem filtros preservados, ao abrir, usar valores gerais, busca/prazo vazios, Apenas atrasadas desmarcado, criação mais recente e primeira página. Finalizadas e canceladas aparecem quando pertencem ao conjunto permitido. [R5, R7–R10; entrada]
 
@@ -121,17 +121,16 @@ CA14 — Sem correspondências, ao consultar, mostrar estado vazio e permitir li
 
 CA15 — Com pessoa sem acesso vigente ou conta inativa, ao consultar ou abrir diretamente tarefa restrita, recusar. Com projeto arquivado acessível, ao abrir detalhe, manter somente consulta conforme Gestão de Tarefa. [R1, R11]
 
-CA16 — Como gestor autorizado de projeto ativo ou administrador, ao acionar Nova tarefa, abrir o cadastro da Gestão de Tarefa. Quem não tem essa permissão não recebe autorização de criação pela consulta. [R11]
+CA16 — Como gestor autorizado de projeto ativo, ao acionar Nova tarefa, abrir o cadastro da Gestão de Tarefa. Quem não tem essa permissão não recebe autorização de criação pela consulta. [R11]
 
 CA17 — Em desktop/mobile, ao usar busca, filtros, tabela/cards, paginação e links, apresentar os mesmos dados essenciais e ações utilizáveis por teclado, com labels, foco visível e mensagens acessíveis. Diferenciar carregamento, vazio, erro e sucesso. [R11; guia de design]
 
 ## Dependências
 
-Gestão de Tarefa (#1014454), com relação nativa 665 já criada e conferida: #1014454 bloqueia #1014465. Fornece dados, situações, prioridades, atribuição, datas, atraso, detalhe e criação autorizada. A participação, o acesso administrativo e o estado dos projetos vêm da Gestão de Projeto por essa integração. Minhas Tarefas e Painel Gerencial mantêm suas próprias entregas e consomem a consulta quando previsto no catálogo, sem alterar seus limites de acesso.
+Gestão de Tarefa (#1014454), com relação nativa 665 já criada e conferida: #1014454 bloqueia #1014465. Fornece dados, situações, prioridades, atribuição, datas, atraso, detalhe e criação autorizada. A participação e o estado dos projetos vêm da Gestão de Projeto por essa integração. Minhas Tarefas e Painel Gerencial mantêm suas próprias entregas e consomem a consulta quando previsto no catálogo, sem alterar seus limites de acesso.
 
 ## Designs e evidências
 
-- Revisão administrativa: Q84/Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/interview.md), com [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md). Essa decisão substitui a limitação anterior do administrador aos projetos participantes.
 - [Tela Tarefas](../../scopes/2026-09-09-nexum-scope/sources/design-tasks.md) e [Guia de design](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md).
 - [Entrevista](interview.md): decisões Q63–Q69 e confirmação explícita de Mário Tinelli.
 - [Catálogo completo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-search-review.md).

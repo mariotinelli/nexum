@@ -1,0 +1,7 @@
+{
+  "project_id": 65221,
+  "tracker_id": 2,
+  "status_id": 1,
+  "subject": "[WEB] [OPERACIONAL] Gestão de Tempo",
+  "description": "<!-- project-flow:start -->\nPermitir registrar, corrigir e consultar o esforço realizado nas tarefas, manualmente ou por cronômetro, pela interface WEB responsiva em português.\n\nA entrega inclui:\n- Criar apontamentos com tarefa, usuário, data, duração positiva, descrição opcional e origem Manual/Cronômetro.\n- Editar e excluir somente os próprios apontamentos, com confirmação, e consultar registros das tarefas e projetos acessíveis.\n- Filtrar por projeto, pessoa e período, paginar e apresentar totais de horas.\n- Disponibilizar cronômetro global, com início, pausa, continuidade, encerramento com apontamento e descarte confirmado.\n- Impedir mais de uma execução aberta por pessoa, incluindo pausadas, mantendo a contagem após recarregar ou fechar a página.\n- Integrar as permissões e ações da Gestão de Tarefa e os impedimentos por execução aberta.\n- Atualizar horas realizadas nas tarefas, projetos e consultas, respeitando os estados de somente leitura.\n- Apresentar formulários, cards no mobile, validações e estados de carregamento, vazio, erro e sucesso.\n\nDepende de Gestão de Tarefa (#1014454). Não inclui aprovação de horas, faturamento, centros de custo ou integração externa.\n\nRequisitos em coleta. Os detalhes da integração, arredondamento e critérios de aceite serão definidos na entrevista desta Feature.\n<!-- project-flow:end -->"
+}

@@ -239,13 +239,6 @@
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T15:00:58.053962Z",
       "status": "valid"
-    },
-    {
-      "id": "catalog-time-reconciliation-001",
-      "statement": "Metadados reconciliados com catalog-time-review-001 aprovado por Mário Tinelli. Documento revisado aprovado nesta conversa; nova publicação pendente em requirements-time-review.json. Não reutilizar nem reescrever operações remotas concluídas do run inicial.",
-      "decided_by": "Mário Tinelli",
-      "decided_at": "2026-09-10T18:57:55.794421Z",
-      "status": "valid"
     }
   ],
   "approvals": [
@@ -275,9 +268,7 @@
       "subject_sha256": "489fc54a956488fedb584a56047fa182e9520e4042e0bced4a3dcb6b08d32ea6",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T15:05:44.502887Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+      "status": "valid"
     },
     {
       "id": "publish-search-001",
@@ -285,24 +276,6 @@
       "subject_sha256": "9de4afd44f81127044163cfaaebf253f698af1bb289dd8965cb182d7f52c8e4f",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T15:07:54.298365Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T18:57:55.794421Z",
-      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
-    },
-    {
-      "id": "requirement-time-review-1014465-001",
-      "kind": "requirement",
-      "subject_sha256": "da590f2972c1ed48e865ff410b5685017336eeed26ced9b8cc682f28ef1f7164",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T18:55:05.870661Z",
-      "status": "valid"
-    },
-    {
-      "id": "publish-time-review-1014465-001",
-      "kind": "publish-payload",
-      "subject_sha256": "d213d39c537e7cc10b9ac7bca53ca6e2b968f721572dda21c7c0c78184bbe9da",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T19:05:24.933185Z",
       "status": "valid"
     }
   ],
@@ -410,21 +383,6 @@
       "outcome": "matched",
       "remote_sha256": "4f2d1c60ac5c5b4a8a583bcf98ae3aadf7969ff0eba03e29f7b86aacf6df2126",
       "summary": "Releitura confirmou descrição aprovada, status New, relação 665 e nenhum conteúdo externo. Requisito e operações reconciliados."
-    },
-    {
-      "id": "time-review-publish-response-1014465-001",
-      "operation_key": "time-review-publish-1014465-001",
-      "observed_at": "2026-09-10T19:08:13.395195Z",
-      "outcome": "matched",
-      "summary": "Redmine confirmou a atualização da descrição aprovada; resultado persistido antes da releitura. Nenhum outro campo enviado."
-    },
-    {
-      "id": "time-review-publish-verification-1014465-001",
-      "operation_key": "time-review-publish-1014465-001",
-      "observed_at": "2026-09-10T19:08:17.200094Z",
-      "outcome": "matched",
-      "remote_sha256": "a3992fae4f761530c3a4a8eed7958fa573d330b0e6a937befa277633af417670",
-      "summary": "Releitura confirmou descrição aprovada, status New, relações e conteúdo externo preservados. Hash gerenciado conforme retornado pelo Redmine."
     }
   ],
   "requirement_divergences": [],
@@ -438,11 +396,11 @@
       "OPERACIONAL"
     ],
     "audience_mode": "aggregate",
-    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
     "confirmation": {
-      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
       "confirmed_by": "Mário Tinelli",
-      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
     }
   },
   "delivery": {
@@ -457,7 +415,7 @@
     "included": [
       "Buscar por título ou descrição e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
       "Ordenar por criação, prazo, prioridade ou atualização; aplicar/limpar e preservar filtros na sessão.",
-      "Paginar somente tarefas não arquivadas dos projetos acessíveis: participantes veem seus projetos e administradores podem consultar todos, inclusive arquivados para consulta. Mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
+      "Paginar somente tarefas não arquivadas dos projetos acessíveis; mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
       "Exibir vazio com limpeza de filtros, loading/erro/sucesso e cards rotulados em mobile."
     ],
     "boundary_reason": "Busca em todos os projetos acessíveis. Não substitui o recorte por responsabilidade e as ações diárias de Minhas Tarefas."
@@ -465,6 +423,6 @@
   "scope_item": {
     "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
     "catalog_item_id": "search-tasks",
-    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+    "catalog_sha256": "b94fa4965f81118c562e5c88e70b8111fc44f74b77a878f2865f2c75b0f9bc18"
   }
 }

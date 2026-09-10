@@ -1,7 +1,4 @@
-# [WEB] [OPERACIONAL] Gestão de Tarefa
-
-Issue: #1014454.
-
+<!-- project-flow:start -->
 ## Objetivo
 
 Permitir que gestores planejem e mantenham tarefas em seus projetos e administradores em qualquer projeto, que responsáveis executem as ações de trabalho permitidas e que participantes distribuam responsabilidades e colaborem no detalhe. A entrega organiza dados, prazos, estimativas, situações e registros em uma interface WEB em português, com rastreabilidade e acesso por participação ou administração.
@@ -171,14 +168,6 @@ Gestão de Projeto (#1014450) fornece projetos, participação, papéis e arquiv
 
 Consulta de Tarefas, Gestão de Tempo, Minhas Tarefas, Quadro do Projeto e Painel Gerencial consomem dados, permissões e situações aqui definidos. Gestão de Tempo entrega execução/horas posteriormente; seus critérios de integração são verificados quando essa capacidade for entregue. Não há novo bloqueio de Gestão de Tarefa por esses consumidores.
 
-## Designs e evidências
-
-- Revisão administrativa e de integração: Q70–Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/interview.md), com [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md). Substitui limites antigos do administrador, execução aberta durante pausa e encerramento separado com Descartar.
-- [Nova tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-new-task.md), [Editar tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-edit-task.md), [Detalhes da tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-task-detail.md), [Detalhes do projeto](../../scopes/2026-09-09-nexum-scope/sources/design-project-detail.md) e [Guia de design](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md).
-- [Entrevista](interview.md): Q39–Q62, confirmação explícita do entendimento e correção posterior de Mário Tinelli: Iniciar/Pausar/Finalizar exclusivos do responsável atual.
-- [Catálogo completo corrigido aprovado](../../scopes/2026-09-09-nexum-scope/catalog-responsible-review.md). Aprovação `catalog-responsible-only-001`; revisão anterior preservada no histórico.
-- Decisões confirmadas substituem nas referências: criação/edição por membros ou responsável, troca de projeto, edição direta de situação, Bloqueada/Concluída e reabertura, estimativa em minutos e exclusão de imagens/anexos/desarquivamento. Permanecem prioridades fixas e datas de tarefas; o acesso administrativo sem participação passa a seguir a revisão de Gestão de Tempo. Referências são evidência de design, sem comprovar implementação existente.
-
 ## Dentro do escopo
 
 Criação/edição por gestores do projeto e administradores, consulta por participantes ou administradores, atribuição, datas/estimativa, fluxo fixo por ações, arquivamento/desarquivamento, editor rico com imagens, comentários, anexos separados, histórico, proteção contra sobrescrita concorrente, tarefas/progresso no projeto e remoção confirmada de responsáveis. Interface WEB em português, responsiva, com carregamento, vazio, erro, indisponibilidade e sucesso. Requisitos explícitos do guia: contraste WCAG AA, teclado, foco, labels, nomes acessíveis, mensagens descritivas, alvos de toque adequados, hierarquia semântica e redução de movimento.
@@ -186,3 +175,10 @@ Criação/edição por gestores do projeto e administradores, consulta por parti
 ## Fora do escopo
 
 Transferência entre projetos, exclusão definitiva de tarefa, campos personalizados, workflow configurável, comentários privados, menções, notificações de negócio, dependências entre tarefas, sprints/backlog, aplicativo nativo e API pública. Consulta transversal, organização diária, quadro, cronômetro, apontamentos e painel permanecem nas Features responsáveis. Este requisito não estabelece biblioteca, armazenamento ou desenho técnico.
+
+## Requisito canônico
+
+Documento aprovado: docs/harness/features/1014454-gestao-de-tarefa/feature.md
+
+Requisito aprovado por Mário Tinelli.
+<!-- project-flow:end -->

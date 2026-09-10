@@ -3,7 +3,7 @@
   "run_id": "f14a499f-1674-419d-91e3-db9b5c03326d",
   "internal_identity": "0370e6d4-2c49-4f0c-8157-299d7bcb3eaf",
   "mode": "new-scope",
-  "phase": "items-processing",
+  "phase": "paused",
   "completed_phases": [
     "mode-confirmed",
     "inputs-normalized",
@@ -731,7 +731,7 @@
       "name": "Consulta de Tarefas",
       "human_objective": "Encontrar tarefas nos projetos acessíveis por busca, filtros e ordenação.",
       "actors": [
-        "Participantes consultam tarefas dos seus projetos; administradores consultam qualquer projeto sem participação."
+        "Gestores e membros conforme permissões; administrador nas funções pessoais comuns"
       ],
       "observable_result_or_deviation": "Consulta transversal paginada, em tabela ou cards, com filtros persistentes na sessão e links para detalhes.",
       "evidence": [
@@ -760,7 +760,7 @@
         "included": [
           "Buscar por título ou descrição e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
           "Ordenar por criação, prazo, prioridade ou atualização; aplicar/limpar e preservar filtros na sessão.",
-          "Paginar somente tarefas não arquivadas dos projetos acessíveis: participantes veem seus projetos e administradores podem consultar todos, inclusive arquivados para consulta. Mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
+          "Paginar somente tarefas não arquivadas dos projetos acessíveis; mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
           "Exibir vazio com limpeza de filtros, loading/erro/sucesso e cards rotulados em mobile."
         ],
         "boundary_reason": "Busca em todos os projetos acessíveis. Não substitui o recorte por responsabilidade e as ações diárias de Minhas Tarefas."
@@ -812,7 +812,7 @@
       "name": "Quadro do Projeto",
       "human_objective": "Acompanhar visualmente o fluxo de tarefas de um projeto e operar transições permitidas.",
       "actors": [
-        "Participantes dos projetos e administradores sem exigência de participação; ações conforme responsável e permissões administrativas."
+        "Gestores e membros conforme permissões; administrador nas funções pessoais comuns"
       ],
       "observable_result_or_deviation": "Cinco colunas com contagem, cards, horas realizadas e ações permitidas pelo fluxo; sem edição direta de situação. Projeto arquivado fica somente para consulta.",
       "evidence": [
@@ -842,7 +842,7 @@
           "Apresentar Pendente, Em andamento, Pausada, Finalizada e Cancelada com contagens e estados vazios; tarefas arquivadas ficam fora do quadro.",
           "Exibir título/link, responsável, prioridade, prazo/atraso, estimativa e horas realizadas nos cards.",
           "Oferecer somente ações válidas para a situação e a permissão: Iniciar, Pausar, Finalizar, Cancelar e Arquivar quando aplicáveis; sem edição direta de situação nem arraste que a altere. Projeto arquivado fica somente para consulta.",
-          "Participantes consultam seus projetos; administradores consultam qualquer projeto sem participação. Alterações seguem autorizações, inclusive Iniciar/Pausar/Finalizar exclusivos do responsável. Empilhar colunas em mobile e usar rótulos que não dependam só de cor."
+          "Restringir consulta aos participantes e alterações aos autorizados; empilhar colunas em mobile e usar rótulos que não dependam só de cor."
         ],
         "boundary_reason": "Entrega contextual por situação, independente da busca transversal e da edição completa. Usa a regra de transição da Gestão de Tarefa e totais da Gestão de Tempo."
       }
@@ -853,7 +853,7 @@
       "name": "Painel Gerencial",
       "human_objective": "Acompanhar progresso, atrasos e esforço conforme o papel em cada projeto.",
       "actors": [
-        "Membros no recorte pessoal, gestores nas equipes dos projetos gerenciados e administradores nas equipes de todos os projetos."
+        "Gestores e membros conforme permissões; administrador nas funções pessoais comuns"
       ],
       "observable_result_or_deviation": "Painel com projetos ativos, distribuição pelo novo fluxo de situações, atrasos, finalizações por período, estimadas versus realizadas, horas por membro e progresso; links para recortes correspondentes.",
       "evidence": [
@@ -865,7 +865,7 @@
         "my-tasks",
         "search-tasks"
       ],
-      "separation_reason": "Gestor vê dados da equipe nos projetos que gerencia; membro vê somente suas tarefas e horas; administrador consulta equipes de todos os projetos. O painel agrega dados e abre as consultas já entregues, sem duplicar a produção de tarefas ou horas.",
+      "separation_reason": "Gestor vê dados da equipe nos projetos que gerencia; membro vê somente suas tarefas e horas. O painel agrega dados e abre as consultas já entregues, sem duplicar a produção de tarefas ou horas.",
       "suggested_position": 11,
       "status": "pending",
       "candidate_ids": [
@@ -882,13 +882,13 @@
         "visible_delivery": "Painel com projetos ativos, distribuição pelo novo fluxo de situações, atrasos, finalizações por período, estimadas versus realizadas, horas por membro e progresso; links para recortes correspondentes.",
         "user_result": "Acompanhar progresso, atrasos e esforço conforme o papel em cada projeto.",
         "included": [
-          "Restringir membros às próprias tarefas/horas e gestores à equipe nos projetos gerenciados; administradores podem consultar equipes e indicadores de todos os projetos. Respeitar os demais limites de situação e período.",
+          "Restringir membros às próprias tarefas/horas e gestores à equipe nos projetos gerenciados; respeitar papéis por projeto.",
           "Exibir projetos ativos, distribuição pelo novo fluxo de situações, tarefas atrasadas e finalizadas no período, com filtro de finalizações.",
           "Comparar horas estimadas e realizadas, mostrar horas por membro e progresso Finalizadas/(Pendentes + Em andamento + Pausadas + Finalizadas), com 0% no conjunto vazio. Canceladas e arquivadas não compõem progresso nem atraso.",
           "Abrir projetos, tarefas filtradas e Minhas Tarefas a partir dos links/indicadores correspondentes.",
           "Apresentar dados vazios, loading/erro/sucesso, gráficos rotulados e empilhamento mobile, sem expor dados fora do recorte."
         ],
-        "boundary_reason": "Gestor vê dados da equipe nos projetos que gerencia; membro vê somente suas tarefas e horas; administrador consulta equipes de todos os projetos. O painel agrega dados e abre as consultas já entregues, sem duplicar a produção de tarefas ou horas."
+        "boundary_reason": "Gestor vê dados da equipe nos projetos que gerencia; membro vê somente suas tarefas e horas. O painel agrega dados e abre as consultas já entregues, sem duplicar a produção de tarefas ou horas."
       }
     },
     {
@@ -904,7 +904,7 @@
       "name": "Gestão de Projeto",
       "human_objective": "Organizar projetos, participantes e papéis durante seu ciclo de vida.",
       "actors": [
-        "Administradores criam e administram qualquer projeto sem participação; participantes consultam e Gestores do projeto gerenciam conforme seus papéis."
+        "Administradores criam projetos; participantes consultam e Gestores do projeto gerenciam conforme seus papéis."
       ],
       "observable_result_or_deviation": "Lista, cadastro, consulta de dados/participantes, edição e arquivamento/reativação de projetos, mais consulta dos vínculos na gestão de usuários. Tarefas, horas e indicadores nessas telas entram pelas capacidades que os produzem.",
       "evidence": [
@@ -933,15 +933,15 @@
         "visible_delivery": "Lista, cadastro, consulta de dados/participantes, edição e arquivamento/reativação de projetos, mais consulta dos vínculos na gestão de usuários. Tarefas, horas e indicadores nessas telas entram pelas capacidades que os produzem.",
         "user_result": "Organizar projetos, participantes e papéis durante seu ciclo de vida.",
         "included": [
-          "Consultar projetos de que participa; administradores consultam qualquer projeto sem participação. Filtrar ativos/arquivados, paginar e abrir dados e participantes.",
+          "Consultar somente projetos de que participa, filtrar ativos/arquivados, paginar e abrir dados e participantes.",
           "Somente administradores criam projetos, com nome e gestor principal obrigatórios e descrição opcional; identificador automático de três letras, sem Data inicial ou Prazo do projeto.",
           "Incluir o gestor principal como participante Gestor obrigatório e permitir outros Gestores com as mesmas permissões; o administrador criador só participa quando incluído explicitamente.",
-          "Gestores do projeto e administradores editam dados, gestor e participantes. Troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo. Administrador não precisa participar para administrar.",
-          "Gestores do projeto e administradores podem arquivar com confirmação e reativar, respeitando somente consulta enquanto arquivado. Gestão de Tempo impede arquivar enquanto houver cronômetro rodando; tarefa pausada já salvou seu tempo e não mantém execução aberta.",
+          "Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
+          "Arquivar com confirmação, manter somente consulta e reativar; a Gestão de Tempo acrescenta o impedimento quando houver cronômetro aberto.",
           "Consultar os projetos e papéis de uma pessoa no modal da tela de usuários; somente o administrador acessa essa consulta administrativa.",
           "Oferecer resumo e participantes no detalhe e navegação às tarefas, quadro e horas quando as respectivas entregas estiverem disponíveis.",
           "Gerar identificador automático, único e imutável de três letras maiúsculas sem acento: iniciais, complemento por letras do nome ou X, alternativas do nome em colisões e depois A–Z; arquivados reservam códigos. Não permitir edição manual nem regenerar ao renomear.",
-          "Respeitar autorização de gestor do projeto ou administrador, confirmações, foco, estados vazios e formulários responsivos.",
+          "Respeitar autorização de gestor, confirmações, foco, estados vazios e formulários responsivos.",
           "Preservar o MVP de projeto sem subprojetos, Gantt/roadmap, sprints/backlog ou dependências entre tarefas; essas extensões não entram nesta entrega.",
           "Preservar vínculos e papéis de contas inativas, identificá-las como inativas e impedir novas inclusões enquanto inativas; recuperação de acesso de gestores via reativação administrativa da conta."
         ],
@@ -959,9 +959,9 @@
       "name": "Gestão de Tarefa",
       "human_objective": "Planejar e acompanhar uma tarefa, colaborar no seu detalhe e preservar a rastreabilidade.",
       "actors": [
-        "Gestores do projeto e administradores criam/editam e gerenciam o ciclo; somente responsáveis Iniciam/Pausam/Finalizam; participantes e administradores atribuem e colaboram conforme as restrições."
+        "Gestores criam/editam e gerenciam o ciclo; responsáveis executam ações autorizadas; participantes atribuem e colaboram; administradores sem participação não recebem acesso automático."
       ],
-      "observable_result_or_deviation": "Criação e edição por gestores do projeto e administradores, consulta, atribuição, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
+      "observable_result_or_deviation": "Criação e edição por gestores, consulta, atribuição por participantes, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
       "evidence": [
         "design-new-task",
         "design-edit-task",
@@ -983,22 +983,22 @@
         ],
         "name": "Gestão de Tarefa",
         "title": "[WEB] [OPERACIONAL] Gestão de Tarefa",
-        "visible_delivery": "Criação e edição por gestores do projeto e administradores, consulta, atribuição, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
+        "visible_delivery": "Criação e edição por gestores, consulta, atribuição por participantes, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
         "user_result": "Planejar e acompanhar uma tarefa, colaborar no seu detalhe e preservar a rastreabilidade.",
         "included": [
-          "Gestores do projeto e administradores criam tarefas e editam seus dados. Participantes ativos e administradores podem atribuir a qualquer participante ativo, inclusive a si quando participante, ou deixar sem responsável, respeitando as situações de somente consulta.",
+          "Somente gestores do projeto criam tarefas e editam seus dados. Qualquer participante ativo pode atribuir a qualquer participante ativo, inclusive a si, ou deixar sem responsável, respeitando as situações de somente consulta.",
           "Cadastrar projeto fixo após criação, título, situação inicial Pendente, prioridade Média e autor automático; descrição, responsável, datas e estimativa opcionais. Estimativa em horas decimais até duas casas, maior que zero e até seis, convertida ao minuto mais próximo; aceitar ponto ou vírgula.",
-          "Restringir criação a projeto ativo gerenciado ou administrado; consultas dependem de participação ou acesso administrativo. Somente o responsável atual pode Iniciar, Pausar e Finalizar, inclusive quando gestor ou administrador. Gestores do projeto e administradores podem Cancelar, Arquivar e Desarquivar quando permitido. Preservar responsável inativo existente, sem novas atribuições a inativos.",
+          "Restringir criação a projeto ativo gerenciado e consultas à participação. Somente o responsável atual pode Iniciar, Pausar e Finalizar; gestor apenas quando também responsável; somente gestores Cancelar, Arquivar e Desarquivar, quando permitidos. Preservar responsável inativo existente, sem novas atribuições a inativos.",
           "Manter prioridades Baixa/Média/Alta/Urgente. Situação muda somente por ações: Iniciar → Em andamento; Pausar → Pausada; Finalizar → Finalizada; Cancelar → Cancelada; Arquivar → Arquivada; Desarquivar → Pendente. Finalizar registra data. Não oferecer edição direta, Bloquear, Retomar, Reabrir ou Devolver à fila.",
-          "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores do projeto e administradores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
-          "Permitir a participantes ativos e administradores comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
+          "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
+          "Permitir a participantes ativos comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
           "Registrar criação e alterações de situação por ação, responsável, prioridade, prazo, estimativa, título, descrição, data inicial e arquivamento/desarquivamento, com autoria, data/hora e valores anterior/novo quando aplicáveis; histórico cronológico sem evento ao salvar sem mudanças.",
           "Integrar tarefas, atraso e progresso no projeto. Progresso = Finalizadas/(Pendentes + Em andamento + Pausadas + Finalizadas), com 0% no conjunto vazio. Canceladas/arquivadas excluídas; atraso somente nas três situações não finalizadas. Remoção confirmada de participante deixa tarefas sem responsável e preserva comentários, horas e histórico.",
           "Validar campos e datas opcionais, permitindo passado e prazo igual/posterior ao início. Impedir sobrescrita silenciosa em edição simultânea, preservando texto para revisão. Oferecer estados acessíveis de consulta, loading, vazio, erro e sucesso em desktop/mobile.",
           "Manter campos personalizados, workflow configurável, comentários privados, menções e notificações de negócio fora do MVP. Imagens no editor e anexos da tarefa estão incluídos por decisão explícita; situações e prioridades são fixas.",
           "Aplicar as transições: Pendente → Iniciar/Finalizar/Cancelar/Arquivar; Em andamento → Pausar/Finalizar; Pausada → Iniciar/Finalizar/Cancelar/Arquivar; Finalizada → nenhuma ação de situação; Cancelada → Arquivar; Arquivada → Desarquivar para Pendente. Ações funcionam sem cronômetro nesta entrega.",
-          "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos e administradores podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
-          "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor do projeto ou administrador; arquivadas permitem consulta/download e Desarquivar por gestor do projeto ou administrador em projeto ativo. Projeto arquivado impede mutações."
+          "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
+          "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor; arquivadas permitem consulta/download e Desarquivar por gestor em projeto ativo. Projeto arquivado impede mutações."
         ],
         "boundary_reason": "Criação, manutenção, colaboração e rastreabilidade pertencem ao mesmo detalhe de tarefa. Consulta transversal, organização diária e quadro têm entregas próprias; consomem a mesma regra de transição sem duplicar sua responsabilidade."
       }
@@ -1012,9 +1012,9 @@
       "name": "Gestão de Tempo",
       "human_objective": "Registrar, corrigir e consultar o esforço realizado nas tarefas, manualmente ou por cronômetro.",
       "actors": [
-        "Responsável atual usa seu cronômetro; gestores lançam/corrigem horas nos projetos gerenciados; administradores lançam/corrigem em qualquer projeto; participantes consultam registros acessíveis."
+        "Gestores e membros conforme permissões; administrador nas funções pessoais comuns"
       ],
-      "observable_result_or_deviation": "Página de apontamentos, formulários manuais exclusivos de gestores/administradores, registros por tarefa/projeto e cronômetro global persistente do responsável. Cada pausa salva horas, cada execução tem limite de oito horas e os totais refletem os apontamentos nas consultas.",
+      "observable_result_or_deviation": "Página de apontamentos e registros por tarefa/projeto, formulários manuais e cronômetro global persistente. Entrega totais de horas em detalhe/listas de projetos e tarefas e integra as restrições de execução aberta.",
       "evidence": [
         "design-guide",
         "design-time-entries",
@@ -1026,7 +1026,7 @@
       ],
       "separation_reason": "Cronômetro e lançamento manual produzem o mesmo registro de trabalho, com consulta e correção coesas. Minhas Tarefas e Quadro consomem ações/totais; o painel agrega e compara esses dados.",
       "suggested_position": 8,
-      "status": "completed",
+      "status": "in-progress",
       "lifecycle": "active",
       "delivery": {
         "surface": "WEB",
@@ -1035,17 +1035,17 @@
         ],
         "name": "Gestão de Tempo",
         "title": "[WEB] [OPERACIONAL] Gestão de Tempo",
-        "visible_delivery": "Página de apontamentos, formulários manuais exclusivos de gestores/administradores, registros por tarefa/projeto e cronômetro global persistente do responsável. Cada pausa salva horas, cada execução tem limite de oito horas e os totais refletem os apontamentos nas consultas.",
+        "visible_delivery": "Página de apontamentos e registros por tarefa/projeto, formulários manuais e cronômetro global persistente. Entrega totais de horas em detalhe/listas de projetos e tarefas e integra as restrições de execução aberta.",
         "user_result": "Registrar, corrigir e consultar o esforço realizado nas tarefas, manualmente ou por cronômetro.",
         "included": [
-          "Criar apontamento ligado a tarefa, pessoa, data, duração positiva, descrição opcional e origem Manual/Cronômetro. Lançamento manual exclusivo de gestores nos projetos gerenciados e administradores em qualquer projeto, para si ou outro participante atual e ativo. Data padrão hoje, passado permitido e futuro recusado. Horas decimais somente com ponto, até duas casas, maiores que zero e até 24 por registro, convertidas ao minuto mais próximo; estimativa de seis horas não limita esforço real.",
-          "Gestores nos projetos gerenciados e administradores em qualquer projeto podem editar/excluir apontamentos de qualquer pessoa, inclusive de origem Cronômetro. Editar tarefa, data, duração e descrição, preservando pessoa e origem; destino deve admitir o registro. Excluir exige confirmação. Participantes consultam registros dos projetos acessíveis; sem aprovação de horas.",
-          "Filtrar Apontamentos por projeto, pessoa e período De/Até inclusivo. Inicialmente todos os projetos/pessoas acessíveis, sem limite de período; ordenar por data mais recente e desempatar pela criação mais recente. Paginar oito registros e somar todos os resultados filtrados, não somente a página; apresentar modal e cards mobile.",
-          "Iniciar tarefa inicia seu cronômetro, exclusivo do responsável atual, inclusive para gestores e administradores; ninguém controla manualmente cronômetro alheio. Exibir tarefa e tempo globalmente e impedir mais de um cronômetro rodando por pessoa. Toda pausa salva o tempo e deixa a tarefa Pausada, liberando outra tarefa sem finalizar a anterior. Iniciar novamente começa nova execução e novo limite de oito horas.",
-          "Pausar automaticamente e salvar ao atingir oito horas da execução atual, sem considerar apontamentos anteriores. Finalizar salva o tempo ainda não registrado e finaliza a tarefa, sem duplicar registros; duração zero não cria apontamento. Não existe Descartar. Manter contagem após recarregar, fechar a página ou sair da conta.",
-          "Integrar Iniciar/Pausar/Finalizar com tarefa e horas, respeitando responsável e transições válidas, sem exigir encerramento separado antes de Finalizar. Impedir arquivamento de projeto enquanto houver cronômetro rodando. Troca permitida de responsável, remoção de participante ou inativação da conta pausa automaticamente e salva o tempo até o instante da alteração, sem finalizar tarefa. A regra de tarefas continua pertencendo à Gestão de Tarefa.",
-          "Atualizar horas realizadas pela soma dos apontamentos em tarefa, projeto e consultas, inclusive após correção/exclusão. Finalizadas admitem registros e correções. Tarefas canceladas/arquivadas e projetos arquivados permitem consulta e impedem mutações inclusive por administradores.",
-          "Arredondar cada apontamento do cronômetro para o próximo minuto inteiro; dividir execução que atravesse meia-noite por data de Brasília. Tratar tarefa não autorizada, duração inválida, outro cronômetro rodando, vazio e erros acessíveis; contar somente tempo ativo.",
+          "Criar apontamento ligado a tarefa, usuário, data, duração positiva, descrição opcional e origem Manual/Cronômetro.",
+          "Editar/excluir somente os próprios apontamentos, com confirmação; consultar registros da tarefa e projeto acessíveis, sem aprovação de horas.",
+          "Filtrar por projeto, pessoa e período, paginar e somar a duração do período; apresentar modal e cards mobile.",
+          "Iniciar execução autorizada, pausar e voltar a iniciar, exibir tempo e tarefa globalmente e impedir outra execução aberta, incluindo pausada. Respeitar as ações e permissões da Gestão de Tarefa, sem oferecer edição direta de situação.",
+          "Finalizar criando apontamento com origem Cronômetro ou descartar com confirmação; manter contagem correta após recarregar ou fechar a página.",
+          "Integrar o cronômetro às ações de tarefa já entregues, respeitando o novo fluxo e suas permissões; exigir finalizar/descartar execução aberta antes de Finalizar ou Arquivar a tarefa, quando a ação for permitida, e antes de arquivar o projeto. Gestão de Tarefa funciona sem exigir cronômetro; detalhes da integração pertencem à entrevista de Gestão de Tempo.",
+          "Atualizar horas realizadas pela soma dos apontamentos em tarefa, projeto e suas consultas; tarefas canceladas/arquivadas e projetos arquivados permitem consulta e impedem mutações.",
+          "Tratar tarefa não autorizada, duração inválida, execução já aberta, vazio e erros acessíveis; detalhes de arredondamento ficam para a entrevista.",
           "Registrar esforço sem aprovação de apontamentos, faturamento ou centros de custo; nenhum apontamento depende de integração com sistema externo."
         ],
         "boundary_reason": "Cronômetro e lançamento manual produzem o mesmo registro de trabalho, com consulta e correção coesas. Minhas Tarefas e Quadro consomem ações/totais; o painel agrega e compara esses dados."
@@ -1086,7 +1086,7 @@
         "included": [
           "Mostrar somente tarefas atribuídas ao usuário, nos grupos Em execução, Atrasadas, Para hoje, Próximas, Sem prazo e Finalizadas recentemente; aplicar os novos critérios de situação e atraso.",
           "Buscar e filtrar por projeto, situação, prioridade e prazo; ordenar e limpar filtros sem ampliar a visibilidade pessoal.",
-          "Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo: pausa salva as horas e libera iniciar outra tarefa; novo início abre nova execução. Manter recorte pessoal inclusive para administradores. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
+          "Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
           "Oferecer grupos vazios, retorno de ações e cards/ações de toque no mobile."
         ],
         "boundary_reason": "Recorte pessoal para execução diária, separado da busca transversal. A regra de situação e o registro de tempo permanecem nas capacidades que os produzem."
@@ -1232,16 +1232,6 @@
       "subject_sha256": "b94fa4965f81118c562e5c88e70b8111fc44f74b77a878f2865f2c75b0f9bc18",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T15:05:44.502887Z",
-      "status": "invalidated",
-      "invalidated_at": "2026-09-10T17:49:11.029268Z",
-      "invalidated_reason": "Prévia separada da revisão confirmada em Q70–Q95: acesso administrativo e ciclo de execução/apontamentos. Catálogo ativo preservado até aprovação desta prévia."
-    },
-    {
-      "id": "catalog-time-review-001",
-      "kind": "complete-catalog-and-order",
-      "subject_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0",
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T17:55:39.898177Z",
       "status": "valid"
     }
   ],
@@ -1381,7 +1371,7 @@
     },
     {
       "id": "time-permissions-catalog-001",
-      "status": "resumed",
+      "status": "paused",
       "kind": "catalog-change",
       "previous_phase": "items-processing",
       "resume_phase": "items-processing",
@@ -1390,9 +1380,7 @@
       "paused_at": "2026-09-10T16:11:40.666359Z",
       "affected_item_ids": [
         "manage-time"
-      ],
-      "resumed_at": "2026-09-10T18:59:36.680846Z",
-      "resume_evidence": "Catálogo completo e quatro requisitos aprovados; metadados locais reconciliados. Gestão de Tempo pronta para prévia de publicação, com republicações anteriores controladas em requirements-time-review.json."
+      ]
     }
   ],
   "lock": {
@@ -1904,15 +1892,15 @@
     },
     {
       "catalog_item_id": "manage-time",
-      "status": "completed",
+      "status": "in-progress",
       "issue_id": 1014493,
       "artifact_path": "../../features/1014493-gestao-de-tempo/feature.md",
       "state_path": "../../features/1014493-gestao-de-tempo/feature-state.json",
-      "requirement_phase": "completed",
+      "requirement_phase": "paused",
       "functional_gaps": [],
-      "reconciliation_status": "completed",
+      "reconciliation_status": "pending",
       "started_at": "2026-09-10T16:00:47.916774Z",
-      "completed_at": "2026-09-10T19:09:37.970937Z"
+      "completed_at": null
     },
     {
       "catalog_item_id": "my-tasks",
@@ -1975,12 +1963,6 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T15:23:38.877070Z"
-    },
-    {
-      "after_item_id": "manage-time",
-      "decision": "continue",
-      "decided_by": "Mário Tinelli",
-      "decided_at": "2026-09-10T19:14:17.981375Z"
     }
   ],
   "catalog_changes": [
@@ -2176,52 +2158,6 @@
       ],
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T15:00:58.053962Z"
-    },
-    {
-      "id": "time-admin-delivery-001",
-      "kind": "delivery",
-      "affected_item_ids": [
-        "authenticate",
-        "recover-access",
-        "maintain-own-profile",
-        "administer-users",
-        "manage-project",
-        "manage-task",
-        "search-tasks",
-        "manage-time",
-        "my-tasks",
-        "manage-project-board",
-        "view-management-dashboard"
-      ],
-      "names_impact": "Os onze nomes e títulos de Features são preservados.",
-      "audiences_impact": "Prefixos preservados; administradores acessam e administram qualquer projeto, respeitando ações exclusivas do responsável, cronômetro próprio, recorte pessoal e estados de somente consulta.",
-      "deliveries_impact": "Permissões administrativas em projetos/tarefas/consultas/quadro/painel; Gestão de Tempo com lançamento/correção por gestores e administradores, pausa que salva e encerra execução, limite de oito horas por nova execução e sem Descartar. Minhas Tarefas consome a integração.",
-      "coverage_impact": "22 descrições reconciliadas; identificadores, responsáveis e consumidores preservados.",
-      "source_allocation_impact": "Mesmas 17 fontes e alocação; decisões atribuídas a Q70–Q95 e entendimento confirmado.",
-      "graph_impact": "Mesmo grafo com dez bloqueios ativos e nove relações legadas retiradas; nenhuma nova relação.",
-      "order_impact": "Mesma ordem dos onze itens; Gestão de Tempo permanece na oitava posição.",
-      "preserved_issue_ids": [
-        1014446,
-        1014447,
-        1014448,
-        1014449,
-        1014465,
-        1014450,
-        1014454,
-        1014493
-      ],
-      "artifact_paths": [
-        "docs/harness/features/1014446-autenticacao/feature.md",
-        "docs/harness/features/1014447-recuperacao-de-senha/feature.md",
-        "docs/harness/features/1014448-meu-perfil/feature.md",
-        "docs/harness/features/1014449-gestao-de-usuario/feature.md",
-        "../../features/1014465-consulta-de-tarefas/feature.md",
-        "../../features/1014450-gestao-de-projeto/feature.md",
-        "../../features/1014454-gestao-de-tarefa/feature.md",
-        "../../features/1014493-gestao-de-tempo/feature.md"
-      ],
-      "approved_by": "Mário Tinelli",
-      "approved_at": "2026-09-10T17:55:39.898177Z"
     }
   ],
   "relations": [
@@ -2535,90 +2471,6 @@
       "status": "passed",
       "checked_at": "2026-09-10T16:03:24.400176Z",
       "details": "Relação 666 aprovada, criada e conferida: #1014454 bloqueia #1014493. Gate anterior resolvido; progresso consolidado e entrevista liberada."
-    },
-    {
-      "id": "time-catalog-preview-001",
-      "kind": "catalog-review",
-      "status": "pending",
-      "item_id": "manage-time",
-      "checked_at": "2026-09-10T17:50:47.250246Z",
-      "summary": "Entendimento confirmado; prévia completa separada validada, aguardando aprovação explícita. Impactos em acesso administrativo e Gestão de Tempo; requisitos anteriores afetados terão reconciliação própria.",
-      "preview_path": "catalog-time-review.md",
-      "impact_path": "catalog-time-impact.md",
-      "candidate_path": "scope-state.time-review.json",
-      "subject_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
-    },
-    {
-      "id": "catalog-time-approved-pending-reconciliation-001",
-      "kind": "catalog-review",
-      "status": "pending",
-      "checked_at": "2026-09-10T17:55:39.898177Z",
-      "summary": "Catálogo revisado aprovado, preservado em scope-state.time-review.json, aprovação catalog-time-review-001. Aplicação coordenada com os requisitos afetados pendente; o escopo permanece pausado. Não repetir aprovação do catálogo.",
-      "subject_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
-    },
-    {
-      "id": "time-requirements-preview-001",
-      "kind": "requirement-review",
-      "status": "pending",
-      "checked_at": "2026-09-10T18:04:39.100488Z",
-      "summary": "Quatro documentos completos preparados e conferidos; aguardando aprovação de requisito. Catálogo já aprovado em catalog-time-review-001, sem nova pergunta de catálogo.",
-      "review_path": "requirements-time-review.md",
-      "ledger_path": "requirements-time-review.json"
-    },
-    {
-      "id": "catalog-time-approval-001",
-      "kind": "catalog-review",
-      "status": "passed",
-      "checked_at": "2026-09-10T17:55:39.898177Z",
-      "summary": "Mário Tinelli respondeu sim à projeção completa 89759a4f... e seus impactos. Aprovação persistida no candidato; aplicação coordenada aguarda reconciliação dos documentos e metadados anteriores, sem invalidar os estados ativos no meio da revisão."
-    },
-    {
-      "id": "time-catalog-local-reconciliation-001",
-      "kind": "catalog-review",
-      "status": "passed",
-      "checked_at": "2026-09-10T18:57:55.794421Z",
-      "summary": "Catálogo e quatro documentos aprovados; reconciliação local coordenada das oito identidades, preservando operações remotas iniciais. As quatro publicações permanecem pendentes no registro de revisão."
-    },
-    {
-      "id": "time-publication-preview-001",
-      "kind": "publication-review",
-      "status": "pending",
-      "checked_at": "2026-09-10T19:01:50.880790Z",
-      "summary": "Quatro descrições completas preparadas e preservação conferida. Aguardando aprovação explícita de publicação; somente description e nenhum status/relacionamento.",
-      "preview_path": "publication-time-review.md",
-      "ledger_path": "requirements-time-review.json"
-    },
-    {
-      "id": "time-revision-completed-manage-project-001",
-      "kind": "requirement-state",
-      "item_id": "manage-project",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
-    },
-    {
-      "id": "time-revision-completed-manage-task-001",
-      "kind": "requirement-state",
-      "item_id": "manage-task",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
-    },
-    {
-      "id": "time-revision-completed-search-tasks-001",
-      "kind": "requirement-state",
-      "item_id": "search-tasks",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
-    },
-    {
-      "id": "time-revision-completed-manage-time-001",
-      "kind": "requirement-state",
-      "item_id": "manage-time",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
     }
   ],
   "final_summary": null,
@@ -2632,11 +2484,11 @@
       "OPERACIONAL"
     ],
     "audience_mode": "aggregate",
-    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
     "confirmation": {
-      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
       "confirmed_by": "Mário Tinelli",
-      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
     }
   },
   "input_inventory": {
@@ -3148,7 +3000,7 @@
     },
     {
       "id": "manage-project-01",
-      "description": "Consultar projetos de que participa; administradores consultam qualquer projeto sem participação. Filtrar ativos/arquivados, paginar e abrir dados e participantes.",
+      "description": "Consultar somente projetos de que participa, filtrar ativos/arquivados, paginar e abrir dados e participantes.",
       "evidence": [
         {
           "source_id": "design-projects",
@@ -3171,11 +3023,7 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Consultar projetos de que participa; administradores consultam qualquer projeto sem participação. Filtrar ativos/arquivados, paginar e abrir dados e participantes.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-project-02",
@@ -3241,7 +3089,7 @@
     },
     {
       "id": "manage-project-04",
-      "description": "Gestores do projeto e administradores editam dados, gestor e participantes. Troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo. Administrador não precisa participar para administrar.",
+      "description": "Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -3265,14 +3113,14 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Gestores do projeto e administradores editam dados, gestor e participantes. Troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo. Administrador não precisa participar para administrar.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q21–Q38 de Gestão de Projeto, confirmada nesta conversa: Editar dados, gestor e participantes com papéis por projeto; troca do principal preserva o anterior como Gestor salvo alteração explícita. Permitir saída ou rebaixamento do próprio gestor com confirmação e outro principal ativo.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T12:20:18.296259Z"
       }
     },
     {
       "id": "manage-project-05",
-      "description": "Gestores do projeto e administradores podem arquivar com confirmação e reativar, respeitando somente consulta enquanto arquivado. Gestão de Tempo impede arquivar enquanto houver cronômetro rodando; tarefa pausada já salvou seu tempo e não mantém execução aberta.",
+      "description": "Arquivar com confirmação, manter somente consulta e reativar; a Gestão de Tempo acrescenta o impedimento quando houver cronômetro aberto.",
       "evidence": [
         {
           "source_id": "design-edit-project",
@@ -3295,11 +3143,7 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Gestores do projeto e administradores podem arquivar com confirmação e reativar, respeitando somente consulta enquanto arquivado. Gestão de Tempo impede arquivar enquanto houver cronômetro rodando; tarefa pausada já salvou seu tempo e não mantém execução aberta.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-project-06",
@@ -3390,7 +3234,7 @@
     },
     {
       "id": "manage-project-09",
-      "description": "Respeitar autorização de gestor do projeto ou administrador, confirmações, foco, estados vazios e formulários responsivos.",
+      "description": "Respeitar autorização de gestor, confirmações, foco, estados vazios e formulários responsivos.",
       "evidence": [
         {
           "source_id": "design-edit-project",
@@ -3413,15 +3257,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Respeitar autorização de gestor do projeto ou administrador, confirmações, foco, estados vazios e formulários responsivos.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-task-01",
-      "description": "Gestores do projeto e administradores criam tarefas e editam seus dados. Participantes ativos e administradores podem atribuir a qualquer participante ativo, inclusive a si quando participante, ou deixar sem responsável, respeitando as situações de somente consulta.",
+      "description": "Somente gestores do projeto criam tarefas e editam seus dados. Qualquer participante ativo pode atribuir a qualquer participante ativo, inclusive a si, ou deixar sem responsável, respeitando as situações de somente consulta.",
       "evidence": [
         {
           "source_id": "design-new-task",
@@ -3445,9 +3285,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Gestores do projeto e administradores criam tarefas e editam seus dados. Participantes ativos e administradores podem atribuir a qualquer participante ativo, inclusive a si quando participante, ou deixar sem responsável, respeitando as situações de somente consulta.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Somente gestores do projeto criam tarefas e editam seus dados. Qualquer participante ativo pode atribuir a qualquer participante ativo, inclusive a si, ou deixar sem responsável, respeitando as situações de somente consulta.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
@@ -3483,7 +3323,7 @@
     },
     {
       "id": "manage-task-03",
-      "description": "Restringir criação a projeto ativo gerenciado ou administrado; consultas dependem de participação ou acesso administrativo. Somente o responsável atual pode Iniciar, Pausar e Finalizar, inclusive quando gestor ou administrador. Gestores do projeto e administradores podem Cancelar, Arquivar e Desarquivar quando permitido. Preservar responsável inativo existente, sem novas atribuições a inativos.",
+      "description": "Restringir criação a projeto ativo gerenciado e consultas à participação. Somente o responsável atual pode Iniciar, Pausar e Finalizar; gestor apenas quando também responsável; somente gestores Cancelar, Arquivar e Desarquivar, quando permitidos. Preservar responsável inativo existente, sem novas atribuições a inativos.",
       "evidence": [
         {
           "source_id": "design-edit-task",
@@ -3507,9 +3347,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Restringir criação a projeto ativo gerenciado ou administrado; consultas dependem de participação ou acesso administrativo. Somente o responsável atual pode Iniciar, Pausar e Finalizar, inclusive quando gestor ou administrador. Gestores do projeto e administradores podem Cancelar, Arquivar e Desarquivar quando permitido. Preservar responsável inativo existente, sem novas atribuições a inativos.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Restringir criação a projeto ativo gerenciado e consultas à participação. Somente o responsável atual pode Iniciar, Pausar e Finalizar; gestor apenas quando também responsável; somente gestores Cancelar, Arquivar e Desarquivar, quando permitidos. Preservar responsável inativo existente, sem novas atribuições a inativos.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
@@ -3549,7 +3389,7 @@
     },
     {
       "id": "manage-task-05",
-      "description": "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores do projeto e administradores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
+      "description": "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -3573,14 +3413,14 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores do projeto e administradores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
       "id": "manage-task-06",
-      "description": "Permitir a participantes ativos e administradores comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
+      "description": "Permitir a participantes ativos comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -3604,9 +3444,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Permitir a participantes ativos e administradores comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Permitir a participantes ativos comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
@@ -3767,7 +3607,7 @@
     },
     {
       "id": "search-tasks-03",
-      "description": "Paginar somente tarefas não arquivadas dos projetos acessíveis: participantes veem seus projetos e administradores podem consultar todos, inclusive arquivados para consulta. Mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
+      "description": "Paginar somente tarefas não arquivadas dos projetos acessíveis; mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
       "evidence": [
         {
           "source_id": "design-tasks",
@@ -3790,11 +3630,7 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Paginar somente tarefas não arquivadas dos projetos acessíveis: participantes veem seus projetos e administradores podem consultar todos, inclusive arquivados para consulta. Mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "search-tasks-04",
@@ -3825,7 +3661,7 @@
     },
     {
       "id": "manage-time-01",
-      "description": "Criar apontamento ligado a tarefa, pessoa, data, duração positiva, descrição opcional e origem Manual/Cronômetro. Lançamento manual exclusivo de gestores nos projetos gerenciados e administradores em qualquer projeto, para si ou outro participante atual e ativo. Data padrão hoje, passado permitido e futuro recusado. Horas decimais somente com ponto, até duas casas, maiores que zero e até 24 por registro, convertidas ao minuto mais próximo; estimativa de seis horas não limita esforço real.",
+      "description": "Criar apontamento ligado a tarefa, usuário, data, duração positiva, descrição opcional e origem Manual/Cronômetro.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -3848,15 +3684,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Criar apontamento ligado a tarefa, pessoa, data, duração positiva, descrição opcional e origem Manual/Cronômetro. Lançamento manual exclusivo de gestores nos projetos gerenciados e administradores em qualquer projeto, para si ou outro participante atual e ativo. Data padrão hoje, passado permitido e futuro recusado. Horas decimais somente com ponto, até duas casas, maiores que zero e até 24 por registro, convertidas ao minuto mais próximo; estimativa de seis horas não limita esforço real.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-time-02",
-      "description": "Gestores nos projetos gerenciados e administradores em qualquer projeto podem editar/excluir apontamentos de qualquer pessoa, inclusive de origem Cronômetro. Editar tarefa, data, duração e descrição, preservando pessoa e origem; destino deve admitir o registro. Excluir exige confirmação. Participantes consultam registros dos projetos acessíveis; sem aprovação de horas.",
+      "description": "Editar/excluir somente os próprios apontamentos, com confirmação; consultar registros da tarefa e projeto acessíveis, sem aprovação de horas.",
       "evidence": [
         {
           "source_id": "design-time-entries",
@@ -3879,15 +3711,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Gestores nos projetos gerenciados e administradores em qualquer projeto podem editar/excluir apontamentos de qualquer pessoa, inclusive de origem Cronômetro. Editar tarefa, data, duração e descrição, preservando pessoa e origem; destino deve admitir o registro. Excluir exige confirmação. Participantes consultam registros dos projetos acessíveis; sem aprovação de horas.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-time-03",
-      "description": "Filtrar Apontamentos por projeto, pessoa e período De/Até inclusivo. Inicialmente todos os projetos/pessoas acessíveis, sem limite de período; ordenar por data mais recente e desempatar pela criação mais recente. Paginar oito registros e somar todos os resultados filtrados, não somente a página; apresentar modal e cards mobile.",
+      "description": "Filtrar por projeto, pessoa e período, paginar e somar a duração do período; apresentar modal e cards mobile.",
       "evidence": [
         {
           "source_id": "design-time-entries",
@@ -3910,15 +3738,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Filtrar Apontamentos por projeto, pessoa e período De/Até inclusivo. Inicialmente todos os projetos/pessoas acessíveis, sem limite de período; ordenar por data mais recente e desempatar pela criação mais recente. Paginar oito registros e somar todos os resultados filtrados, não somente a página; apresentar modal e cards mobile.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-time-04",
-      "description": "Iniciar tarefa inicia seu cronômetro, exclusivo do responsável atual, inclusive para gestores e administradores; ninguém controla manualmente cronômetro alheio. Exibir tarefa e tempo globalmente e impedir mais de um cronômetro rodando por pessoa. Toda pausa salva o tempo e deixa a tarefa Pausada, liberando outra tarefa sem finalizar a anterior. Iniciar novamente começa nova execução e novo limite de oito horas.",
+      "description": "Iniciar execução autorizada, pausar e voltar a iniciar, exibir tempo e tarefa globalmente e impedir outra execução aberta, incluindo pausada. Respeitar as ações e permissões da Gestão de Tarefa, sem oferecer edição direta de situação.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -3944,14 +3768,14 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Iniciar tarefa inicia seu cronômetro, exclusivo do responsável atual, inclusive para gestores e administradores; ninguém controla manualmente cronômetro alheio. Exibir tarefa e tempo globalmente e impedir mais de um cronômetro rodando por pessoa. Toda pausa salva o tempo e deixa a tarefa Pausada, liberando outra tarefa sem finalizar a anterior. Iniciar novamente começa nova execução e novo limite de oito horas.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Iniciar execução autorizada, pausar e voltar a iniciar, exibir tempo e tarefa globalmente e impedir outra execução aberta, incluindo pausada. Respeitar as ações e permissões da Gestão de Tarefa, sem oferecer edição direta de situação.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
       "id": "manage-time-05",
-      "description": "Pausar automaticamente e salvar ao atingir oito horas da execução atual, sem considerar apontamentos anteriores. Finalizar salva o tempo ainda não registrado e finaliza a tarefa, sem duplicar registros; duração zero não cria apontamento. Não existe Descartar. Manter contagem após recarregar, fechar a página ou sair da conta.",
+      "description": "Finalizar criando apontamento com origem Cronômetro ou descartar com confirmação; manter contagem correta após recarregar ou fechar a página.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -3974,15 +3798,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Pausar automaticamente e salvar ao atingir oito horas da execução atual, sem considerar apontamentos anteriores. Finalizar salva o tempo ainda não registrado e finaliza a tarefa, sem duplicar registros; duração zero não cria apontamento. Não existe Descartar. Manter contagem após recarregar, fechar a página ou sair da conta.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "manage-time-06",
-      "description": "Integrar Iniciar/Pausar/Finalizar com tarefa e horas, respeitando responsável e transições válidas, sem exigir encerramento separado antes de Finalizar. Impedir arquivamento de projeto enquanto houver cronômetro rodando. Troca permitida de responsável, remoção de participante ou inativação da conta pausa automaticamente e salva o tempo até o instante da alteração, sem finalizar tarefa. A regra de tarefas continua pertencendo à Gestão de Tarefa.",
+      "description": "Integrar o cronômetro às ações de tarefa já entregues, respeitando o novo fluxo e suas permissões; exigir finalizar/descartar execução aberta antes de Finalizar ou Arquivar a tarefa, quando a ação for permitida, e antes de arquivar o projeto. Gestão de Tarefa funciona sem exigir cronômetro; detalhes da integração pertencem à entrevista de Gestão de Tempo.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -4009,14 +3829,14 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Integrar Iniciar/Pausar/Finalizar com tarefa e horas, respeitando responsável e transições válidas, sem exigir encerramento separado antes de Finalizar. Impedir arquivamento de projeto enquanto houver cronômetro rodando. Troca permitida de responsável, remoção de participante ou inativação da conta pausa automaticamente e salva o tempo até o instante da alteração, sem finalizar tarefa. A regra de tarefas continua pertencendo à Gestão de Tarefa.",
+        "statement": "Reconciliar a integração de Gestão de Tempo com as ações e estados de somente consulta confirmados em Q53–Q62: Integrar o cronômetro às ações de tarefa já entregues, respeitando o novo fluxo e suas permissões; exigir finalizar/descartar execução aberta antes de Finalizar ou Arquivar a tarefa, quando a ação for permitida, e antes de arquivar o projeto. Gestão de Tarefa funciona sem exigir cronômetro; detalhes da integração pertencem à entrevista de Gestão de Tempo.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
       "id": "manage-time-07",
-      "description": "Atualizar horas realizadas pela soma dos apontamentos em tarefa, projeto e consultas, inclusive após correção/exclusão. Finalizadas admitem registros e correções. Tarefas canceladas/arquivadas e projetos arquivados permitem consulta e impedem mutações inclusive por administradores.",
+      "description": "Atualizar horas realizadas pela soma dos apontamentos em tarefa, projeto e suas consultas; tarefas canceladas/arquivadas e projetos arquivados permitem consulta e impedem mutações.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -4045,14 +3865,14 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Atualizar horas realizadas pela soma dos apontamentos em tarefa, projeto e consultas, inclusive após correção/exclusão. Finalizadas admitem registros e correções. Tarefas canceladas/arquivadas e projetos arquivados permitem consulta e impedem mutações inclusive por administradores.",
+        "statement": "Reconciliar a integração de Gestão de Tempo com as ações e estados de somente consulta confirmados em Q53–Q62: Atualizar horas realizadas pela soma dos apontamentos em tarefa, projeto e suas consultas; tarefas canceladas/arquivadas e projetos arquivados permitem consulta e impedem mutações.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
       "id": "manage-time-08",
-      "description": "Arredondar cada apontamento do cronômetro para o próximo minuto inteiro; dividir execução que atravesse meia-noite por data de Brasília. Tratar tarefa não autorizada, duração inválida, outro cronômetro rodando, vazio e erros acessíveis; contar somente tempo ativo.",
+      "description": "Tratar tarefa não autorizada, duração inválida, execução já aberta, vazio e erros acessíveis; detalhes de arredondamento ficam para a entrevista.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -4075,11 +3895,7 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Arredondar cada apontamento do cronômetro para o próximo minuto inteiro; dividir execução que atravesse meia-noite por data de Brasília. Tratar tarefa não autorizada, duração inválida, outro cronômetro rodando, vazio e erros acessíveis; contar somente tempo ativo.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "my-tasks-01",
@@ -4141,7 +3957,7 @@
     },
     {
       "id": "my-tasks-03",
-      "description": "Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo: pausa salva as horas e libera iniciar outra tarefa; novo início abre nova execução. Manter recorte pessoal inclusive para administradores. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
+      "description": "Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
       "evidence": [
         {
           "source_id": "design-guide",
@@ -4165,9 +3981,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo: pausa salva as horas e libera iniciar outra tarefa; novo início abre nova execução. Manter recorte pessoal inclusive para administradores. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
+        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
@@ -4288,7 +4104,7 @@
     },
     {
       "id": "manage-project-board-04",
-      "description": "Participantes consultam seus projetos; administradores consultam qualquer projeto sem participação. Alterações seguem autorizações, inclusive Iniciar/Pausar/Finalizar exclusivos do responsável. Empilhar colunas em mobile e usar rótulos que não dependam só de cor.",
+      "description": "Restringir consulta aos participantes e alterações aos autorizados; empilhar colunas em mobile e usar rótulos que não dependam só de cor.",
       "evidence": [
         {
           "source_id": "design-board",
@@ -4311,15 +4127,11 @@
         ],
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
-      "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Participantes consultam seus projetos; administradores consultam qualquer projeto sem participação. Alterações seguem autorizações, inclusive Iniciar/Pausar/Finalizar exclusivos do responsável. Empilhar colunas em mobile e usar rótulos que não dependam só de cor.",
-        "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
-      }
+      "decision": null
     },
     {
       "id": "view-management-dashboard-01",
-      "description": "Restringir membros às próprias tarefas/horas e gestores à equipe nos projetos gerenciados; administradores podem consultar equipes e indicadores de todos os projetos. Respeitar os demais limites de situação e período.",
+      "description": "Restringir membros às próprias tarefas/horas e gestores à equipe nos projetos gerenciados; respeitar papéis por projeto.",
       "evidence": [
         {
           "source_id": "design-dashboard",
@@ -4343,9 +4155,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Restringir membros às próprias tarefas/horas e gestores à equipe nos projetos gerenciados; administradores podem consultar equipes e indicadores de todos os projetos. Respeitar os demais limites de situação e período.",
+        "statement": "Restringir membros às próprias tarefas/horas e gestores à equipe nos projetos gerenciados; respeitar papéis por projeto.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-09T22:04:45.451808+00:00"
       }
     },
     {
@@ -4667,7 +4479,7 @@
     },
     {
       "id": "manage-task-12",
-      "description": "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos e administradores podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
+      "description": "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -4691,14 +4503,14 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos e administradores podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
+        "statement": "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     },
     {
       "id": "manage-task-13",
-      "description": "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor do projeto ou administrador; arquivadas permitem consulta/download e Desarquivar por gestor do projeto ou administrador em projeto ativo. Projeto arquivado impede mutações.",
+      "description": "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor; arquivadas permitem consulta/download e Desarquivar por gestor em projeto ativo. Projeto arquivado impede mutações.",
       "evidence": [
         {
           "source_id": "design-task-detail",
@@ -4722,9 +4534,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli em Q70–Q95 e entendimento explicitamente confirmado: Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor do projeto ou administrador; arquivadas permitem consulta/download e Desarquivar por gestor do projeto ou administrador em projeto ativo. Projeto arquivado impede mutações.",
+        "statement": "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor; arquivadas permitem consulta/download e Desarquivar por gestor em projeto ativo. Projeto arquivado impede mutações.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T17:49:11.029268Z"
+        "confirmed_at": "2026-09-10T13:42:06.815366Z"
       }
     }
   ],

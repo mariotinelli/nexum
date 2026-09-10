@@ -1,7 +1,4 @@
-# [WEB] [OPERACIONAL] Gestão de Projeto
-
-Issue: #1014450.
-
+<!-- project-flow:start -->
 ## Objetivo
 
 Permitir organizar projetos, participantes e papéis durante seu ciclo de vida pela interface WEB responsiva em português. Administradores criam e administram qualquer projeto, mesmo sem participação; participantes consultam e gestores do projeto mantêm dados, participantes e estado, respeitando as restrições do ciclo de vida.
@@ -100,12 +97,6 @@ CA18 — Em desktop/mobile, ao usar listas, formulários e diálogos, manter aç
 
 Gestão de Usuário (#1014449), com relação nativa 661 já registrada: #1014449 bloqueia #1014450. Gestão de Tarefa entregará tarefas, progresso por quantidade e a integração de remoção confirmada de responsáveis. Gestão de Tempo entregará horas e o bloqueio de arquivamento por cronômetro rodando. Quadro do Projeto e Painel Gerencial fornecem suas navegações e indicadores conforme o catálogo. Esses critérios de integração são verificados quando a capacidade responsável for entregue.
 
-## Designs e evidências
-
-Revisão de acesso administrativo e integração de tempo: decisões Q70–Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/interview.md); [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md). Participação automática continua fora do escopo; o acesso administrativo passa a independer dela.
-
-Fontes design-projects, design-new-project, design-guide, design-edit-project, design-users, design-project-detail e design-task-detail. Decisões Q21–Q38 e confirmação em interview.md. Catálogo revisado aprovado por Mário Tinelli: criação administrativa, identificador automático de três letras, retirada somente das datas de projetos e remoção confirmada de responsáveis substituem as propostas anteriores das referências.
-
 ## Dentro do escopo
 
 Criação administrativa, listagem e detalhe por participação ou acesso administrativo, edição por gestor do projeto ou administrador, participantes e papéis, identificador automático, arquivamento/reativação e consulta administrativa de vínculos. Interface WEB em português com cards e formulários responsivos, loading, vazio, erro, indisponibilidade e sucesso. Aplicam-se os requisitos explícitos do guia: contraste WCAG AA, teclado, foco, labels, nomes acessíveis, mensagens descritivas, alvos de toque adequados, hierarquia semântica e redução de movimento.
@@ -113,3 +104,10 @@ Criação administrativa, listagem e detalhe por participação ou acesso admini
 ## Fora do escopo
 
 Datas dos projetos, exclusão definitiva de projetos, edição manual de identificadores, participação automática do administrador, subprojetos, Gantt/roadmap, sprints/backlog, dependências entre tarefas, aplicativo nativo e API pública. Datas das tarefas continuam incluídas nas respectivas Features. Implementação de tarefas, horas, cronômetro, quadro e indicadores permanece nas capacidades responsáveis do catálogo.
+
+## Requisito canônico
+
+Documento aprovado: docs/harness/features/1014450-gestao-de-projeto/feature.md
+
+Requisito aprovado por Mário Tinelli.
+<!-- project-flow:end -->

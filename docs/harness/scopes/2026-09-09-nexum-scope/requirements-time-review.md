@@ -1,0 +1,18 @@
+# Requisitos após aprovação do catálogo de Gestão de Tempo
+
+Catálogo completo aprovado por Mário Tinelli: catalog-time-review-001. Esta etapa apresenta os documentos finais de Gestão de Tempo e as correções dos requisitos anteriores afetados.
+
+| Documento completo | Alteração |
+| --- | --- |
+| [Gestão de Projeto](../../features/1014450-gestao-de-projeto/feature.time-review.md) | Administrador acessa/administra qualquer projeto sem participação; arquivamento bloqueado por cronômetro rodando; remoção de participante salva o tempo pela integração. |
+| [Gestão de Tarefa](../../features/1014454-gestao-de-tarefa/feature.time-review.md) | Administração ampla; Iniciar/Pausar/Finalizar exclusivos do responsável; pausa salva e libera outra tarefa; finalização integrada, sem Descartar ou encerramento separado. |
+| [Consulta de Tarefas](../../features/1014465-consulta-de-tarefas/feature.time-review.md) | Administrador consulta todos os projetos; filtros, ordenação, paginação e exclusão de tarefas arquivadas preservados. |
+| [Gestão de Tempo](../../features/1014493-gestao-de-tempo/feature.time-review.md) | Documento completo de apontamentos, permissões, cronômetro, limite de oito horas, pausa/retomada, finalização, precisão, perda de vínculo, consultas e totais; 22 critérios de aceite. |
+
+Autenticação, Recuperação de Senha, Meu Perfil e Gestão de Usuário mantêm seus documentos e comportamentos; a convenção compartilhada será reconciliada sem reescrever esses conteúdos.
+
+O catálogo aprovado foi persistido no candidato. Aplicação coordenada com estes documentos evita deixar os estados de requisitos incompatíveis com a convenção e as entregas do catálogo. As versões canônicas e as publicações anteriores permanecem intactas até a aprovação dos documentos; a publicação remota terá prévia própria.
+
+Validação: contrato documental, numeração, links e coerência entre os quatro documentos conferidos. Identidades e operações remotas anteriores preservadas. Detalhes e fingerprints em [requirements-time-review.json](requirements-time-review.json).
+
+Aguardando aprovação explícita destes quatro requisitos. Não repetir a aprovação já recebida para o catálogo.

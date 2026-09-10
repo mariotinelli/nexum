@@ -3,7 +3,7 @@
   "run_id": "f14a499f-1674-419d-91e3-db9b5c03326d",
   "internal_identity": "0370e6d4-2c49-4f0c-8157-299d7bcb3eaf",
   "mode": "new-scope",
-  "phase": "items-processing",
+  "phase": "paused",
   "completed_phases": [
     "mode-confirmed",
     "inputs-normalized",
@@ -1026,7 +1026,7 @@
       ],
       "separation_reason": "Cronômetro e lançamento manual produzem o mesmo registro de trabalho, com consulta e correção coesas. Minhas Tarefas e Quadro consomem ações/totais; o painel agrega e compara esses dados.",
       "suggested_position": 8,
-      "status": "completed",
+      "status": "in-progress",
       "lifecycle": "active",
       "delivery": {
         "surface": "WEB",
@@ -1381,7 +1381,7 @@
     },
     {
       "id": "time-permissions-catalog-001",
-      "status": "resumed",
+      "status": "paused",
       "kind": "catalog-change",
       "previous_phase": "items-processing",
       "resume_phase": "items-processing",
@@ -1390,9 +1390,7 @@
       "paused_at": "2026-09-10T16:11:40.666359Z",
       "affected_item_ids": [
         "manage-time"
-      ],
-      "resumed_at": "2026-09-10T18:59:36.680846Z",
-      "resume_evidence": "Catálogo completo e quatro requisitos aprovados; metadados locais reconciliados. Gestão de Tempo pronta para prévia de publicação, com republicações anteriores controladas em requirements-time-review.json."
+      ]
     }
   ],
   "lock": {
@@ -1904,15 +1902,15 @@
     },
     {
       "catalog_item_id": "manage-time",
-      "status": "completed",
+      "status": "in-progress",
       "issue_id": 1014493,
       "artifact_path": "../../features/1014493-gestao-de-tempo/feature.md",
       "state_path": "../../features/1014493-gestao-de-tempo/feature-state.json",
-      "requirement_phase": "completed",
+      "requirement_phase": "paused",
       "functional_gaps": [],
-      "reconciliation_status": "completed",
+      "reconciliation_status": "pending",
       "started_at": "2026-09-10T16:00:47.916774Z",
-      "completed_at": "2026-09-10T19:09:37.970937Z"
+      "completed_at": null
     },
     {
       "catalog_item_id": "my-tasks",
@@ -1975,12 +1973,6 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T15:23:38.877070Z"
-    },
-    {
-      "after_item_id": "manage-time",
-      "decision": "continue",
-      "decided_by": "Mário Tinelli",
-      "decided_at": "2026-09-10T19:14:17.981375Z"
     }
   ],
   "catalog_changes": [
@@ -2549,76 +2541,11 @@
       "subject_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
     },
     {
-      "id": "catalog-time-approved-pending-reconciliation-001",
-      "kind": "catalog-review",
-      "status": "pending",
-      "checked_at": "2026-09-10T17:55:39.898177Z",
-      "summary": "Catálogo revisado aprovado, preservado em scope-state.time-review.json, aprovação catalog-time-review-001. Aplicação coordenada com os requisitos afetados pendente; o escopo permanece pausado. Não repetir aprovação do catálogo.",
-      "subject_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
-    },
-    {
-      "id": "time-requirements-preview-001",
-      "kind": "requirement-review",
-      "status": "pending",
-      "checked_at": "2026-09-10T18:04:39.100488Z",
-      "summary": "Quatro documentos completos preparados e conferidos; aguardando aprovação de requisito. Catálogo já aprovado em catalog-time-review-001, sem nova pergunta de catálogo.",
-      "review_path": "requirements-time-review.md",
-      "ledger_path": "requirements-time-review.json"
-    },
-    {
       "id": "catalog-time-approval-001",
       "kind": "catalog-review",
       "status": "passed",
       "checked_at": "2026-09-10T17:55:39.898177Z",
       "summary": "Mário Tinelli respondeu sim à projeção completa 89759a4f... e seus impactos. Aprovação persistida no candidato; aplicação coordenada aguarda reconciliação dos documentos e metadados anteriores, sem invalidar os estados ativos no meio da revisão."
-    },
-    {
-      "id": "time-catalog-local-reconciliation-001",
-      "kind": "catalog-review",
-      "status": "passed",
-      "checked_at": "2026-09-10T18:57:55.794421Z",
-      "summary": "Catálogo e quatro documentos aprovados; reconciliação local coordenada das oito identidades, preservando operações remotas iniciais. As quatro publicações permanecem pendentes no registro de revisão."
-    },
-    {
-      "id": "time-publication-preview-001",
-      "kind": "publication-review",
-      "status": "pending",
-      "checked_at": "2026-09-10T19:01:50.880790Z",
-      "summary": "Quatro descrições completas preparadas e preservação conferida. Aguardando aprovação explícita de publicação; somente description e nenhum status/relacionamento.",
-      "preview_path": "publication-time-review.md",
-      "ledger_path": "requirements-time-review.json"
-    },
-    {
-      "id": "time-revision-completed-manage-project-001",
-      "kind": "requirement-state",
-      "item_id": "manage-project",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
-    },
-    {
-      "id": "time-revision-completed-manage-task-001",
-      "kind": "requirement-state",
-      "item_id": "manage-task",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
-    },
-    {
-      "id": "time-revision-completed-search-tasks-001",
-      "kind": "requirement-state",
-      "item_id": "search-tasks",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
-    },
-    {
-      "id": "time-revision-completed-manage-time-001",
-      "kind": "requirement-state",
-      "item_id": "manage-time",
-      "status": "passed",
-      "checked_at": "2026-09-10T19:09:37.970937Z",
-      "summary": "Requisito aprovado, publicado e relido com status New e relações preservadas; validação local passou. Gestão de Tempo aguarda escolha continuar/parar antes de concluir seu progresso de catálogo."
     }
   ],
   "final_summary": null,
