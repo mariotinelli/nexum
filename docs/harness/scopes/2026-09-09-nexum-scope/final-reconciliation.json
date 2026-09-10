@@ -1,0 +1,273 @@
+{
+  "checked_at": "2026-09-10T20:53:54.371231Z",
+  "status": "completed",
+  "issues": [
+    {
+      "item_id": "authenticate",
+      "issue_id": 1014446,
+      "subject": "[WEB] [PUBLICO] Autenticação",
+      "status": "New",
+      "artifact": "docs/harness/features/1014446-autenticacao/feature.md",
+      "requirement_approval_id": "requirement-authenticate-001-preserved-time-review",
+      "canonical_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
+      "state_validation": "passed",
+      "published_observation_id": "publish-verification-001",
+      "published_managed_sha256": "db9ae358368a47e4336286bd4656fc4f6f2229cd6789ed66d8544261320d21d9",
+      "current_managed_sha256": "fc45d1ff1f1a92386ffea5581ffc370c0a0fe32909baa91f86846a4a51b0bc0e",
+      "exact_publication_match": false,
+      "editorial_changes": [
+        "Remoção do título H1 duplicado dentro da descrição."
+      ],
+      "editorial_resolution": "preservation-approved"
+    },
+    {
+      "item_id": "recover-access",
+      "issue_id": 1014447,
+      "subject": "[WEB] [PUBLICO] Recuperação de Senha",
+      "status": "New",
+      "artifact": "docs/harness/features/1014447-recuperacao-de-senha/feature.md",
+      "requirement_approval_id": "requirement-recovery-001-preserved-time-review",
+      "canonical_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+      "state_validation": "passed",
+      "published_observation_id": "publish-verification-001",
+      "published_managed_sha256": "52f24b0d8bd0bf8391856f01ebf19481116d67382ac0533171dcea02552d9fa9",
+      "current_managed_sha256": "d3cadc6a0f2845ce9fe3ebc21401155a48da62de2549824700e90a9b2bc96cbf",
+      "exact_publication_match": false,
+      "editorial_changes": [
+        "Remoção do título H1 duplicado dentro da descrição."
+      ],
+      "editorial_resolution": "preservation-approved"
+    },
+    {
+      "item_id": "maintain-own-profile",
+      "issue_id": 1014448,
+      "subject": "[WEB] [OPERACIONAL] Meu Perfil",
+      "status": "New",
+      "artifact": "docs/harness/features/1014448-meu-perfil/feature.md",
+      "requirement_approval_id": "requirement-profile-002-preserved-time-review",
+      "canonical_sha256": "b92d0a6ab0db0364fb4981736c27f880504cc6d1adf694b30638b6124c1f13a9",
+      "state_validation": "passed",
+      "published_observation_id": "publish-verification-001",
+      "published_managed_sha256": "f08a9f0966d56be5af6ff218ac6db63e464730e5f05331d9554515b32442f0f9",
+      "current_managed_sha256": "c4c295a1b2ec49948d1fc52a2bc13629bcac47df4db8ce9b8b7277a876dd3e64",
+      "exact_publication_match": false,
+      "editorial_changes": [
+        "Remoção da palavra Card dos títulos Dados Pessoais e Troca de Senha."
+      ],
+      "editorial_resolution": "preservation-approved"
+    },
+    {
+      "item_id": "administer-users",
+      "issue_id": 1014449,
+      "subject": "[WEB] [ADMIN] Gestão de Usuário",
+      "status": "New",
+      "artifact": "docs/harness/features/1014449-gestao-de-usuario/feature.md",
+      "requirement_approval_id": "requirement-users-001-preserved-time-review",
+      "canonical_sha256": "b62647b8d9d1f5ee5ca9021f1d0bf65b40da39a68c6b7572994d17ef89bb5701",
+      "state_validation": "passed",
+      "published_observation_id": "publish-verification-001",
+      "published_managed_sha256": "ad8749ac341c7e80f36f812f707c25a1238ca1b0a5e61e1e984b6577278fbb24",
+      "current_managed_sha256": "ad8749ac341c7e80f36f812f707c25a1238ca1b0a5e61e1e984b6577278fbb24",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "manage-project",
+      "issue_id": 1014450,
+      "subject": "[WEB] [OPERACIONAL] Gestão de Projeto",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014450-gestao-de-projeto/feature.md",
+      "requirement_approval_id": "requirement-time-review-1014450-001",
+      "canonical_sha256": "3b4ef5cf44920c4c96579ce233518a986095c702671d1196da82223aa58abc9d",
+      "state_validation": "passed",
+      "published_observation_id": "time-review-publish-verification-1014450-001",
+      "published_managed_sha256": "75dbb07630b7c44cdd3009a79e9dede389d4f899434f9690d905569263c7263e",
+      "current_managed_sha256": "75dbb07630b7c44cdd3009a79e9dede389d4f899434f9690d905569263c7263e",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "manage-task",
+      "issue_id": 1014454,
+      "subject": "[WEB] [OPERACIONAL] Gestão de Tarefa",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014454-gestao-de-tarefa/feature.md",
+      "requirement_approval_id": "requirement-time-review-1014454-001",
+      "canonical_sha256": "5e758dcfb4faa537d6870fb600d9d57a693fe2741550e5bfd0006755424564a7",
+      "state_validation": "passed",
+      "published_observation_id": "time-review-publish-verification-1014454-001",
+      "published_managed_sha256": "81d7a3438c47354df84098c176574cf32d56444eb9b350207c908f3ce681a35a",
+      "current_managed_sha256": "81d7a3438c47354df84098c176574cf32d56444eb9b350207c908f3ce681a35a",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "search-tasks",
+      "issue_id": 1014465,
+      "subject": "[WEB] [OPERACIONAL] Consulta de Tarefas",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014465-consulta-de-tarefas/feature.md",
+      "requirement_approval_id": "requirement-time-review-1014465-001",
+      "canonical_sha256": "da590f2972c1ed48e865ff410b5685017336eeed26ced9b8cc682f28ef1f7164",
+      "state_validation": "passed",
+      "published_observation_id": "time-review-publish-verification-1014465-001",
+      "published_managed_sha256": "a3992fae4f761530c3a4a8eed7958fa573d330b0e6a937befa277633af417670",
+      "current_managed_sha256": "a3992fae4f761530c3a4a8eed7958fa573d330b0e6a937befa277633af417670",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "manage-time",
+      "issue_id": 1014493,
+      "subject": "[WEB] [OPERACIONAL] Gestão de Tempo",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014493-gestao-de-tempo/feature.md",
+      "requirement_approval_id": "requirement-time-review-1014493-001",
+      "canonical_sha256": "0439e88ac1f28d28d0f781d21a4bd51a8e725a682e9b7cb3e810584dc74c8440",
+      "state_validation": "passed",
+      "published_observation_id": "time-review-publish-verification-1014493-001",
+      "published_managed_sha256": "ff898dc4b99bfcbc224d632202e25009fa8ade531aa61c5741e57f24c7e60346",
+      "current_managed_sha256": "ff898dc4b99bfcbc224d632202e25009fa8ade531aa61c5741e57f24c7e60346",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "my-tasks",
+      "issue_id": 1014547,
+      "subject": "[WEB] [OPERACIONAL] Minhas Tarefas",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014547-minhas-tarefas/feature.md",
+      "requirement_approval_id": "requirement-my-tasks-001",
+      "canonical_sha256": "6c7a93bbce7ff7013f98ad93977616a8f24336b792e1c4e808fae92be56f65c6",
+      "state_validation": "passed",
+      "published_observation_id": "publish-readback-001",
+      "published_managed_sha256": "a7a3270f90898bf6917027b9fd0e5a718a81ff620d928bc007bc1e071c3776f4",
+      "current_managed_sha256": "a7a3270f90898bf6917027b9fd0e5a718a81ff620d928bc007bc1e071c3776f4",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "manage-project-board",
+      "issue_id": 1014548,
+      "subject": "[WEB] [OPERACIONAL] Quadro do Projeto",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014548-quadro-do-projeto/feature.md",
+      "requirement_approval_id": "requirement-board-001",
+      "canonical_sha256": "07070b18faa7c6f9e57d543ef052f13a2b192e2458220451831a7521ad89f884",
+      "state_validation": "passed",
+      "published_observation_id": "publish-readback-001",
+      "published_managed_sha256": "cb7c64f297e4bffb344670cf475f18138683afdb6d92b9bd1cc9c976f8f9eb2c",
+      "current_managed_sha256": "cb7c64f297e4bffb344670cf475f18138683afdb6d92b9bd1cc9c976f8f9eb2c",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    },
+    {
+      "item_id": "view-management-dashboard",
+      "issue_id": 1014550,
+      "subject": "[WEB] [OPERACIONAL] Painel Gerencial",
+      "status": "New",
+      "artifact": "docs/harness/scopes/2026-09-09-nexum-scope/../../features/1014550-painel-gerencial/feature.md",
+      "requirement_approval_id": "requirement-dashboard-001",
+      "canonical_sha256": "84121a2e81b8516a76b783b1679efbf2dc78ea2b9d65289be0f5031bee9f0019",
+      "state_validation": "passed",
+      "published_observation_id": "publish-readback-001",
+      "published_managed_sha256": "0dce3f3f7bf902fdbf93df3ea7b491832119ac9efa7bf7fbc3ffd83bd9c82c8f",
+      "current_managed_sha256": "0dce3f3f7bf902fdbf93df3ea7b491832119ac9efa7bf7fbc3ffd83bd9c82c8f",
+      "exact_publication_match": true,
+      "editorial_changes": [],
+      "editorial_resolution": "not-applicable"
+    }
+  ],
+  "relations": [
+    {
+      "id": 659,
+      "issue_id": 1014446,
+      "issue_to_id": 1014448,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 660,
+      "issue_id": 1014446,
+      "issue_to_id": 1014449,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 661,
+      "issue_id": 1014449,
+      "issue_to_id": 1014450,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 662,
+      "issue_id": 1014450,
+      "issue_to_id": 1014454,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 665,
+      "issue_id": 1014454,
+      "issue_to_id": 1014465,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 666,
+      "issue_id": 1014454,
+      "issue_to_id": 1014493,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 669,
+      "issue_id": 1014465,
+      "issue_to_id": 1014550,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 667,
+      "issue_id": 1014493,
+      "issue_to_id": 1014547,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 668,
+      "issue_id": 1014493,
+      "issue_to_id": 1014548,
+      "relation_type": "blocks",
+      "delay": null
+    },
+    {
+      "id": 670,
+      "issue_id": 1014547,
+      "issue_to_id": 1014550,
+      "relation_type": "blocks",
+      "delay": null
+    }
+  ],
+  "relation_validation": "passed",
+  "editorial_preservation": "approved",
+  "functional_differences": [],
+  "remote_mutations_performed": false,
+  "completion_approval": {
+    "id": "scope-completion-001",
+    "kind": "scope-completion",
+    "subject_sha256": "7c76cfdfb8f5764a6b494222adc65c636ba67f9c86cfd27fdcaf11e4ba0c2184",
+    "approved_by": "Mário Tinelli",
+    "approved_at": "2026-09-10T20:59:07.705504Z",
+    "status": "valid"
+  },
+  "commit_authorized": true
+}

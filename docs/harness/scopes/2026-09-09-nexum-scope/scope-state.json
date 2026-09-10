@@ -3,13 +3,17 @@
   "run_id": "f14a499f-1674-419d-91e3-db9b5c03326d",
   "internal_identity": "0370e6d4-2c49-4f0c-8157-299d7bcb3eaf",
   "mode": "new-scope",
-  "phase": "items-processing",
+  "phase": "completed",
   "completed_phases": [
     "mode-confirmed",
     "inputs-normalized",
     "repository-analyzed",
     "catalog-proposed",
-    "catalog-approved"
+    "catalog-approved",
+    "items-processing",
+    "relations-reconciled",
+    "scope-approved",
+    "completed"
   ],
   "identity": {
     "redmine_user_id": 131789,
@@ -1242,6 +1246,14 @@
       "subject_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T17:55:39.898177Z",
+      "status": "valid"
+    },
+    {
+      "id": "scope-completion-001",
+      "kind": "scope-completion",
+      "subject_sha256": "7c76cfdfb8f5764a6b494222adc65c636ba67f9c86cfd27fdcaf11e4ba0c2184",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T20:59:07.705504Z",
       "status": "valid"
     }
   ],
@@ -2661,9 +2673,118 @@
       "status": "passed",
       "checked_at": "2026-09-10T20:46:11.399188Z",
       "summary": "Requisito aprovado, publicado e relido com status New e relações 669/670 preservados; estado completed validado. Aguarda escolha finish/stop para consolidar o catálogo e iniciar fechamento do escopo."
+    },
+    {
+      "id": "global-reconciliation-authenticate-001",
+      "kind": "requirement-state",
+      "item_id": "authenticate",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-recover-access-001",
+      "kind": "requirement-state",
+      "item_id": "recover-access",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-maintain-own-profile-001",
+      "kind": "requirement-state",
+      "item_id": "maintain-own-profile",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-administer-users-001",
+      "kind": "requirement-state",
+      "item_id": "administer-users",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-manage-project-001",
+      "kind": "requirement-state",
+      "item_id": "manage-project",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-manage-task-001",
+      "kind": "requirement-state",
+      "item_id": "manage-task",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-search-tasks-001",
+      "kind": "requirement-state",
+      "item_id": "search-tasks",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-manage-time-001",
+      "kind": "requirement-state",
+      "item_id": "manage-time",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-my-tasks-001",
+      "kind": "requirement-state",
+      "item_id": "my-tasks",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-manage-project-board-001",
+      "kind": "requirement-state",
+      "item_id": "manage-project-board",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-reconciliation-view-management-dashboard-001",
+      "kind": "requirement-state",
+      "item_id": "view-management-dashboard",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Estado completed e hash canônico aprovado validados. Comparação remota detalhada em final-reconciliation.json; diferenças editoriais destacadas no resumo para confirmação final."
+    },
+    {
+      "id": "global-scope-conference-001",
+      "kind": "scope-state",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:53:54.371231Z",
+      "summary": "Catálogo e estados validados; 11 hashes canônicos e dez relações confirmados. Aprovação terminal pendente do resumo final e da preservação editorial proposta."
+    },
+    {
+      "id": "scope-completion-validation-001",
+      "kind": "scope-state",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:59:07.705504Z",
+      "summary": "Resumo final aprovado por Mário Tinelli, incluindo preservação das três diferenças editoriais e commit dos registros finais. Onze requisitos completos, dez relações reconciliadas e nenhuma pendência funcional."
     }
   ],
-  "final_summary": null,
+  "final_summary": {
+    "issues": "| Issue | Requisito | Status |\n| --- | --- | --- |\n| #1014446 | [WEB] [PUBLICO] Autenticação | New |\n| #1014447 | [WEB] [PUBLICO] Recuperação de Senha | New |\n| #1014448 | [WEB] [OPERACIONAL] Meu Perfil | New |\n| #1014449 | [WEB] [ADMIN] Gestão de Usuário | New |\n| #1014450 | [WEB] [OPERACIONAL] Gestão de Projeto | New |\n| #1014454 | [WEB] [OPERACIONAL] Gestão de Tarefa | New |\n| #1014465 | [WEB] [OPERACIONAL] Consulta de Tarefas | New |\n| #1014493 | [WEB] [OPERACIONAL] Gestão de Tempo | New |\n| #1014547 | [WEB] [OPERACIONAL] Minhas Tarefas | New |\n| #1014548 | [WEB] [OPERACIONAL] Quadro do Projeto | New |\n| #1014550 | [WEB] [OPERACIONAL] Painel Gerencial | New |\n\nOs 11 itens ativos estão concluídos como requisitos. As issues continuam New; este fechamento não altera seu status nem declara implementação concluída. Os seis itens retirados do catálogo e seus históricos permanecem preservados.",
+    "relations": "Todas as dez relações nativas `blocks` foram relidas nos dois extremos e correspondem ao grafo aprovado, sem relações adicionais.\n\n| Relação | Origem bloqueia destino |\n| --- | --- |\n| 659 | #1014446 → #1014448 |\n| 660 | #1014446 → #1014449 |\n| 661 | #1014449 → #1014450 |\n| 662 | #1014450 → #1014454 |\n| 665 | #1014454 → #1014465 |\n| 666 | #1014454 → #1014493 |\n| 667 | #1014493 → #1014547 |\n| 668 | #1014493 → #1014548 |\n| 669 | #1014465 → #1014550 |\n| 670 | #1014547 → #1014550 |",
+    "artifacts": "- #1014446: [[WEB] [PUBLICO] Autenticação](../../features/1014446-autenticacao/feature.md)\n- #1014447: [[WEB] [PUBLICO] Recuperação de Senha](../../features/1014447-recuperacao-de-senha/feature.md)\n- #1014448: [[WEB] [OPERACIONAL] Meu Perfil](../../features/1014448-meu-perfil/feature.md)\n- #1014449: [[WEB] [ADMIN] Gestão de Usuário](../../features/1014449-gestao-de-usuario/feature.md)\n- #1014450: [[WEB] [OPERACIONAL] Gestão de Projeto](../../features/1014450-gestao-de-projeto/feature.md)\n- #1014454: [[WEB] [OPERACIONAL] Gestão de Tarefa](../../features/1014454-gestao-de-tarefa/feature.md)\n- #1014465: [[WEB] [OPERACIONAL] Consulta de Tarefas](../../features/1014465-consulta-de-tarefas/feature.md)\n- #1014493: [[WEB] [OPERACIONAL] Gestão de Tempo](../../features/1014493-gestao-de-tempo/feature.md)\n- #1014547: [[WEB] [OPERACIONAL] Minhas Tarefas](../../features/1014547-minhas-tarefas/feature.md)\n- #1014548: [[WEB] [OPERACIONAL] Quadro do Projeto](../../features/1014548-quadro-do-projeto/feature.md)\n- #1014550: [[WEB] [OPERACIONAL] Painel Gerencial](../../features/1014550-painel-gerencial/feature.md)\n\nEvidências de conferência: [reconciliação](final-reconciliation.json) e [releituras do Redmine](final-remote-snapshots.json). O catálogo, as fontes e as decisões permanecem em scope.md e scope-state.json.",
+    "approvals": "Catálogo vigente: `catalog-time-review-001`. As aprovações canônicas abaixo permanecem válidas e seus hashes correspondem aos arquivos atuais. Aprovações e operações anteriores são preservadas, incluindo a proveniência dos quatro requisitos mantidos na revisão do catálogo.\n\n- #1014446: `requirement-authenticate-001-preserved-time-review`.\n- #1014447: `requirement-recovery-001-preserved-time-review`.\n- #1014448: `requirement-profile-002-preserved-time-review`.\n- #1014449: `requirement-users-001-preserved-time-review`.\n- #1014450: `requirement-time-review-1014450-001`.\n- #1014454: `requirement-time-review-1014454-001`.\n- #1014465: `requirement-time-review-1014465-001`.\n- #1014493: `requirement-time-review-1014493-001`.\n- #1014547: `requirement-my-tasks-001`.\n- #1014548: `requirement-board-001`.\n- #1014550: `requirement-dashboard-001`.\n\nProposta para aprovação final atribuída a Mário Tinelli: aceitar este resumo e preservar as diferenças exclusivamente editoriais no Redmine descritas abaixo, sem republicar as descrições. A aprovação final e o commit dos registros de fechamento ainda dependem da confirmação do usuário.",
+    "validations": "Os 11 estados individuais validam em completed; os 11 documentos correspondem às aprovações canônicas. O catálogo, a ordem e as dez relações estão reconciliados, sem lacunas funcionais abertas ou candidatos indecisos. Oito descrições coincidem exatamente com a última publicação registrada. Nas outras três, a comparação comprovou somente:\n\n- #1014446 — Autenticação: remoção do título H1 duplicado na descrição.\n- #1014447 — Recuperação de Senha: remoção do título H1 duplicado na descrição.\n- #1014448 — Meu Perfil: retirada de “Card” dos títulos “Dados Pessoais” e “Troca de Senha”.\n\nAs duas primeiras remoções já constavam do histórico de retomada. A terceira foi observada na conferência; sua autoria não foi atribuída. Nenhuma diferença funcional foi encontrada. Propõe-se preservar as três edições. Os registros históricos de publicação permanecem intactos. A validação terminal de completed será executada após registrar a aprovação deste resumo.",
+    "next_recommendation": "Após aprovar o fechamento, iniciar o planejamento técnico pela Autenticação (#1014446), seguindo a ordem e as dependências aprovadas. O planejamento e a implementação serão trabalhos posteriores. Commit já criado para o Painel Gerencial: `da1c483`. Proposta: registrar também os artefatos finais de fechamento em um novo commit após esta aprovação."
+  },
   "title_convention": {
     "surfaces": [
       "WEB"
