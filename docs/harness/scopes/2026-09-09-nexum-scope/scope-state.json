@@ -743,7 +743,7 @@
       ],
       "separation_reason": "Busca em todos os projetos acessíveis. Não substitui o recorte por responsabilidade e as ações diárias de Minhas Tarefas.",
       "suggested_position": 7,
-      "status": "pending",
+      "status": "completed",
       "candidate_ids": [
         "candidate-search-tasks"
       ],
@@ -758,7 +758,7 @@
         "visible_delivery": "Consulta transversal paginada, em tabela ou cards, com filtros persistentes na sessão e links para detalhes.",
         "user_result": "Encontrar tarefas nos projetos acessíveis por busca, filtros e ordenação.",
         "included": [
-          "Buscar por título e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
+          "Buscar por título ou descrição e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
           "Ordenar por criação, prazo, prioridade ou atualização; aplicar/limpar e preservar filtros na sessão.",
           "Paginar somente tarefas não arquivadas dos projetos acessíveis; mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
           "Exibir vazio com limpeza de filtros, loading/erro/sucesso e cards rotulados em mobile."
@@ -1222,6 +1222,16 @@
       "subject_sha256": "5a44b77c45bbcddee99611edea7794445158880512e1782c794023dda059608d",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T14:14:32.187427Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T15:00:58.053962Z",
+      "invalidated_reason": "Q63 de Consulta de Tarefas amplia a busca para título ou descrição; entendimento confirmado em Q63–Q69."
+    },
+    {
+      "id": "catalog-search-review-001",
+      "kind": "complete-catalog-and-order",
+      "subject_sha256": "b94fa4965f81118c562e5c88e70b8111fc44f74b77a878f2865f2c75b0f9bc18",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T15:05:44.502887Z",
       "status": "valid"
     }
   ],
@@ -1343,6 +1353,21 @@
       ],
       "resumed_at": "2026-09-10T14:14:32.187427Z",
       "resume_evidence": "Catálogo e requisito corrigidos aprovados por Mário Tinelli; tarefa reconciliada em requirement-proposed."
+    },
+    {
+      "id": "search-description-catalog-001",
+      "status": "resumed",
+      "kind": "catalog-change",
+      "previous_phase": "items-processing",
+      "resume_phase": "items-processing",
+      "reason": "Q63 inclui busca em descrição, ampliando a busca apenas por título do catálogo aprovado.",
+      "resume_condition": "Resolver os esclarecimentos da consulta, confirmar o entendimento e aprovar o catálogo completo revisado com busca em título ou descrição.",
+      "paused_at": "2026-09-10T14:49:18.391854Z",
+      "affected_item_ids": [
+        "search-tasks"
+      ],
+      "resumed_at": "2026-09-10T15:05:44.502887Z",
+      "resume_evidence": "Aprovação catalog-search-review-001 registrada; requisito de Consulta de Tarefas reconciliado."
     }
   ],
   "lock": {
@@ -1782,15 +1807,15 @@
     },
     {
       "catalog_item_id": "search-tasks",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014465,
+      "artifact_path": "../../features/1014465-consulta-de-tarefas/feature.md",
+      "state_path": "../../features/1014465-consulta-de-tarefas/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T14:29:26.832513Z",
+      "completed_at": "2026-09-10T15:09:11.823972Z"
     },
     {
       "catalog_item_id": "update-task",
@@ -1919,6 +1944,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T14:23:25.948767Z"
+    },
+    {
+      "after_item_id": "search-tasks",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T15:23:38.877070Z"
     }
   ],
   "catalog_changes": [
@@ -2080,6 +2111,40 @@
       ],
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T14:08:05.421145Z"
+    },
+    {
+      "id": "search-description-delivery-001",
+      "kind": "delivery",
+      "affected_item_ids": [
+        "search-tasks"
+      ],
+      "names_impact": "Nomes e títulos preservados.",
+      "audiences_impact": "Mesmos públicos e permissões por participação.",
+      "deliveries_impact": "Consulta de Tarefas busca em título ou descrição, conforme Q63 e entendimento confirmado.",
+      "coverage_impact": "Ampliar search-tasks-01; manter os demais comportamentos e consumidores.",
+      "source_allocation_impact": "Mesmas fontes e alocação; decisão atribuída à entrevista de Consulta de Tarefas.",
+      "graph_impact": "Grafo, relações e bloqueios preservados.",
+      "order_impact": "Mesma ordem dos onze itens; Consulta de Tarefas permanece na sétima posição.",
+      "preserved_issue_ids": [
+        1014446,
+        1014447,
+        1014448,
+        1014449,
+        1014465,
+        1014450,
+        1014454
+      ],
+      "artifact_paths": [
+        "docs/harness/features/1014446-autenticacao/feature.md",
+        "docs/harness/features/1014447-recuperacao-de-senha/feature.md",
+        "docs/harness/features/1014448-meu-perfil/feature.md",
+        "docs/harness/features/1014449-gestao-de-usuario/feature.md",
+        "../../features/1014465-consulta-de-tarefas/feature.md",
+        "../../features/1014450-gestao-de-projeto/feature.md",
+        "../../features/1014454-gestao-de-tarefa/feature.md"
+      ],
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T15:00:58.053962Z"
     }
   ],
   "relations": [
@@ -2244,12 +2309,12 @@
       "from_item_id": "manage-task",
       "to_item_id": "search-tasks",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014454,
+      "to_issue_id": 1014465,
+      "status": "completed",
+      "approval_id": "relation-task-search-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T14:35:46.971214Z"
     },
     {
       "stable_key": "blocks:manage-task:manage-time",
@@ -2363,6 +2428,24 @@
       "status": "passed",
       "checked_at": "2026-09-10T14:21:28.748645Z",
       "details": "Requisito #1014454 aprovado, publicado e conferido; estados e transições válidos. Status New, relação 662 e conteúdo externo preservados. Catálogo corrigido aprovado e bloco gerado conferido. Sem lacunas funcionais ou operações pendentes no item. Requisito individual concluído; status de processamento do catálogo permanece in-progress até decisão explícita de continuar/parar, conforme validador."
+    },
+    {
+      "kind": "search-tasks-relation-gate",
+      "status": "pending",
+      "checked_at": "2026-09-10T14:30:19.305216Z",
+      "details": "Issue #1014465 criada e confirmada em New, sem relações. Estado definitivo docs/harness/features/1014465-consulta-de-tarefas/feature-state.json válido em interviewing; criação completed. Consolidação de item_progress aguarda aprovação/publicação da relação #1014454 blocks #1014465, exigida pelo validador ao registrar ambos os endpoints. Não recriar issue."
+    },
+    {
+      "kind": "search-tasks-relation-reconciled",
+      "status": "passed",
+      "checked_at": "2026-09-10T14:35:46.971214Z",
+      "details": "Relação 665 aprovada, criada e conferida: #1014454 bloqueia #1014465. Gate anterior resolvido; progresso consolidado e entrevista liberada."
+    },
+    {
+      "kind": "search-tasks-completion",
+      "status": "passed",
+      "checked_at": "2026-09-10T15:09:11.823972Z",
+      "details": "Requisito #1014465 aprovado, publicado e conferido; estados e transições válidos. New e relação 665 preservados. Sem pendências funcionais ou operações. Processamento permanece in-progress até decisão explícita de continuar/parar exigida pelo validador."
     }
   ],
   "final_summary": null,
@@ -3439,14 +3522,14 @@
     },
     {
       "id": "search-tasks-01",
-      "description": "Buscar por título e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
+      "description": "Buscar por título ou descrição e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
       "evidence": [
         {
           "source_id": "design-tasks",
           "locator": "Busca, filtros e ordenação"
         }
       ],
-      "evidence_kind": "demonstrated",
+      "evidence_kind": "annotation",
       "audiences": [
         "OPERACIONAL"
       ],
@@ -3465,9 +3548,9 @@
         "proposed_change": "Adicionar a capacidade de negócio e suas integrações visíveis; a orientação do repositório ainda não apresenta projetos, tarefas ou horas."
       },
       "decision": {
-        "statement": "Decisão de Mário Tinelli na entrevista Q39–Q62 de Gestão de Tarefa e entendimento confirmado: Buscar por título e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
+        "statement": "Decisão de Mário Tinelli em Q63 de Consulta de Tarefas e entendimento Q63–Q69 confirmado: ampliar a busca para trechos de título ou descrição, preservando filtros e regras de atraso já aprovados.",
         "confirmed_by": "Mário Tinelli",
-        "confirmed_at": "2026-09-10T13:42:06.815366Z"
+        "confirmed_at": "2026-09-10T15:00:58.053962Z"
       }
     },
     {
