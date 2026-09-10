@@ -1,0 +1,384 @@
+{
+  "schema_version": 4,
+  "run_id": "3a7d6d06-b12c-460e-9446-3c43eeb385cf",
+  "internal_identity": "79a125de-e04c-4c6e-82c0-55ddf1b92c4a",
+  "mode": "new-scope",
+  "item_type": "Feature",
+  "phase": "completed",
+  "completed_phases": [
+    "mode-confirmed",
+    "inputs-normalized",
+    "repository-analyzed",
+    "item-ready",
+    "item-created",
+    "interviewing",
+    "requirement-proposed",
+    "requirement-approved",
+    "redmine-synchronized",
+    "completed"
+  ],
+  "identity": {
+    "redmine_user_id": 131789,
+    "display_name": "Mário Tinelli",
+    "confirmed_at": "2026-09-09T19:14:01.0762355Z"
+  },
+  "redmine": {
+    "project_id": 65221,
+    "project_name": "Nexum",
+    "tracker_id": 2,
+    "tracker_name": "Feature",
+    "initial_status_id": 1,
+    "initial_status_name": "New",
+    "approved_status_id": 4,
+    "approved_status_name": "Approved",
+    "mapping_confirmations": [],
+    "category": {
+      "id": null,
+      "name": null,
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T11:26:03.606261Z"
+    },
+    "issue_id": 1014449
+  },
+  "sources": [
+    {
+      "id": "design-users",
+      "name": "usuarios.html",
+      "type": "design HTML da tela Usuários",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\usuarios.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-users.md",
+      "original_sha256": "900da2a517fdd275860861d8e4a81ad005a1b480372a3ee38999adc698d12814",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "3471bc0797cbf37da870ef32fc2c8877ff761c906b305b629756a9bd3b25c197",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-guide",
+      "name": "guia-de-design.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\guia-de-design.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-guide.md",
+      "original_sha256": "801383f4687ff5c25486f5007341cf625910d75f7c6c9337d552ce3ec29baceb",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "14cd798e9f9cec0b74b5c6f4c53ff8f8a9a9cfe3ab57a16ba0a6df47b0fa696a",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    }
+  ],
+  "repository": {
+    "stack": [
+      "PHP 8.4",
+      "Laravel 13",
+      "Livewire 4",
+      "Tailwind CSS 4, DaisyUI 5 e Alpine.js 3",
+      "MySQL e Eloquent",
+      "Pest 5 e PHPUnit 12",
+      "r2luna/brain 4.1",
+      "Laravel Auditing 14"
+    ],
+    "vocabulary": [
+      {
+        "term": "Usuário",
+        "evidence_paths": [
+          "app/Models/User.php",
+          "docs/agents/domain_rules.md",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Administrador",
+        "evidence_paths": [
+          "app/Enums/TypeUsers.php",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Gestor",
+        "evidence_paths": [
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Membro",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-dashboard.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Projeto",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md"
+        ]
+      },
+      {
+        "term": "Tarefa",
+        "evidence_paths": [
+          "sources/design-tasks.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Situação da tarefa",
+        "evidence_paths": [
+          "sources/design-board.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Prioridade da tarefa",
+        "evidence_paths": [
+          "sources/design-new-task.md",
+          "sources/design-tasks.md"
+        ]
+      },
+      {
+        "term": "Projeto arquivado",
+        "evidence_paths": [
+          "sources/design-edit-project.md",
+          "sources/design-board.md",
+          "sources/design-projects.md"
+        ]
+      }
+    ],
+    "exclusions": [
+      "vendor/** e node_modules/**",
+      ".git/**",
+      "storage/logs/**, caches e arquivos temporários",
+      "public/build/**, artefatos Vite e relatórios de cobertura",
+      ".env*, credenciais, chaves privadas e tokens",
+      "binários e conteúdo gerado sem relevância funcional"
+    ]
+  },
+  "classification": {
+    "suggested_type": "Feature",
+    "rationale": "Gestão administrativa de contas aprovada como Feature no catálogo.",
+    "confirmed_type": "Feature",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T11:26:03.606261Z"
+  },
+  "similarity": {
+    "searched_at": "2026-09-10T11:26:03.606261Z",
+    "candidates": [],
+    "decision": "new-demand",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T11:26:03.606261Z"
+  },
+  "decisions": [
+    {
+      "id": "creation-confirmation",
+      "statement": "Mário Tinelli respondeu aprovado à prévia completa de Gestão de Usuário, nova Feature sem categoria. Busca encontrou apenas Autenticação, Recuperação de Senha e Meu Perfil, sem duplicidade.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:26:03.606261Z",
+      "status": "valid"
+    },
+    {
+      "id": "q15",
+      "statement": "Após cadastro ativo, a pessoa define a primeira senha pelo fluxo Esqueci minha senha. Cadastro não envia senha nem e-mail adicional automaticamente.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:33:07.474226Z",
+      "status": "valid"
+    },
+    {
+      "id": "q16",
+      "statement": "Impedir autodesativação e remoção do próprio acesso administrativo. Impedir que o sistema fique sem administrador ativo; outro administrador pode realizar alterações respeitando essa condição.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:33:07.474226Z",
+      "status": "valid"
+    },
+    {
+      "id": "q17",
+      "statement": "Cadastro inicia com estado Ativo e sem Acesso administrativo; administrador pode alterar essas opções antes de salvar.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:33:07.474226Z",
+      "status": "valid"
+    },
+    {
+      "id": "q18",
+      "statement": "Listar todas as contas, ativas/inativas e comuns/administrativas, com busca por nome/e-mail, filtros por estado e acesso administrativo e ordenação inicial alfabética por nome.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:33:07.474226Z",
+      "status": "valid"
+    },
+    {
+      "id": "q19",
+      "statement": "Remover acesso administrativo bloqueia as próximas ações administrativas, mantendo funções comuns enquanto a conta estiver ativa. Desativação bloqueia o acesso inteiro conforme Autenticação.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:33:07.474226Z",
+      "status": "valid"
+    },
+    {
+      "id": "q20",
+      "statement": "Novo e-mail válido e único salvo pelo administrador vale imediatamente para login e recuperação, sem confirmação por e-mail, sem encerrar sessões e sem alterar senha.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:33:07.474226Z",
+      "status": "valid"
+    },
+    {
+      "id": "understanding-confirmation-001",
+      "statement": "Mário Tinelli respondeu sim à síntese completa de Gestão de Usuário, confirmando o entendimento de Q15–Q20 e os limites apresentados. Auditoria sem lacunas funcionais ou contradições abertas.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:35:25.136072Z",
+      "status": "valid"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "create-users-001",
+      "kind": "create-payload",
+      "subject_sha256": "af70fd147142202a33af0de6a4cf2b0d418ca45726563f23a48e7b79a7bf8f16",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:26:03.606261Z",
+      "status": "valid"
+    },
+    {
+      "id": "relation-authenticate-users-001",
+      "kind": "relation-payload",
+      "subject_sha256": "1896f31fb1f8363c7b9268c96d647e62690b1bfa068e98a2de13c99bd784092d",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:28:31.453559Z",
+      "status": "valid"
+    },
+    {
+      "id": "requirement-users-001",
+      "kind": "requirement",
+      "subject_sha256": "b62647b8d9d1f5ee5ca9021f1d0bf65b40da39a68c6b7572994d17ef89bb5701",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:41:15.228855Z",
+      "status": "valid"
+    },
+    {
+      "id": "publish-users-001",
+      "kind": "publish-payload",
+      "subject_sha256": "51f3de0ef2f3c20817dc060998521b5e50f5d7fe659867aeba01bca32f379ed6",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:44:21.940220Z",
+      "status": "valid"
+    }
+  ],
+  "deferred_questions": [],
+  "pauses": [],
+  "lock": {
+    "acquired_at": "2026-09-10T11:26:03.694207Z",
+    "item_key": "nexum:administer-users",
+    "lock_id": "5f4ca88c-6992-4ed5-b1b5-cf106bed2762",
+    "path": "docs/harness/.locks/f2c8601bcdc85c4913b9a1594e7305002a6c1d089892a54025c94363171d83f5.lock.json"
+  },
+  "remote_operations": {
+    "create": {
+      "status": "completed",
+      "payload_sha256": "af70fd147142202a33af0de6a4cf2b0d418ca45726563f23a48e7b79a7bf8f16",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:26:03.606261Z",
+      "attempts": [
+        {
+          "id": "create-attempt-001",
+          "attempted_at": "2026-09-10T11:26:17Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T11:26:54.123643Z",
+      "observation_id": "create-response-001"
+    },
+    "publish": {
+      "status": "completed",
+      "payload_sha256": "51f3de0ef2f3c20817dc060998521b5e50f5d7fe659867aeba01bca32f379ed6",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T11:44:21.940220Z",
+      "attempts": [
+        {
+          "id": "publish-attempt-001",
+          "attempted_at": "2026-09-10T11:44:40.756100Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T11:44:40.756100Z",
+      "observation_id": "publish-response-001"
+    },
+    "relations": []
+  },
+  "remote_observations": [
+    {
+      "id": "create-response-001",
+      "operation_key": "create",
+      "observed_at": "2026-09-10T11:26:54.123643Z",
+      "outcome": "matched",
+      "remote_sha256": "167d6cad9f4b4eea2fd987843ed6b83a8f39596fb16be2af58498e90973e802b",
+      "summary": "Redmine confirmou issue 1014449, Feature New e descrição aprovada; hash do conteúdo gerenciado em CRLF."
+    },
+    {
+      "id": "prepublication-read-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T11:42:17.589201Z",
+      "outcome": "matched",
+      "remote_sha256": "167d6cad9f4b4eea2fd987843ed6b83a8f39596fb16be2af58498e90973e802b",
+      "summary": "Issue 1014449 relida: descrição inicial intacta, um par de delimitadores, nenhum conteúdo externo e status New. Relação 660 blocks de 1014446 para 1014449 preservada. Sem divergências."
+    },
+    {
+      "id": "publish-response-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T11:44:40.756100Z",
+      "outcome": "matched",
+      "summary": "Redmine confirmou atualização da descrição aprovada da issue 1014449; nenhum status enviado. Resultado persistido antes da releitura."
+    },
+    {
+      "id": "publish-verification-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T11:45:15.652215Z",
+      "outcome": "matched",
+      "remote_sha256": "ad8749ac341c7e80f36f812f707c25a1238ca1b0a5e61e1e984b6577278fbb24",
+      "summary": "Releitura confirmou descrição aprovada, status New, relação 660 preservada e nenhum conteúdo externo. Hash do conteúdo gerenciado em CRLF."
+    }
+  ],
+  "requirement_divergences": [],
+  "title_convention": {
+    "surfaces": [
+      "WEB"
+    ],
+    "audiences": [
+      "PUBLICO",
+      "ADMIN",
+      "OPERACIONAL"
+    ],
+    "audience_mode": "aggregate",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados, incluindo gestores e membros; um administrador usa perfil/autenticação comuns, sem adquirir acesso automático a projetos.",
+    "confirmation": {
+      "statement": "Usuário respondeu concordo com tudo às três propostas de inclusão das referências, agrupamento coeso e convenção de títulos. O prefixo não concede novas permissões.",
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-09T21:03:27.181973+00:00"
+    }
+  },
+  "delivery": {
+    "surface": "WEB",
+    "audiences": [
+      "ADMIN"
+    ],
+    "name": "Gestão de Usuário",
+    "title": "[WEB] [ADMIN] Gestão de Usuário",
+    "visible_delivery": "Listagem paginada e formulários de cadastro/edição, com ativação e desativação. Os vínculos com projetos serão integrados pela Gestão de Projeto, que os cria e mantém.",
+    "user_result": "Administrar contas, situação e acesso administrativo das pessoas.",
+    "included": [
+      "Listar e paginar usuários; cadastrar e editar nome, e-mail e estado.",
+      "Ativar/desativar e definir/remover acesso administrativo; somente administradores operam essa gestão.",
+      "Apresentar formulário modal, retorno de validação, vazio/erro/sucesso e cards no mobile."
+    ],
+    "boundary_reason": "Cadastro, edição e situação são uma entrega coesa. Gestão de Projeto responde pelos vínculos e pela consulta desses vínculos na tela de usuários, evitando dependência circular."
+  },
+  "scope_item": {
+    "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
+    "catalog_item_id": "administer-users",
+    "catalog_sha256": "e25773bf2585e7605aa8161b2a4bfe30ad392974327f62bf606b42e251db6d4f"
+  }
+}

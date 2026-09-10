@@ -1,0 +1,7 @@
+{
+  "project_id": 65221,
+  "tracker_id": 2,
+  "subject": "[WEB] [ADMIN] Gestão de Usuário",
+  "description": "<!-- project-flow:start -->\nPermitir que administradores gerenciem as contas das pessoas, sua situação e seu acesso administrativo pela interface WEB responsiva em português.\n\nA entrega inclui:\n- Listar usuários com paginação.\n- Cadastrar e editar nome, e-mail e estado.\n- Ativar e desativar contas.\n- Conceder e remover acesso administrativo.\n- Restringir essas operações aos administradores.\n- Apresentar formulários em modal, validações e estados de vazio, erro e sucesso, com cards nos dispositivos móveis.\n\nA entrega depende da autenticação. A criação, manutenção e consulta dos vínculos com projetos serão integradas pela Feature Gestão de Projeto. A manutenção dos próprios dados pertence a Meu Perfil.\n\nRequisitos em coleta. As regras detalhadas e os critérios de aceite serão definidos na entrevista desta Feature.\n<!-- project-flow:end -->",
+  "status_id": 1
+}

@@ -2716,3 +2716,9 @@ Issue #1014448: requisito aprovado, dois cards explicitados nos fluxos e descri�
 ## Continuação após Meu Perfil
 
 Mário Tinelli autorizou o commit das alterações e a continuação para [WEB] [ADMIN] Gestão de Usuário, quarto item da ordem aprovada. Meu Perfil está concluído no catálogo; três requisitos concluídos, oito ainda não iniciados.
+
+## Gestão de Usuário concluída — 2026-09-10T11:45:15.652215Z
+
+Requisito #1014449 aprovado por Mário Tinelli, publicado e conferido. Status New e relação 660 preservados. Artefato: ../../features/1014449-gestao-de-usuario/feature.md. Requisito e escopo validados. Quatro de onze requisitos concluídos; sete itens ainda não iniciados. Aguardando escolha explícita de continuar para Gestão de Projeto ou parar.
+
+Mário Tinelli autorizou commit e continuidade para Gestão de Projeto em 2026-09-10T11:48:11.490539Z. Gestão de Usuário marcada como concluída no catálogo.

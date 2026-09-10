@@ -509,7 +509,7 @@
       ],
       "separation_reason": "Cadastro, edição e situação são uma entrega coesa. Gestão de Projeto responde pelos vínculos e pela consulta desses vínculos na tela de usuários, evitando dependência circular.",
       "suggested_position": 4,
-      "status": "pending",
+      "status": "completed",
       "candidate_ids": [
         "candidate-administer-users"
       ],
@@ -1629,15 +1629,15 @@
     },
     {
       "catalog_item_id": "administer-users",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014449,
+      "artifact_path": "docs/harness/features/1014449-gestao-de-usuario/feature.md",
+      "state_path": "docs/harness/features/1014449-gestao-de-usuario/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T11:26:54.123643Z",
+      "completed_at": "2026-09-10T11:45:15.652215Z"
     },
     {
       "catalog_item_id": "browse-projects",
@@ -1820,6 +1820,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T11:23:12.377091Z"
+    },
+    {
+      "after_item_id": "administer-users",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T11:48:11.490539Z"
     }
   ],
   "catalog_changes": [
@@ -1901,12 +1907,12 @@
       "from_item_id": "authenticate",
       "to_item_id": "administer-users",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014446,
+      "to_issue_id": 1014449,
+      "status": "completed",
+      "approval_id": "relation-authenticate-users-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T11:29:04.730495Z"
     },
     {
       "stable_key": "blocks:authenticate:browse-projects",

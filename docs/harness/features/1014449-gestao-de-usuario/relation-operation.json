@@ -1,0 +1,24 @@
+{
+  "key": "blocks:1014446:1014449",
+  "payload": {
+    "issue_id": 1014446,
+    "issue_to_id": 1014449,
+    "relation_type": "blocks"
+  },
+  "payload_sha256": "1896f31fb1f8363c7b9268c96d647e62690b1bfa068e98a2de13c99bd784092d",
+  "status": "completed",
+  "approval_id": "relation-authenticate-users-001",
+  "approved_by": "Mário Tinelli",
+  "approved_at": "2026-09-10T11:28:31.453559Z",
+  "attempts": [
+    {
+      "id": "relation-attempt-001",
+      "attempted_at": "2026-09-10T11:29:01.510926Z",
+      "outcome": "completed"
+    }
+  ],
+  "relation_id": 660,
+  "completed_at": "2026-09-10T11:29:01.510926Z",
+  "reconciliation_status": "completed",
+  "observation": "Releitura de #1014449 confirmou relação 660, endpoints e tipo aprovados; status New preservado."
+}
