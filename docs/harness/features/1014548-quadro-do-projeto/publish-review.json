@@ -1,0 +1,18 @@
+{
+  "issue_id": 1014548,
+  "status": "completed",
+  "payload_sha256": "65ea32b987c95baf9dac32a16106cfcb3f8a9a0a3fe54609e9969ddf38d339f7",
+  "requirement_sha256": "07070b18faa7c6f9e57d543ef052f13a2b192e2458220451831a7521ad89f884",
+  "baseline_managed_sha256": "8d2c262a4b1aa75be0e3b3d9e0f19fb60da13bb8e865e4002faf2bb6084c7339",
+  "preserved_prefix_bytes": 0,
+  "preserved_suffix_bytes": 0,
+  "divergences": [],
+  "preserved_status": "New",
+  "preserved_relation_ids": [
+    668
+  ],
+  "prepared_at": "2026-09-10T20:11:49.370760Z",
+  "completed_at": "2026-09-10T20:17:09.403941Z",
+  "reconciliation_status": "completed",
+  "actual_managed_sha256": "cb7c64f297e4bffb344670cf475f18138683afdb6d92b9bd1cc9c976f8f9eb2c"
+}

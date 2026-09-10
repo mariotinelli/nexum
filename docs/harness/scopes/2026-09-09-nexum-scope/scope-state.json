@@ -824,7 +824,7 @@
       ],
       "separation_reason": "Entrega contextual por situação, independente da busca transversal e da edição completa. Usa a regra de transição da Gestão de Tarefa e totais da Gestão de Tempo.",
       "suggested_position": 10,
-      "status": "pending",
+      "status": "completed",
       "candidate_ids": [
         "candidate-manage-project-board"
       ],
@@ -1856,15 +1856,15 @@
     },
     {
       "catalog_item_id": "manage-project-board",
-      "status": "pending",
-      "issue_id": null,
-      "artifact_path": null,
-      "state_path": null,
-      "requirement_phase": null,
+      "status": "completed",
+      "issue_id": 1014548,
+      "artifact_path": "../../features/1014548-quadro-do-projeto/feature.md",
+      "state_path": "../../features/1014548-quadro-do-projeto/feature-state.json",
+      "requirement_phase": "completed",
       "functional_gaps": [],
-      "reconciliation_status": "pending",
-      "started_at": null,
-      "completed_at": null
+      "reconciliation_status": "completed",
+      "started_at": "2026-09-10T20:03:01.463717Z",
+      "completed_at": "2026-09-10T20:17:09.403941Z"
     },
     {
       "catalog_item_id": "view-management-dashboard",
@@ -1987,6 +1987,12 @@
       "decision": "continue",
       "decided_by": "Mário Tinelli",
       "decided_at": "2026-09-10T19:58:01.564985Z"
+    },
+    {
+      "after_item_id": "manage-project-board",
+      "decision": "continue",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T20:19:49.550772Z"
     }
   ],
   "catalog_changes": [
@@ -2428,12 +2434,12 @@
       "from_item_id": "manage-time",
       "to_item_id": "manage-project-board",
       "relation_type": "blocks",
-      "from_issue_id": null,
-      "to_issue_id": null,
-      "status": "planned",
-      "approval_id": null,
-      "reconciliation_status": "pending",
-      "completed_at": null
+      "from_issue_id": 1014493,
+      "to_issue_id": 1014548,
+      "status": "completed",
+      "approval_id": "relation-time-board-001",
+      "reconciliation_status": "completed",
+      "completed_at": "2026-09-10T20:02:27.703747Z"
     },
     {
       "stable_key": "blocks:my-tasks:view-management-dashboard",
@@ -2633,6 +2639,14 @@
       "status": "passed",
       "checked_at": "2026-09-10T19:56:47.791515Z",
       "summary": "Requisito aprovado, publicado e relido com status New e relação 667 preservados; estado completed validado. Aguarda escolha continuar/parar para consolidar o catálogo."
+    },
+    {
+      "id": "board-completed-001",
+      "kind": "requirement-state",
+      "item_id": "manage-project-board",
+      "status": "passed",
+      "checked_at": "2026-09-10T20:17:09.403941Z",
+      "summary": "Requisito aprovado, publicado e relido com status New e relação 668 preservados; estado completed validado. Aguarda escolha continuar/parar para consolidar o catálogo."
     }
   ],
   "final_summary": null,
