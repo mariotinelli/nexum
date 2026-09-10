@@ -1,13 +1,13 @@
 ---
 name: project-flow
-description: Turn readable conversation, file, URL, image, or design evidence into an approved Feature/Bug catalog or canonical requirements with recoverable Redmine projections. Use for new-scope and new-issue work, including multi-item scope completion, safe pause, resume, catalog revision, relations, and partial-failure reconciliation; this flow does not edit an existing issue as a new demand.
+description: Turn readable conversation, file, URL, image, or design evidence into an approved Feature/Bug catalog or canonical requirements with recoverable Redmine projections. Use for new-scope and new-issue work, including multi-item scope completion, safe pause, resume, catalog revision, relations, publication alignment of its completed items, and partial-failure reconciliation; this flow does not edit an existing issue as a new demand.
 ---
 
 # Project Flow
 
 Respond in Brazilian Portuguese (pt-BR) from the first announcement, including questions, progress, preflight diagnostics, approval previews, final summaries, and authored requirements in local artifacts and Redmine. Preserve technical identifiers, schema keys, commands, and quoted source text. Apply this language choice when invoking the supporting disciplines unless the user explicitly requests another language.
 
-Deliver approved requirements: `new-scope` discovers an ordered Feature/Bug catalog and completes every item in that order; `new-issue` handles one Feature or Bug. The local Markdown is canonical; Redmine is its human-readable operational projection. Product decisions belong to the user, and implementation decisions belong to later roles.
+Deliver approved requirements: `new-scope` discovers an ordered Feature/Bug catalog and completes every item in that order; `new-issue` handles one Feature or Bug. The local Markdown is canonical; Redmine preserves its approved functional content through the [checked projection](references/redmine-publication.md). Product decisions belong to the user, and implementation decisions belong to later roles.
 
 ## Preflight before intake
 
@@ -20,6 +20,8 @@ Treat the user's demand text as opaque until this phase passes. Create no file a
 If a required capability remains unavailable, authentication fails, identity is missing, or a read fails, stop before intake and report the observed failure and its evidence-based corrective action using the diagnostic reference. Distinguish a connected server missing a capability from an unconfigured server. The valid outcome is failure before intake: no demand content processed and no artifact written.
 
 **Complete when:** discovery pagination is exhausted, every mandatory tool is present in the accumulated inventory, the authenticated identity is known, and the three read probes succeeded without reading or displaying a credential.
+
+For an explicitly requested publication alignment of a completed item created by this flow, reuse the confirmed project and identity after preflight and follow [the completed-publication branch](references/redmine-publication.md#aligning-an-already-completed-publication). This branch preserves the completed catalog and interview; it does not restart intake or issue creation.
 
 ## Select the context
 

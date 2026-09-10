@@ -46,7 +46,7 @@ After each completed item, show current issues, relations, catalog progress, rem
 
 ## 5. Reconcile and close the scope
 
-After all active items complete, reread every issue and relation. Reconcile unknown outcomes and divergences in operation order. Validate every separate requirement state and the scope state. Build the final `scope.md` summary listing all issues, native relations, canonical artifacts, approvals, validations, and one actionable next recommendation. Present its exact projection and persist one attributed scope-completion approval.
+After all active items complete, reread every issue and relation. Reconcile unknown outcomes and divergences in operation order. Validate every separate requirement state and the scope state, and run the [functional publication check](redmine-publication.md) for every issue against its approved canonical document. Surface incomplete or summarized projections even when their historical publication fingerprints match. Build the final `scope.md` summary listing all issues, native relations, canonical artifacts, approvals, validations, and one actionable next recommendation. Present its exact projection and persist one attributed scope-completion approval.
 
 The scope may reach `completed` only when every active item is completed, every retained/retired item preserves any existing issue and artifacts, every relation is published and reconciled, every required approval is valid, every validation passes, all candidates are decided, and no functional gap is open.
 

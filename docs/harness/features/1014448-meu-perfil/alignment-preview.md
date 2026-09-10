@@ -1,7 +1,4 @@
-# [WEB] [OPERACIONAL] Meu Perfil
-
-Issue: #1014448. Versão proposta para aprovação.
-
+<!-- project-flow:start -->
 ## Objetivo
 
 Permitir que usuários autenticados mantenham seus próprios dados pessoais e alterem a própria senha, com ações independentes, pela interface WEB responsiva em português.
@@ -72,10 +69,6 @@ CA11 — Em desktop e mobile, ao usar os dois cards, manter campos e botões uti
 
 Autenticação, issue #1014446. Relação nativa 659 já registrada: Autenticação bloqueia Meu Perfil. A interface utiliza a navegação autenticada existente.
 
-## Designs e evidências
-
-design-profile e design-guide. Decisões Q11–Q14 e confirmação registradas em interview.md. A decisão explícita de dois cards, componentes e botões independentes substitui a ação única do design. A política de senha foi alinhada à aprovada em Recuperação de Senha.
-
 ## Dentro do escopo
 
 Consulta e edição dos próprios dados, alteração da própria senha, efeitos confirmados sobre login, recuperação, sessões e lembranças, e ações independentes. Interface responsiva em português com os requisitos explícitos do guia: contraste WCAG AA, teclado, foco, labels, nomes acessíveis, mensagens descritivas, alvos de toque adequados, hierarquia semântica e redução de movimento. Senhas protegidas e erros sem exposição de dados sensíveis.
@@ -83,3 +76,8 @@ Consulta e edição dos próprios dados, alteração da própria senha, efeitos 
 ## Fora do escopo
 
 Administração de outras contas, permissões, ativação e desativação de usuários, recuperação de senha sem sessão e gestão de projetos pertencem às respectivas Features. Sem confirmação do novo e-mail, aplicativo nativo ou API pública nesta entrega.
+
+## Requisito canônico
+
+Documento aprovado por Mário Tinelli: docs/harness/features/1014448-meu-perfil/feature.md
+<!-- project-flow:end -->

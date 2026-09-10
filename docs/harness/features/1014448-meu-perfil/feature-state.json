@@ -291,6 +291,16 @@
       "subject_sha256": "b92d0a6ab0db0364fb4981736c27f880504cc6d1adf694b30638b6124c1f13a9",
       "approved_by": "Mário Tinelli",
       "approved_at": "2026-09-10T11:20:28.089283Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T23:52:17.473681Z",
+      "invalidated_reason": "Ajuste editorial aprovado para alinhar os títulos de Meu Perfil ao Redmine, sem alteração funcional."
+    },
+    {
+      "id": "requirement-profile-editorial-alignment-001",
+      "kind": "requirement",
+      "subject_sha256": "ea1ca6adc333be9a9c67d05d16e78355be676d67f2686d8ee42f79e27bb053cd",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T23:52:17.473681Z",
       "status": "valid"
     }
   ],
