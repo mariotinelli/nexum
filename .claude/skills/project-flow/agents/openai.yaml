@@ -1,0 +1,11 @@
+interface:
+  display_name: "Project Flow"
+  short_description: "Define a sourced scope, Feature, or Bug"
+  default_prompt: "Use $project-flow to define or safely resume this sourced scope, Feature, or Bug, complete its approved items, and reconcile Redmine issues and relations without duplicate mutations."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "redmine"
+      description: "Authenticated Redmine project and issue tools"
+policy:
+  allow_implicit_invocation: true
