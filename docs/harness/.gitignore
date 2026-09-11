@@ -1,0 +1,7 @@
+
+# Project Flow temporary execution files
+/.runs/
+/.locks/
+/features/*/.work/
+/bugs/*/.work/
+/scopes/*/.work/

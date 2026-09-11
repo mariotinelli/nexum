@@ -165,8 +165,8 @@ Gestão de Tempo entrega os apontamentos, totais e integração do cronômetro c
 ## Designs e evidências
 
 - [Guia de design](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md), [Apontamentos](../../scopes/2026-09-09-nexum-scope/sources/design-time-entries.md), [Detalhes da tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-task-detail.md) e [Minhas Tarefas](../../scopes/2026-09-09-nexum-scope/sources/design-my-tasks.md).
-- [Entrevista](interview.md): Q70–Q95 e confirmação explícita do entendimento por Mário Tinelli.
-- [Catálogo completo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md), aprovação catalog-time-review-001.
+- [Entrevista](history/interview.md): Q70–Q95 e confirmação explícita do entendimento por Mário Tinelli.
+- [Catálogo completo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md), aprovação catalog-time-review-001.
 - As respostas substituem nas referências a edição exclusiva de apontamentos próprios, duração manual em minutos, Descartar, execução aberta durante pausa e data única de encerramento. Cada pausa salva e fecha execução; novo início abre outra de até oito horas. O acesso administrativo amplo preserva as exceções de cronômetro próprio, responsável e somente consulta.
 
 ## Dentro do escopo

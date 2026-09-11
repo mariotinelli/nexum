@@ -58,8 +58,8 @@
       ],
       "required_artifacts": [
         "feature.md",
-        "feature-state.json",
-        "interview.md",
+        ".flow/feature-state.json",
+        "history/interview.md",
         "sources/<source-id>-<slug>.md"
       ]
     },
@@ -90,8 +90,8 @@
       ],
       "required_artifacts": [
         "bug.md",
-        "bug-state.json",
-        "interview.md",
+        ".flow/bug-state.json",
+        "history/interview.md",
         "sources/<source-id>-<slug>.md"
       ],
       "approval_without_deterministic_reproduction_requires": [
@@ -144,7 +144,7 @@
       ],
       "required_scope_artifacts": [
         "scope.md",
-        "scope-state.json",
+        ".flow/scope-state.json",
         "sources/<source-id>-<slug>.md"
       ],
       "catalog_item_fields": [

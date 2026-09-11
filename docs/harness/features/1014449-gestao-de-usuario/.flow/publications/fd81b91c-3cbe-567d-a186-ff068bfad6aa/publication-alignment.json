@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "kind": "publication-alignment",
+  "status": "completed",
+  "issue_id": 1014449,
+  "canonical_state": "feature-state.json",
+  "lock": {
+    "schema_version": 1,
+    "item_key": "nexum:administer-users",
+    "run_id": "d4c2fdbb-52f4-45d9-b470-8e730d197cae",
+    "lock_id": "1f4d9290-cb19-4649-b668-426c68c9615a",
+    "acquired_at": "2026-09-10T21:16:39.730468Z"
+  },
+  "approvals": [
+    {
+      "id": "alignment-publish-001",
+      "kind": "publish-payload",
+      "subject_sha256": "457f90fc7f1b48e108d66f3f5c07c61921fe1fc9e3f8854daf305e8dfacef7ef",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T23:52:17.473681Z",
+      "status": "valid"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "alignment-attempt-001",
+      "attempted_at": "2026-09-10T23:53:23.105405+00:00",
+      "outcome": "completed",
+      "response_received_at": "2026-09-10T23:53:25.903261+00:00"
+    }
+  ],
+  "observations": [
+    {
+      "id": "alignment-response-001",
+      "observed_at": "2026-09-10T23:53:25.903261+00:00",
+      "outcome": "completed",
+      "summary": "MCP update returned success."
+    },
+    {
+      "id": "alignment-readback-001",
+      "observed_at": "2026-09-10T23:54:51.024095+00:00",
+      "outcome": "matched",
+      "description_sha256": "56093ee02ca838bca6b77038fbb9dc6d7799db8e2f536f45990d007fcf067c77",
+      "summary": "Descrição relida confere com a publicação aprovada e com todas as seções funcionais canônicas. Status New, relações e conteúdo externo preservados."
+    }
+  ],
+  "canonical_approval_id": "requirement-users-001-preserved-time-review",
+  "canonical_sha256": "b62647b8d9d1f5ee5ca9021f1d0bf65b40da39a68c6b7572994d17ef89bb5701",
+  "baseline_description_sha256": "0f4739d3b90dd4dcdc022c0525ff9aa301f0e63ee3c37f6465e6ac49b7c26071",
+  "payload_sha256": "457f90fc7f1b48e108d66f3f5c07c61921fe1fc9e3f8854daf305e8dfacef7ef",
+  "preview_path": "alignment-preview.md",
+  "payload_path": "alignment-payload.json",
+  "baseline_path": "alignment-before.json",
+  "review": {
+    "preserve_status": {
+      "id": 1,
+      "name": "New",
+      "is_closed": false
+    },
+    "preserve_relations": [
+      {
+        "id": 660,
+        "issue_id": 1014446,
+        "issue_to_id": 1014449,
+        "relation_type": "blocks",
+        "delay": null
+      },
+      {
+        "id": 661,
+        "issue_id": 1014449,
+        "issue_to_id": 1014450,
+        "relation_type": "blocks",
+        "delay": null
+      }
+    ],
+    "unmanaged_content": "preserved-byte-for-byte",
+    "canonical_content": "unchanged",
+    "functional_projection_check": "passed",
+    "reason": "Publicar integralmente as seções funcionais, preservando regras e critérios com seus identificadores. Manter títulos sem Card em Meu Perfil e evitar título H1 duplicado."
+  },
+  "commit_authorized": true,
+  "completed_at": "2026-09-10T23:54:51.024095+00:00",
+  "readback_path": "alignment-after.json",
+  "scope_verification": {
+    "issues": [
+      {
+        "issue_id": 1014446,
+        "canonical_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014447,
+        "canonical_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014448,
+        "canonical_sha256": "ea1ca6adc333be9a9c67d05d16e78355be676d67f2686d8ee42f79e27bb053cd",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014449,
+        "canonical_sha256": "b62647b8d9d1f5ee5ca9021f1d0bf65b40da39a68c6b7572994d17ef89bb5701",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014450,
+        "canonical_sha256": "3b4ef5cf44920c4c96579ce233518a986095c702671d1196da82223aa58abc9d",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014454,
+        "canonical_sha256": "5e758dcfb4faa537d6870fb600d9d57a693fe2741550e5bfd0006755424564a7",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014465,
+        "canonical_sha256": "da590f2972c1ed48e865ff410b5685017336eeed26ced9b8cc682f28ef1f7164",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014493,
+        "canonical_sha256": "0439e88ac1f28d28d0f781d21a4bd51a8e725a682e9b7cb3e810584dc74c8440",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014547,
+        "canonical_sha256": "6c7a93bbce7ff7013f98ad93977616a8f24336b792e1c4e808fae92be56f65c6",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014548,
+        "canonical_sha256": "07070b18faa7c6f9e57d543ef052f13a2b192e2458220451831a7521ad89f884",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      },
+      {
+        "issue_id": 1014550,
+        "canonical_sha256": "84121a2e81b8516a76b783b1679efbf2dc78ea2b9d65289be0f5031bee9f0019",
+        "state": "passed",
+        "functional_projection": "passed",
+        "status": "New"
+      }
+    ],
+    "native_relations": 10,
+    "scope_state": "passed"
+  }
+}

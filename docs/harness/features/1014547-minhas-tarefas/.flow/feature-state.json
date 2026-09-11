@@ -1,0 +1,414 @@
+{
+  "schema_version": 4,
+  "run_id": "bf318b8c-a3af-4c49-b0fd-cedeca261beb",
+  "internal_identity": "0ba818f7-0e90-4017-8418-4b61ff3420c6",
+  "mode": "new-scope",
+  "item_type": "Feature",
+  "phase": "completed",
+  "completed_phases": [
+    "mode-confirmed",
+    "inputs-normalized",
+    "repository-analyzed",
+    "item-ready",
+    "item-created",
+    "interviewing",
+    "requirement-proposed",
+    "requirement-approved",
+    "redmine-synchronized",
+    "completed"
+  ],
+  "identity": {
+    "redmine_user_id": 131789,
+    "display_name": "Mário Tinelli",
+    "confirmed_at": "2026-09-09T19:14:01.0762355Z"
+  },
+  "redmine": {
+    "project_id": 65221,
+    "project_name": "Nexum",
+    "tracker_id": 2,
+    "tracker_name": "Feature",
+    "initial_status_id": 1,
+    "initial_status_name": "New",
+    "approved_status_id": 4,
+    "approved_status_name": "Approved",
+    "mapping_confirmations": [],
+    "category": {
+      "id": null,
+      "name": null,
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T19:18:07.813471Z"
+    },
+    "issue_id": 1014547
+  },
+  "sources": [
+    {
+      "id": "design-guide",
+      "name": "guia-de-design.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\guia-de-design.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-guide.md",
+      "original_sha256": "801383f4687ff5c25486f5007341cf625910d75f7c6c9337d552ce3ec29baceb",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "14cd798e9f9cec0b74b5c6f4c53ff8f8a9a9cfe3ab57a16ba0a6df47b0fa696a",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-my-tasks",
+      "name": "minhas-tarefas.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\minhas-tarefas.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-my-tasks.md",
+      "original_sha256": "56421110a7263467f9db0b1359d38ae4027dcdc640aa74ef3397d14cd2c742c6",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "a119e5da1dbe6408a4b327eb05ab09bb8871c890e4ecc4aabe346e7a44c41200",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    }
+  ],
+  "repository": {
+    "stack": [
+      "PHP 8.4",
+      "Laravel 13",
+      "Livewire 4",
+      "Tailwind CSS 4, DaisyUI 5 e Alpine.js 3",
+      "MySQL e Eloquent",
+      "Pest 5 e PHPUnit 12",
+      "r2luna/brain 4.1",
+      "Laravel Auditing 14"
+    ],
+    "vocabulary": [
+      {
+        "term": "Usuário",
+        "evidence_paths": [
+          "app/Models/User.php",
+          "docs/agents/domain_rules.md",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Administrador",
+        "evidence_paths": [
+          "app/Enums/TypeUsers.php",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Gestor",
+        "evidence_paths": [
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Membro",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-dashboard.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Projeto",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md"
+        ]
+      },
+      {
+        "term": "Tarefa",
+        "evidence_paths": [
+          "sources/design-tasks.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Situação da tarefa",
+        "evidence_paths": [
+          "sources/design-board.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Prioridade da tarefa",
+        "evidence_paths": [
+          "sources/design-new-task.md",
+          "sources/design-tasks.md"
+        ]
+      },
+      {
+        "term": "Projeto arquivado",
+        "evidence_paths": [
+          "sources/design-edit-project.md",
+          "sources/design-board.md",
+          "sources/design-projects.md"
+        ]
+      }
+    ],
+    "exclusions": [
+      "vendor/** e node_modules/**",
+      ".git/**",
+      "storage/logs/**, caches e arquivos temporários",
+      "public/build/**, artefatos Vite e relatórios de cobertura",
+      ".env*, credenciais, chaves privadas e tokens",
+      "binários e conteúdo gerado sem relevância funcional"
+    ]
+  },
+  "classification": {
+    "suggested_type": "Feature",
+    "rationale": "Capacidade pessoal de consulta e execução das próprias tarefas, aprovada como Feature separada da consulta transversal no catálogo.",
+    "confirmed_type": "Feature",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T19:18:07.813471Z"
+  },
+  "similarity": {
+    "searched_at": "2026-09-10T19:18:07.813471Z",
+    "candidates": [],
+    "decision": "new-demand",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T19:18:07.813471Z"
+  },
+  "decisions": [
+    {
+      "id": "creation-confirmation",
+      "statement": "Mário Tinelli respondeu sim à prévia completa de Minhas Tarefas nesta conversa. Aprova uma nova Feature sem categoria; busca em todas as oito issues existentes não encontrou duplicidade. Consulta de Tarefas e Gestão de Tempo são capacidades distintas já aprovadas. Publicação futura e relação nativa exigem suas próprias aprovações.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:18:07.813471Z",
+      "status": "valid"
+    },
+    {
+      "id": "q96",
+      "statement": "Q96: resposta literal de Mário Tinelli: concordo. Entendimento: Excluir tarefas canceladas, arquivadas e de projetos arquivados da visão de trabalho diário.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "valid"
+    },
+    {
+      "id": "q97",
+      "statement": "Q97: resposta literal de Mário Tinelli: hoje e 2 dias uteis anteriores. Entendimento: Finalizadas recentemente abrange hoje e os dois dias úteis anteriores. Definição de dia útil e inclusão dos dias intermediários ainda serão esclarecidas em Q103.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "reopened",
+      "reopened_at": "2026-09-10T19:41:04.792156Z",
+      "reopened_reason": "Mário Tinelli substituiu expressamente os dois dias úteis anteriores por seis dias corridos anteriores em Q103. A decisão substituta está resolvida em q103; não resta lacuna de calendário."
+    },
+    {
+      "id": "q98",
+      "statement": "Q98: resposta literal de Mário Tinelli: concordo. Entendimento: Busca e filtros conforme recomendação Q98; responsável fixo no usuário conectado.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "valid"
+    },
+    {
+      "id": "q99",
+      "statement": "Q99: resposta literal de Mário Tinelli: concordo. Entendimento: Ordenação conforme recomendação Q99, dentro de cada grupo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "valid"
+    },
+    {
+      "id": "q100",
+      "statement": "Q100: resposta literal de Mário Tinelli: concordo. Entendimento: Oito tarefas por página em cada grupo, controles independentes e contador do total filtrado do grupo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "valid"
+    },
+    {
+      "id": "q101",
+      "statement": "Q101: resposta literal de Mário Tinelli: concordo. Entendimento: Preservar filtros, ordenação e páginas até sair da conta, com contexto próprio; Limpar restaura padrão e Aplicar filtros reinicia páginas.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "valid"
+    },
+    {
+      "id": "q102",
+      "statement": "Q102: resposta literal de Mário Tinelli: sim. Entendimento: Manter Nova tarefa conforme recomendação Q102, com permissões existentes e sem atribuição automática.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:38:07.236099Z",
+      "status": "valid"
+    },
+    {
+      "id": "q103",
+      "statement": "Q103: resposta literal de Mário Tinelli: mudei de ideia, pegue hoje e os ultimos 6 dias, sejam ferias ou nao, dias uteis ou nao. Entendimento: Substituir Q97: Finalizadas recentemente inclui hoje e os seis dias corridos anteriores, inclusive fins de semana, feriados e férias, pela data de finalização em Brasília. Intervalo inclusivo, sem calendário de dias úteis.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:41:04.792156Z",
+      "status": "valid"
+    },
+    {
+      "id": "q104",
+      "statement": "Q104: resposta literal de Mário Tinelli: sim. Entendimento: Adotar a recomendação de Q104: grupos exclusivos, execução prevalece sobre atraso sem ocultar seu aviso; Pendentes e Pausadas por prazo; Finalizadas somente no período; seis grupos fixos inclusive vazios.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:41:04.792156Z",
+      "status": "valid"
+    },
+    {
+      "id": "q105",
+      "statement": "Q105: resposta literal de Mário Tinelli: sim. Entendimento: Adotar a recomendação de Q105: atualizar grupos, situação e contadores após sucesso, preservando filtros e páginas; última página disponível do grupo se a anterior desaparecer; cronômetro global visível mesmo quando a tarefa não corresponde aos filtros.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:41:04.792156Z",
+      "status": "valid"
+    },
+    {
+      "id": "understanding-my-tasks-001",
+      "statement": "Mário Tinelli respondeu sim à apresentação integral do entendimento consolidado de Minhas Tarefas nesta conversa. Confirma Q96, Q98–Q105, com Q103 substituindo Q97. Autoriza preparar o requisito completo; aprovação do documento e publicação permanecem posteriores.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T19:48:45.086514Z",
+      "status": "valid"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "create-my-tasks-001",
+      "kind": "create-payload",
+      "subject_sha256": "2754eb191fc1980fd52c43eb0f77469fe83526ade3ab52cd401a59c3f8e4c793",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:18:07.813471Z",
+      "status": "valid"
+    },
+    {
+      "id": "relation-time-my-tasks-001",
+      "kind": "relation-payload",
+      "subject_sha256": "ea7bce3e5c940af35821d7b72e5ad2c9ed8819fb3aa754e4a56c72f2cd57bdfb",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:24:53.568267Z",
+      "status": "valid"
+    },
+    {
+      "id": "requirement-my-tasks-001",
+      "kind": "requirement",
+      "subject_sha256": "6c7a93bbce7ff7013f98ad93977616a8f24336b792e1c4e808fae92be56f65c6",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:54:11.141397Z",
+      "status": "valid"
+    },
+    {
+      "id": "publish-my-tasks-001",
+      "kind": "publish-payload",
+      "subject_sha256": "9080057041ee5a9de9773e6cc750c05ee49077647d98bbf4d48d82d32985356d",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:55:25.681931Z",
+      "status": "valid"
+    }
+  ],
+  "deferred_questions": [],
+  "pauses": [],
+  "lock": {
+    "item_key": "nexum:my-tasks",
+    "lock_id": "13a40277-0517-43a2-af44-c3b6ce4d876e",
+    "acquired_at": "2026-09-10T19:18:07.813471Z",
+    "path": "docs/harness/.locks/e002b6fee71551079b20b10d844e4156fce4fc4afd3b6c10aff4214134d4519f.lock.json"
+  },
+  "remote_operations": {
+    "create": {
+      "status": "completed",
+      "payload_sha256": "2754eb191fc1980fd52c43eb0f77469fe83526ade3ab52cd401a59c3f8e4c793",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:18:07.813471Z",
+      "attempts": [
+        {
+          "id": "create-attempt-001",
+          "attempted_at": "2026-09-10T19:18:46.401835Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T19:18:46.401835Z",
+      "observation_id": "create-response-001"
+    },
+    "publish": {
+      "status": "completed",
+      "attempts": [
+        {
+          "id": "publish-attempt-001",
+          "attempted_at": "2026-09-10T19:55:49.446835Z",
+          "outcome": "completed"
+        }
+      ],
+      "payload_sha256": "9080057041ee5a9de9773e6cc750c05ee49077647d98bbf4d48d82d32985356d",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:55:25.681931Z",
+      "completed_at": "2026-09-10T19:55:49.446835Z",
+      "observation_id": "publish-response-001"
+    },
+    "relations": []
+  },
+  "remote_observations": [
+    {
+      "id": "create-response-001",
+      "operation_key": "create",
+      "observed_at": "2026-09-10T19:18:46.401835Z",
+      "outcome": "matched",
+      "remote_sha256": "3839340af9df169a56d6eda6e8356c87a8a0717688788b852e89e306852563af",
+      "summary": "Redmine confirmou issue #1014547, Feature New, com título e descrição aprovados; conteúdo gerenciado em CRLF."
+    },
+    {
+      "id": "relation-readback-001",
+      "operation_key": "blocks:1014493:1014547",
+      "observed_at": "2026-09-10T19:25:59.116648Z",
+      "outcome": "matched",
+      "summary": "Releitura confirmou relação 667, endpoints #1014493 -> #1014547 e tipo blocks; status New preservado."
+    },
+    {
+      "id": "publish-response-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T19:55:49.446835Z",
+      "outcome": "matched",
+      "summary": "Redmine respondeu Issue atualizada à atualização exata da descrição aprovada de #1014547. Sucesso persistido antes da releitura de verificação."
+    },
+    {
+      "id": "publish-readback-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T19:56:31.422440Z",
+      "outcome": "matched",
+      "remote_sha256": "a7a3270f90898bf6917027b9fd0e5a718a81ff620d928bc007bc1e071c3776f4",
+      "summary": "Releitura confirmou a descrição integral aprovada, normalizada apenas a quebra de linha CRLF, sem conteúdo externo; status New e relação 667 preservados."
+    }
+  ],
+  "requirement_divergences": [],
+  "title_convention": {
+    "surfaces": [
+      "WEB"
+    ],
+    "audiences": [
+      "PUBLICO",
+      "ADMIN",
+      "OPERACIONAL"
+    ],
+    "audience_mode": "aggregate",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "confirmation": {
+      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+    }
+  },
+  "delivery": {
+    "surface": "WEB",
+    "audiences": [
+      "OPERACIONAL"
+    ],
+    "name": "Minhas Tarefas",
+    "title": "[WEB] [OPERACIONAL] Minhas Tarefas",
+    "visible_delivery": "Tarefas atribuídas ao usuário agrupadas por execução e prazo, filtros e ações rápidas de Iniciar, Pausar e Finalizar com integração do cronômetro.",
+    "user_result": "Organizar o trabalho pessoal e executar rapidamente as próprias responsabilidades.",
+    "included": [
+      "Mostrar somente tarefas atribuídas ao usuário, nos grupos Em execução, Atrasadas, Para hoje, Próximas, Sem prazo e Finalizadas recentemente; aplicar os novos critérios de situação e atraso.",
+      "Buscar e filtrar por projeto, situação, prioridade e prazo; ordenar e limpar filtros sem ampliar a visibilidade pessoal.",
+      "Expor ações permitidas de Iniciar, Pausar e Finalizar e abrir o detalhe, integrando o cronômetro segundo Gestão de Tempo: pausa salva as horas e libera iniciar outra tarefa; novo início abre nova execução. Manter recorte pessoal inclusive para administradores. Não oferecer Retomar, Reabrir, Devolver à fila, Bloquear ou seletor manual de situação.",
+      "Oferecer grupos vazios, retorno de ações e cards/ações de toque no mobile."
+    ],
+    "boundary_reason": "Recorte pessoal para execução diária, separado da busca transversal. A regra de situação e o registro de tempo permanecem nas capacidades que os produzem."
+  },
+  "scope_item": {
+    "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
+    "catalog_item_id": "my-tasks",
+    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+  }
+}

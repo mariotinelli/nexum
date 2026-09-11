@@ -173,10 +173,10 @@ Consulta de Tarefas, Gestão de Tempo, Minhas Tarefas, Quadro do Projeto e Paine
 
 ## Designs e evidências
 
-- Revisão administrativa e de integração: Q70–Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/interview.md), com [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md). Substitui limites antigos do administrador, execução aberta durante pausa e encerramento separado com Descartar.
+- Revisão administrativa e de integração: Q70–Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/history/interview.md), com [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md). Substitui limites antigos do administrador, execução aberta durante pausa e encerramento separado com Descartar.
 - [Nova tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-new-task.md), [Editar tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-edit-task.md), [Detalhes da tarefa](../../scopes/2026-09-09-nexum-scope/sources/design-task-detail.md), [Detalhes do projeto](../../scopes/2026-09-09-nexum-scope/sources/design-project-detail.md) e [Guia de design](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md).
-- [Entrevista](interview.md): Q39–Q62, confirmação explícita do entendimento e correção posterior de Mário Tinelli: Iniciar/Pausar/Finalizar exclusivos do responsável atual.
-- [Catálogo completo corrigido aprovado](../../scopes/2026-09-09-nexum-scope/catalog-responsible-review.md). Aprovação `catalog-responsible-only-001`; revisão anterior preservada no histórico.
+- [Entrevista](history/interview.md): Q39–Q62, confirmação explícita do entendimento e correção posterior de Mário Tinelli: Iniciar/Pausar/Finalizar exclusivos do responsável atual.
+- [Catálogo completo corrigido aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-responsible-review.md). Aprovação `catalog-responsible-only-001`; revisão anterior preservada no histórico.
 - Decisões confirmadas substituem nas referências: criação/edição por membros ou responsável, troca de projeto, edição direta de situação, Bloqueada/Concluída e reabertura, estimativa em minutos e exclusão de imagens/anexos/desarquivamento. Permanecem prioridades fixas e datas de tarefas; o acesso administrativo sem participação passa a seguir a revisão de Gestão de Tempo. Referências são evidência de design, sem comprovar implementação existente.
 
 ## Dentro do escopo

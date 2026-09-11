@@ -1,0 +1,24 @@
+{
+  "key": "blocks:1014465:1014550",
+  "payload": {
+    "issue_id": 1014465,
+    "issue_to_id": 1014550,
+    "relation_type": "blocks"
+  },
+  "payload_sha256": "36edcdcda490e53672cfea37ebac846b6836a535ae0626560b5e6e5a85926f71",
+  "status": "completed",
+  "approval_id": "relation-search-dashboard-001",
+  "approved_by": "Mário Tinelli",
+  "approved_at": "2026-09-10T20:28:14.792829Z",
+  "attempts": [
+    {
+      "id": "relation-attempt-001",
+      "attempted_at": "2026-09-10T20:28:43.052083Z",
+      "outcome": "completed"
+    }
+  ],
+  "reconciliation_status": "completed",
+  "relation_id": 669,
+  "completed_at": "2026-09-10T20:28:43.052083Z",
+  "observation": "Releitura final confirmou relações 669 e 670, endpoints e tipo blocks aprovados, status New preservado."
+}

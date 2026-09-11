@@ -131,10 +131,10 @@ Gestão de Tarefa (#1014454), com relação nativa 665 já criada e conferida: #
 
 ## Designs e evidências
 
-- Revisão administrativa: Q84/Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/interview.md), com [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md). Essa decisão substitui a limitação anterior do administrador aos projetos participantes.
+- Revisão administrativa: Q84/Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/history/interview.md), com [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md). Essa decisão substitui a limitação anterior do administrador aos projetos participantes.
 - [Tela Tarefas](../../scopes/2026-09-09-nexum-scope/sources/design-tasks.md) e [Guia de design](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md).
-- [Entrevista](interview.md): decisões Q63–Q69 e confirmação explícita de Mário Tinelli.
-- [Catálogo completo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-search-review.md).
+- [Entrevista](history/interview.md): decisões Q63–Q69 e confirmação explícita de Mário Tinelli.
+- [Catálogo completo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-search-review.md).
 - Q63 amplia a busca do protótipo e do catálogo antigo para título ou descrição, ignorando acentos. Q64/Q69 definem opções e redefinição de responsável. Q65/Q66 confirmam ordenação, oito registros por página e continuidade. Q67/Q68 resolvem precedência do projeto e duração da preservação dos filtros. Situações e permissões antigas das referências são substituídas pelas já aprovadas na Gestão de Tarefa.
 
 ## Dentro do escopo

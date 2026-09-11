@@ -1,0 +1,470 @@
+{
+  "schema_version": 4,
+  "run_id": "e4ab9e34-0a56-434f-b2df-99b5989327c7",
+  "internal_identity": "99bf427d-1c66-48ea-a100-646105e94684",
+  "mode": "new-scope",
+  "item_type": "Feature",
+  "phase": "completed",
+  "completed_phases": [
+    "mode-confirmed",
+    "inputs-normalized",
+    "repository-analyzed",
+    "item-ready",
+    "item-created",
+    "interviewing",
+    "requirement-proposed",
+    "requirement-approved",
+    "redmine-synchronized",
+    "completed"
+  ],
+  "identity": {
+    "redmine_user_id": 131789,
+    "display_name": "Mário Tinelli",
+    "confirmed_at": "2026-09-09T19:14:01.0762355Z"
+  },
+  "redmine": {
+    "project_id": 65221,
+    "project_name": "Nexum",
+    "tracker_id": 2,
+    "tracker_name": "Feature",
+    "initial_status_id": 1,
+    "initial_status_name": "New",
+    "approved_status_id": 4,
+    "approved_status_name": "Approved",
+    "mapping_confirmations": [],
+    "category": {
+      "id": null,
+      "name": null,
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T14:27:58.056148Z"
+    },
+    "issue_id": 1014465
+  },
+  "sources": [
+    {
+      "id": "design-tasks",
+      "name": "tarefas.html",
+      "type": "design HTML da tela Tarefas",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\tarefas.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-tasks.md",
+      "original_sha256": "958027e41eb2543125e745c457fae750741bf4c45336ea2bbb148f5ef7ab154e",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "093f563e97f41777172d5fcf156aea03bd7b250f70cd74f50305782d1761ec26",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-guide",
+      "name": "guia-de-design.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\guia-de-design.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-guide.md",
+      "original_sha256": "801383f4687ff5c25486f5007341cf625910d75f7c6c9337d552ce3ec29baceb",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "14cd798e9f9cec0b74b5c6f4c53ff8f8a9a9cfe3ab57a16ba0a6df47b0fa696a",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    }
+  ],
+  "repository": {
+    "stack": [
+      "PHP 8.4",
+      "Laravel 13",
+      "Livewire 4",
+      "Tailwind CSS 4, DaisyUI 5 e Alpine.js 3",
+      "MySQL e Eloquent",
+      "Pest 5 e PHPUnit 12",
+      "r2luna/brain 4.1",
+      "Laravel Auditing 14"
+    ],
+    "vocabulary": [
+      {
+        "term": "Usuário",
+        "evidence_paths": [
+          "app/Models/User.php",
+          "docs/agents/domain_rules.md",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Administrador",
+        "evidence_paths": [
+          "app/Enums/TypeUsers.php",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Gestor",
+        "evidence_paths": [
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Membro",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-dashboard.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Projeto",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md"
+        ]
+      },
+      {
+        "term": "Tarefa",
+        "evidence_paths": [
+          "sources/design-tasks.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Situação da tarefa",
+        "evidence_paths": [
+          "sources/design-board.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Prioridade da tarefa",
+        "evidence_paths": [
+          "sources/design-new-task.md",
+          "sources/design-tasks.md"
+        ]
+      },
+      {
+        "term": "Projeto arquivado",
+        "evidence_paths": [
+          "sources/design-edit-project.md",
+          "sources/design-board.md",
+          "sources/design-projects.md"
+        ]
+      }
+    ],
+    "exclusions": [
+      "vendor/** e node_modules/**",
+      ".git/**",
+      "storage/logs/**, caches e arquivos temporários",
+      "public/build/**, artefatos Vite e relatórios de cobertura",
+      ".env*, credenciais, chaves privadas e tokens",
+      "binários e conteúdo gerado sem relevância funcional"
+    ]
+  },
+  "classification": {
+    "suggested_type": "Feature",
+    "rationale": "Consulta transversal com busca, filtros, ordenação e paginação aprovada como capacidade própria no catálogo.",
+    "confirmed_type": "Feature",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T14:27:58.056148Z"
+  },
+  "similarity": {
+    "searched_at": "2026-09-10T14:27:58.056148Z",
+    "candidates": [],
+    "decision": "new-demand",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T14:27:58.056148Z"
+  },
+  "decisions": [
+    {
+      "id": "creation-confirmation",
+      "statement": "Mário Tinelli respondeu sim à prévia completa de Consulta de Tarefas, nova Feature sem categoria. Busca em todas as issues do projeto encontrou somente as seis Features anteriores, sem duplicidade; Gestão de Tarefa é pré-requisito distinto.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:27:58.056148Z",
+      "status": "valid"
+    },
+    {
+      "id": "q63",
+      "statement": "Buscar qualquer trecho no título ou na descrição, ignorando maiúsculas/minúsculas, acentos e espaços nas extremidades. Amplia a busca apenas em título do catálogo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:49:18.391854Z",
+      "status": "valid"
+    },
+    {
+      "id": "q64",
+      "statement": "Filtro de responsável oferece Todos, Sem responsável e pessoas dos projetos acessíveis, incluindo responsáveis inativos que ainda tenham tarefas; selecionar projeto limita pessoas a esse projeto.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:49:18.391854Z",
+      "status": "valid"
+    },
+    {
+      "id": "q65",
+      "statement": "Ordenação padrão criação mais recente; atualização mais recente; prazo mais próximo com sem prazo no fim; prioridade Urgente para Baixa. Desempate por criação mais recente.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:49:18.391854Z",
+      "status": "valid"
+    },
+    {
+      "id": "q66",
+      "statement": "Oito tarefas por página, total encontrado e Anterior/Próxima. Aplicar/limpar filtros retorna à primeira página; voltar do detalhe preserva filtros e página. Se a página não existir mais, abrir a última disponível.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:49:18.391854Z",
+      "status": "valid"
+    },
+    {
+      "id": "q67",
+      "statement": "Entrar por Ver tarefas do projeto aplica somente esse projeto e limpa os demais filtros anteriores.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:49:18.391854Z",
+      "status": "valid"
+    },
+    {
+      "id": "q68",
+      "statement": "Preservar filtros e ordenação ao navegar e atualizar; reiniciar no padrão após sair da conta e entrar novamente. Limpar remove busca/filtros, restaura ordenação padrão e primeira página.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:49:18.391854Z",
+      "status": "valid"
+    },
+    {
+      "id": "q69",
+      "statement": "Ao trocar o projeto dentro dos filtros, redefinir responsável para Todos somente se a seleção não estiver disponível no novo projeto; manter se válida e preservar demais filtros. Entrada por Ver tarefas segue Q67, limpando os demais filtros.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:56:10.875178Z",
+      "status": "valid"
+    },
+    {
+      "id": "understanding-confirmation-001",
+      "statement": "Mário Tinelli respondeu confirmo à síntese completa de Consulta de Tarefas, confirmando Q63–Q69 e a preparação da revisão do catálogo e do requisito.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T15:00:58.053962Z",
+      "status": "valid"
+    },
+    {
+      "id": "catalog-time-reconciliation-001",
+      "statement": "Metadados reconciliados com catalog-time-review-001 aprovado por Mário Tinelli. Documento revisado aprovado nesta conversa; nova publicação pendente em requirements-time-review.json. Não reutilizar nem reescrever operações remotas concluídas do run inicial.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T18:57:55.794421Z",
+      "status": "valid"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "create-search-tasks-001",
+      "kind": "create-payload",
+      "subject_sha256": "cd5b33358e60676fcf975cf50944bf4ce81e66949d55cefa5cf791f2bea648c9",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T14:27:58.056148Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T15:05:44.502887Z",
+      "invalidated_reason": "Entrega reconciliada com busca em título ou descrição; operações concluídas preservadas e sem autorização para repetir criação/relação."
+    },
+    {
+      "id": "relation-task-search-001",
+      "kind": "relation-payload",
+      "subject_sha256": "687e011e5513278a6d626e4b1f7090e8992e0d044e27b25890b28dd0d6f93cea",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T14:34:23.878760Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T15:05:44.502887Z",
+      "invalidated_reason": "Entrega reconciliada com busca em título ou descrição; operações concluídas preservadas e sem autorização para repetir criação/relação."
+    },
+    {
+      "id": "requirement-search-001",
+      "kind": "requirement",
+      "subject_sha256": "489fc54a956488fedb584a56047fa182e9520e4042e0bced4a3dcb6b08d32ea6",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T15:05:44.502887Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T18:57:55.794421Z",
+      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+    },
+    {
+      "id": "publish-search-001",
+      "kind": "publish-payload",
+      "subject_sha256": "9de4afd44f81127044163cfaaebf253f698af1bb289dd8965cb182d7f52c8e4f",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T15:07:54.298365Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T18:57:55.794421Z",
+      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+    },
+    {
+      "id": "requirement-time-review-1014465-001",
+      "kind": "requirement",
+      "subject_sha256": "da590f2972c1ed48e865ff410b5685017336eeed26ced9b8cc682f28ef1f7164",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T18:55:05.870661Z",
+      "status": "valid"
+    },
+    {
+      "id": "publish-time-review-1014465-001",
+      "kind": "publish-payload",
+      "subject_sha256": "d213d39c537e7cc10b9ac7bca53ca6e2b968f721572dda21c7c0c78184bbe9da",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:05:24.933185Z",
+      "status": "valid"
+    }
+  ],
+  "deferred_questions": [
+    {
+      "id": "catalog-search-description-001",
+      "question": "Aprovação do catálogo completo revisado com busca em título ou descrição.",
+      "responsible_role": "Mário Tinelli",
+      "reason": "Gate do fluxo após ampliação confirmada da busca; não é adiamento solicitado pelo usuário.",
+      "blocked_decisions": [
+        "requirement-approval",
+        "publication",
+        "next-scope-item"
+      ],
+      "status": "resolved",
+      "asked_at": "2026-09-10T14:49:18.391854Z",
+      "resolution": {
+        "answer": "sim — catálogo completo revisado e requisito aprovados.",
+        "source": "Mário Tinelli, conversa após apresentação conjunta.",
+        "resolved_at": "2026-09-10T15:05:44.502887Z"
+      }
+    }
+  ],
+  "pauses": [
+    {
+      "id": "search-description-catalog-001",
+      "status": "resumed",
+      "kind": "decision-deferred",
+      "previous_phase": "interviewing",
+      "resume_phase": "interviewing",
+      "reason": "Q63 inclui busca em descrição, ampliando a busca apenas por título do catálogo aprovado.",
+      "resume_condition": "Resolver os esclarecimentos da consulta, confirmar o entendimento e aprovar o catálogo completo revisado com busca em título ou descrição.",
+      "paused_at": "2026-09-10T14:49:18.391854Z",
+      "resumed_at": "2026-09-10T15:05:44.502887Z",
+      "resume_evidence": "Catálogo revisado e requisito aprovados; identidade #1014465 preservada e entrega reconciliada."
+    }
+  ],
+  "lock": {
+    "item_key": "nexum:search-tasks",
+    "lock_id": "302e3258-fd36-4561-80fe-1dd9d509ae4b",
+    "acquired_at": "2026-09-10T14:27:58.056148Z",
+    "path": "docs/harness/.locks/04dd9fe6aca0a04217384b32ab5c7a6de8eabe51ee2e4870677686d995357cdc.lock.json"
+  },
+  "remote_operations": {
+    "create": {
+      "status": "completed",
+      "payload_sha256": "cd5b33358e60676fcf975cf50944bf4ce81e66949d55cefa5cf791f2bea648c9",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T14:27:58.056148Z",
+      "attempts": [
+        {
+          "id": "create-attempt-001",
+          "attempted_at": "2026-09-10T14:28:40Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T14:29:26.832513Z",
+      "observation_id": "create-response-001"
+    },
+    "publish": {
+      "status": "completed",
+      "payload_sha256": "9de4afd44f81127044163cfaaebf253f698af1bb289dd8965cb182d7f52c8e4f",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T15:07:54.298365Z",
+      "attempts": [
+        {
+          "id": "publish-attempt-001",
+          "attempted_at": "2026-09-10T15:08:28.295617Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T15:08:28.295617Z",
+      "observation_id": "publish-response-001"
+    },
+    "relations": []
+  },
+  "remote_observations": [
+    {
+      "id": "create-response-001",
+      "operation_key": "create",
+      "observed_at": "2026-09-10T14:29:26.832513Z",
+      "outcome": "matched",
+      "remote_sha256": "9e37f5d592c2c8266c7b394f2c0d0ad9aa96361a3a01a40881bbf3a40d0238a7",
+      "summary": "Redmine confirmou issue #1014465, Feature New, sem categoria, com descrição aprovada; conteúdo gerenciado em CRLF."
+    },
+    {
+      "id": "prepublication-read-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T15:06:25.927117Z",
+      "outcome": "matched",
+      "remote_sha256": "9e37f5d592c2c8266c7b394f2c0d0ad9aa96361a3a01a40881bbf3a40d0238a7",
+      "summary": "Releitura confirmou descrição inicial intacta, um par de delimitadores e nenhum conteúdo externo. Status New e relação 665 preservados; nenhuma divergência humana."
+    },
+    {
+      "id": "publish-response-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T15:08:28.295617Z",
+      "outcome": "matched",
+      "summary": "Redmine confirmou atualização da descrição da issue #1014465; nenhum status enviado. Resultado persistido antes da releitura."
+    },
+    {
+      "id": "publish-verification-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T15:09:11.823972Z",
+      "outcome": "matched",
+      "remote_sha256": "4f2d1c60ac5c5b4a8a583bcf98ae3aadf7969ff0eba03e29f7b86aacf6df2126",
+      "summary": "Releitura confirmou descrição aprovada, status New, relação 665 e nenhum conteúdo externo. Requisito e operações reconciliados."
+    },
+    {
+      "id": "time-review-publish-response-1014465-001",
+      "operation_key": "time-review-publish-1014465-001",
+      "observed_at": "2026-09-10T19:08:13.395195Z",
+      "outcome": "matched",
+      "summary": "Redmine confirmou a atualização da descrição aprovada; resultado persistido antes da releitura. Nenhum outro campo enviado."
+    },
+    {
+      "id": "time-review-publish-verification-1014465-001",
+      "operation_key": "time-review-publish-1014465-001",
+      "observed_at": "2026-09-10T19:08:17.200094Z",
+      "outcome": "matched",
+      "remote_sha256": "a3992fae4f761530c3a4a8eed7958fa573d330b0e6a937befa277633af417670",
+      "summary": "Releitura confirmou descrição aprovada, status New, relações e conteúdo externo preservados. Hash gerenciado conforme retornado pelo Redmine."
+    }
+  ],
+  "requirement_divergences": [],
+  "title_convention": {
+    "surfaces": [
+      "WEB"
+    ],
+    "audiences": [
+      "PUBLICO",
+      "ADMIN",
+      "OPERACIONAL"
+    ],
+    "audience_mode": "aggregate",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "confirmation": {
+      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+    }
+  },
+  "delivery": {
+    "surface": "WEB",
+    "audiences": [
+      "OPERACIONAL"
+    ],
+    "name": "Consulta de Tarefas",
+    "title": "[WEB] [OPERACIONAL] Consulta de Tarefas",
+    "visible_delivery": "Consulta transversal paginada, em tabela ou cards, com filtros persistentes na sessão e links para detalhes.",
+    "user_result": "Encontrar tarefas nos projetos acessíveis por busca, filtros e ordenação.",
+    "included": [
+      "Buscar por título ou descrição e combinar filtros de projeto, responsável, situação do novo fluxo, prioridade, prazo e apenas atrasadas; atraso somente em Pendente, Em andamento e Pausada.",
+      "Ordenar por criação, prazo, prioridade ou atualização; aplicar/limpar e preservar filtros na sessão.",
+      "Paginar somente tarefas não arquivadas dos projetos acessíveis: participantes veem seus projetos e administradores podem consultar todos, inclusive arquivados para consulta. Mostrar título, situação, responsável, prazo, prioridade, atraso e link ao detalhe.",
+      "Exibir vazio com limpeza de filtros, loading/erro/sucesso e cards rotulados em mobile."
+    ],
+    "boundary_reason": "Busca em todos os projetos acessíveis. Não substitui o recorte por responsabilidade e as ações diárias de Minhas Tarefas."
+  },
+  "scope_item": {
+    "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
+    "catalog_item_id": "search-tasks",
+    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+  }
+}

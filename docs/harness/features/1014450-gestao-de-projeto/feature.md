@@ -102,7 +102,7 @@ Gestão de Usuário (#1014449), com relação nativa 661 já registrada: #101444
 
 ## Designs e evidências
 
-Revisão de acesso administrativo e integração de tempo: decisões Q70–Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/interview.md); [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md). Participação automática continua fora do escopo; o acesso administrativo passa a independer dela.
+Revisão de acesso administrativo e integração de tempo: decisões Q70–Q95 e entendimento confirmado na [entrevista de Gestão de Tempo](../1014493-gestao-de-tempo/history/interview.md); [catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md). Participação automática continua fora do escopo; o acesso administrativo passa a independer dela.
 
 Fontes design-projects, design-new-project, design-guide, design-edit-project, design-users, design-project-detail e design-task-detail. Decisões Q21–Q38 e confirmação em interview.md. Catálogo revisado aprovado por Mário Tinelli: criação administrativa, identificador automático de três letras, retirada somente das datas de projetos e remoção confirmada de responsáveis substituem as propostas anteriores das referências.
 

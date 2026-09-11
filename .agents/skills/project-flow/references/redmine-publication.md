@@ -14,6 +14,20 @@ Show project, tracker, title, complete initial objective, confirmed category (or
 
 One approval authorizes retries only for that exact payload fingerprint. Persist the approval before the first call. It does not authorize later publication.
 
+### Feature Sequencing
+
+For every new Feature, resolve the `Sequencing` issue custom field from the selected project's `issue_custom_fields` returned by `redmine_get_project`. Use the returned field ID and available format/allowed-value metadata; IDs are instance-specific. If the field is missing, ambiguous, or incompatible with the intended value, report the observed metadata and resolve the mapping before creation. A non-literal field name requires user confirmation.
+
+For `new-scope`, use the item's approved `suggested_position` in `suggested_order` as its sequence, including when the catalog contains Bugs between Features. Preserve the catalog position instead of numbering Features separately.
+
+For a standalone `new-issue` Feature, always calculate the next sequence from Redmine during creation preparation. Use `redmine_search_issues` for the confirmed project with `status_id: "*"`, following `offset`/`limit` through all result pages, and read Sequencing by its resolved custom-field ID. Include closed issues and every tracker using that field; retain only issues belonging to the confirmed project. Use `redmine_get_issue` when search results omit custom-field values. Set the new value to the largest existing numeric sequence plus one: a maximum of `35` yields `36`, even if earlier numbers are unused. If no issue has a sequence, start at `1`. Treat blank values as unset; an unreadable page or a nonblank invalid sequence must be resolved before calculating the maximum. Calculate automatically rather than asking the user to supply a number or accepting an arbitrary supplied value. Show the observed maximum and calculated next value in the creation preview; the existing exact-payload approval still applies.
+
+Show the resolved field name, ID, value, and source of the sequence in the creation preview. Include it in `redmine_create_issue.attributes.custom_fields` as `{"id": <resolved-field-id>, "value": "<approved-sequence>"}`, alongside any other required custom fields. The creation approval and payload fingerprint cover this value. Bugs retain their existing creation behavior.
+
+Persist the returned issue ID and create outcome immediately, then reread the issue with `redmine_get_issue` and verify the custom field by ID against the approved sequence before starting the interview. On an unknown create outcome, include Sequencing in the candidate comparison. A missing or different value is a divergence to resolve on that existing issue, never a reason to create another issue. Retries and resumed runs retain the original approved payload; a later catalog reorder does not automatically renumber created issues or change an approved retry. Final description publication preserves Sequencing.
+
+**Complete when:** the creation preview and approved payload include the resolved Sequencing field and value, and readback confirms that value on the persisted Feature issue.
+
 ## Final publication preview
 
 Reread the issue. Require exactly one ordered delimiter pair. Replace only content inside the delimiters and preserve byte-for-byte content before and after them; absent, nested, duplicated, or reversed delimiters block publication rather than replacing the whole description.
@@ -24,7 +38,7 @@ The managed section must stand alone for a reader without the interview or local
 
 For Features, only the `Designs e evidências` provenance section stays local. Any condition needed to implement or accept the delivery must already appear in the functional sections before canonical approval; a local evidence pointer cannot substitute for it. For Bugs, retain evidence and reproduction limitations because they define the deviation. Append the repository-relative canonical path and approval attribution. Interview history and operational state remain local.
 
-Use a sanitized fresh issue snapshot with `subject`, `description`, status and relations, either at the JSON root or inside `issue`. Identity may be `id` or `issue_id`; all identity fields present must agree. From the repository root:
+Use the storage and retention policy in [the artifact contract](artifact-contract.md): unapproved output belongs in `.work/`; exact evidence required by an approved operation belongs in its `.flow/publications/<operation-uuid>/` directory before approval. Use a sanitized fresh issue snapshot with `subject`, `description`, status and relations, either at the JSON root or inside `issue`. Identity may be `id` or `issue_id`; all identity fields present must agree. From the repository root:
 
 ```sh
 python <project-flow-skill>/scripts/render_publication.py <feature-or-bug-state.json> --before <issue-before.json> --output <publish-preview.md> --payload <publish-payload.json>
@@ -49,9 +63,9 @@ A known failure records a new attempt with a stable error code and sanitized hum
 
 ## Aligning an already completed publication
 
-When the user requests publication standardization for an issue created by this flow, retain its completed state, approvals, operations and scope closure as history. Acquire the same item lock and create a separate `publication-alignment-<uuid>.json` beside the canonical artifacts for each alignment. Use schema v2 from `schemas/publication-alignment.schema.json`; never reuse an alignment file for a later canonical or remote baseline.
+When the user requests publication standardization for an issue created by this flow, retain its completed state, approvals, operations and scope closure as history. Acquire the same item lock and create `.flow/publications/<uuid>/publication-alignment-<uuid>.json` for each new alignment, retaining its baseline, preview, payload and readback in that same operation directory. All file references are relative to the item root (for example `.flow/feature-state.json`, `feature.md`, and `.flow/publications/<uuid>/baseline.json`); a legacy canonical state may remain at `feature-state.json`. Use schema v2 from `schemas/publication-alignment.schema.json`; never reuse an alignment file for a later canonical or remote baseline.
 
-The record keeps issue identity; completed canonical state, document hash and approval; lock acquisition/release; sanitized fresh baseline with status and relations; exact preview and payload paths/hashes; payload approval; append-only attempts and observations; and verified readback. Its append-only status history is `pending → approved → unknown|completed`, with `unknown → completed` after reconciliation. Validate every candidate against its predecessor during operation:
+The record keeps issue identity; completed canonical state, document hash and approval; lock acquisition/release; sanitized fresh baseline with status and relations; exact preview and payload paths/hashes; payload approval; append-only attempts and observations; and verified readback. Its append-only status history is `pending → approved → unknown|completed`, with `unknown → completed` after reconciliation. Validate every candidate against its predecessor during operation. Place the candidate at `.work/publications/<uuid>/publication-alignment-<uuid>.json`, so its filename retains the alignment identity and its references resolve from the same item root. On success replace the current record atomically and remove the candidate:
 
 ```sh
 python <project-flow-skill>/scripts/validate_publication_alignment.py <candidate.json> --previous <publication-alignment-uuid.json>

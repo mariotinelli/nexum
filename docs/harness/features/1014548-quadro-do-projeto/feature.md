@@ -153,8 +153,8 @@ Gestão de Tempo (#1014493), com relação nativa 668 criada e conferida: #10144
 ## Designs e evidências
 
 - [Quadro do projeto](../../scopes/2026-09-09-nexum-scope/sources/design-board.md) e [guia](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md), incluindo F08 e integração F09.
-- [Entrevista](interview.md): Q106–Q110 e confirmação explícita do entendimento por Mário Tinelli.
-- [Catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md): cinco situações, ações e alcance administrativo herdados.
+- [Entrevista](history/interview.md): Q106–Q110 e confirmação explícita do entendimento por Mário Tinelli.
+- [Catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md): cinco situações, ações e alcance administrativo herdados.
 - O protótipo antigo de quatro colunas e seletor de situação é substituído pelo catálogo e regras aprovadas. Q106 fixa criação decrescente; Q107 define oito cards por coluna; Q108 define preenchimento contextual do cadastro; Q109 preserva páginas por projeto; Q110 define atualização sem navegação forçada.
 
 ## Dentro do escopo

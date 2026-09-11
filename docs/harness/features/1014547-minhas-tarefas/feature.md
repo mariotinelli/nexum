@@ -154,8 +154,8 @@ Consulta de Tarefas (#1014465) é referência de consistência para busca e filt
 ## Designs e evidências
 
 - [Minhas tarefas](../../scopes/2026-09-09-nexum-scope/sources/design-my-tasks.md) e [guia de design](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md), incluindo F07, F09 e F14.
-- [Entrevista](interview.md): Q96, Q98–Q105 e confirmação explícita do entendimento por Mário Tinelli. Q103 substitui Q97: hoje e seis dias corridos anteriores.
-- [Catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md), convenção e limites herdados.
+- [Entrevista](history/interview.md): Q96, Q98–Q105 e confirmação explícita do entendimento por Mário Tinelli. Q103 substitui Q97: hoje e seis dias corridos anteriores.
+- [Catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md), convenção e limites herdados.
 - O protótipo mostrava finalizadas sem limite de data e grupos sem paginação. Q103 define a janela; Q100 define oito por grupo. Q96 define exclusões; Q98 amplia a busca para título ou descrição. Referências antigas de situação, reabertura e descarte são substituídas pelas regras já aprovadas de Tarefa/Tempo.
 
 ## Dentro do escopo

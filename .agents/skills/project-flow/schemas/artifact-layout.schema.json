@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/project-flow/artifact-layout-v1.json",
+  "title": "Local artifact relocation, without new workflow approvals",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "moves", "documents"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "kind": {"const": "artifact-layout"},
+    "moves": {
+      "type": "object",
+      "propertyNames": {"$ref": "#/$defs/path"},
+      "additionalProperties": {"$ref": "#/$defs/path"}
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "original_path", "original_snapshot", "original_sha256", "relocated_sha256"],
+        "properties": {
+          "path": {"$ref": "#/$defs/path"},
+          "original_path": {"$ref": "#/$defs/path"},
+          "original_snapshot": {"$ref": "#/$defs/path"},
+          "original_sha256": {"$ref": "#/$defs/hash"},
+          "relocated_sha256": {"$ref": "#/$defs/hash"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "path": {"type": "string", "pattern": "^docs/harness/", "description": "Repository-relative durable path. The local validator also rejects traversal, symlinks, temporary paths and chained mappings."},
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

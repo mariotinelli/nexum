@@ -43,6 +43,8 @@ python <project-flow-skill>/scripts/render_catalog.py <scope-state.json> --scope
 python <project-flow-skill>/scripts/render_catalog.py <scope-state.json> --check-scope <scope.md>
 ```
 
+Use `.work/catalog-preview.md` for the unapproved preview and `.flow/scope-state.json` for a new scope state. Retain the approved catalog in `scope.md` with its approval hash in state; keep a separate preview only when a retained record requires its exact bytes. Reuse the temporary preview path after completing a review.
+
 Start `scope.md` from its template; `--scope-document` atomically replaces its single marked block and preserves surrounding prose and progress. Present the entire preview, including coverage dispositions, convention, deliveries, dependency reasons and order. All active items appear exactly once in approved order with stable IDs and continuous numbering. For a long catalog, show consecutive identified parts (`parte 1/N`, etc.) preserving the original bytes and numbering when reassembled. A summary cannot replace the complete preview. Record the hash printed by the generator in the attributed `complete-catalog-and-order` approval, then validate again; validation recalculates the hash.
 
 Changes to approved content invalidate its approval and require a complete revised preview. Normal interview progress is outside the projection. Record naming, audience, delivery and coverage impacts as well as graph, allocation and order impacts in catalog revision history. Recompute boundaries, dependencies and order after material decisions.

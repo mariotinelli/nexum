@@ -1,9 +1,0 @@
-{
-  "attributes": {
-    "project_id": 65221,
-    "tracker_id": 2,
-    "status_id": 1,
-    "subject": "[WEB] [OPERACIONAL] Painel Gerencial",
-    "description": "<!-- project-flow:start -->\n## Objetivo\nAcompanhar progresso, atrasos e esforço pela interface WEB em português, conforme o papel do usuário em cada projeto.\n\n## Escopo\n- Membros consultam suas próprias tarefas e horas; gestores consultam a equipe dos projetos gerenciados; administradores consultam equipes e indicadores de todos os projetos.\n- Apresentar projetos ativos, distribuição de tarefas pelas situações vigentes, tarefas atrasadas e finalizadas no período, com filtro de finalizações.\n- Comparar horas estimadas e realizadas e apresentar horas por membro.\n- Calcular progresso por Finalizadas / (Pendentes + Em andamento + Pausadas + Finalizadas), com 0% no conjunto vazio. Canceladas e arquivadas não compõem progresso nem atraso.\n- Abrir projetos, tarefas filtradas e Minhas Tarefas pelos links e indicadores correspondentes.\n- Apresentar gráficos rotulados, estados de vazio, carregamento, erro e sucesso e conteúdo empilhado no mobile, respeitando o recorte autorizado.\n\n## Dependências e limites\nDepende de Consulta de Tarefas (#1014465) e Minhas Tarefas (#1014547). Agrega dados existentes de projetos, tarefas e apontamentos, sem duplicar sua criação nem redefinir permissões e regras de tempo.\n\n## Coleta\nRequisito em coleta. Os detalhes funcionais e critérios de aceite serão definidos na entrevista deste item.\n<!-- project-flow:end -->"
-  }
-}

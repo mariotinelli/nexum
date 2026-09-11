@@ -26,11 +26,13 @@ Recommend the closest existing category with evidence from its name and project 
 
 In requirement state v4, confirm `title_convention` and `delivery` using the shared discipline, then compose the initial title from those fields. A scope item inherits these exact confirmed fields through `scope_item`; do not ask them again. Include the visible delivery, user result and boundaries in the complete initial objective. Prepare the confirmed tracker, category, and initial status. For a Bug, the objective identifies the observed deviation without inventing a cause or deterministic reproduction. Read the Redmine projection reference, show the complete creation preview, and ask the first meaningful remote confirmation. Do not ask for priority, assignee, version, dates, or estimate.
 
-**Complete when:** a new demand and existing category or no category are confirmed, and the user explicitly approves the exact creation payload.
+For a Feature, resolve its sequence and custom-field mapping using the Feature Sequencing section of [the Redmine projection contract](redmine-publication.md) before presenting that preview.
+
+**Complete when:** a new demand and existing category or no category are confirmed, Feature Sequencing is included when applicable, and the user explicitly approves the exact creation payload.
 
 ## 4. Create without duplication
 
-Set `remote_operations.create` to `approved` with approval identity, time, and the exact payload fingerprint; validate and atomically persist that state before calling `redmine_create_issue`. After a successful response, immediately persist the returned issue ID, observation, and `completed` operation before moving files or advancing a phase. Move the durable run files without overwriting an existing directory: Feature files go to `docs/harness/features/<REDMINE-ID>-<slug>/`; Bug files go to `docs/harness/bugs/<REDMINE-ID>-<slug>/`.
+Set `remote_operations.create` to `approved` with approval identity, time, and the exact payload fingerprint; validate and atomically persist that state before calling `redmine_create_issue`. After a successful response, immediately persist the returned issue ID, observation, and `completed` operation before moving files or advancing a phase. Move the staging directory to the definitive path without overwriting an existing directory, then run `manage_artifacts.py prepare` for that path as described in the artifact contract. Keep its `.flow/`, `history/` and `sources/` structure; clean only known disposable `.work/` files after the state is durable at its destination: Feature files go to `docs/harness/features/<REDMINE-ID>-<slug>/`; Bug files go to `docs/harness/bugs/<REDMINE-ID>-<slug>/`.
 
 After a known failure, append only a sanitized attempt result and retain the approved operation for a safe retry. After an unknown outcome, persist `unknown` and reconcile before any retry: search the confirmed project using the immutable run identity and approved payload, then compare every credible candidate. One exact match completes the operation with that issue ID; no match records `absent` and permits retrying the same fingerprint; ambiguity or divergence blocks for user resolution. If state already has an issue ID or the create operation is completed, never call create. A credential, request header, API key, raw exception, or unsanitized response never enters state, artifacts, or output.
 
@@ -38,7 +40,7 @@ After a known failure, append only a sanitized attempt result and retain the app
 
 ## 5. Interview and approve
 
-For a Feature, read [the Feature interview and document contract](new-issue-feature.md). For a Bug, read [the Bug interview and document contract](new-issue-bug.md). Create `interview.md` at the first round and invoke `requirements-grilling` with all normalized sources, repository evidence, and selected document contract. Append every numbered question, recommendation, answer, provenance, reopened decision, and explicit understanding confirmation to the interview history.
+For a Feature, read [the Feature interview and document contract](new-issue-feature.md). For a Bug, read [the Bug interview and document contract](new-issue-bug.md). Create `history/interview.md` at the first round (retain `interview.md` for a legacy run) and invoke `requirements-grilling` with all normalized sources, repository evidence, and selected document contract. Append every numbered question, recommendation, answer, provenance, reopened decision, and explicit understanding confirmation to the interview history.
 
 For evidence received after decisions exist, return to the intake contract. Show and record the confirmed, contradicted, and reopened decisions before asking more questions. Resolve the resulting gaps before drafting or publishing.
 

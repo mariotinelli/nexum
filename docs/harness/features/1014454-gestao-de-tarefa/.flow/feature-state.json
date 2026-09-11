@@ -1,0 +1,694 @@
+{
+  "schema_version": 4,
+  "run_id": "c5f13308-b2b5-4b4d-a655-eec0881b2826",
+  "internal_identity": "e017861b-6ce7-44c5-b0ef-d872eeabbbd1",
+  "mode": "new-scope",
+  "item_type": "Feature",
+  "phase": "completed",
+  "completed_phases": [
+    "mode-confirmed",
+    "inputs-normalized",
+    "repository-analyzed",
+    "item-ready",
+    "item-created",
+    "interviewing",
+    "requirement-proposed",
+    "requirement-approved",
+    "redmine-synchronized",
+    "completed"
+  ],
+  "identity": {
+    "redmine_user_id": 131789,
+    "display_name": "Mário Tinelli",
+    "confirmed_at": "2026-09-09T19:14:01.0762355Z"
+  },
+  "redmine": {
+    "project_id": 65221,
+    "project_name": "Nexum",
+    "tracker_id": 2,
+    "tracker_name": "Feature",
+    "initial_status_id": 1,
+    "initial_status_name": "New",
+    "approved_status_id": 4,
+    "approved_status_name": "Approved",
+    "mapping_confirmations": [],
+    "category": {
+      "id": null,
+      "name": null,
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T12:49:58.674427Z"
+    },
+    "issue_id": 1014454
+  },
+  "sources": [
+    {
+      "id": "design-edit-task",
+      "name": "editar-tarefa.html",
+      "type": "design HTML da tela Editar tarefa",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\editar-tarefa.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-edit-task.md",
+      "original_sha256": "adce7137a9fb397ce56f4b763d5e2f37c8e9a0ee6ece3cc99b68461db8b7c027",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "806403abaabee8d4bd414621729b4834a3ed9d2d51cafa53e8c91dac0c2096d0",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-new-task",
+      "name": "nova-tarefa.html",
+      "type": "design HTML da tela Nova tarefa",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\nova-tarefa.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-new-task.md",
+      "original_sha256": "09598c04d05ecb09db3dbad4de4d2f3287634e3f573a0b0bcca0eb67f3f2e967",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "66daffeadf6a497334a7ccd28327246f80c38794208f4c3d6409ce9c1b9326bd",
+      "extraction_method": "análise estática integral de HTML/CSS/JavaScript UTF-8, sem executar conteúdo ativo",
+      "fully_read": true,
+      "decision_reconciliation": "not-applicable"
+    },
+    {
+      "id": "design-guide",
+      "name": "guia-de-design.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\guia-de-design.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-guide.md",
+      "original_sha256": "801383f4687ff5c25486f5007341cf625910d75f7c6c9337d552ce3ec29baceb",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "14cd798e9f9cec0b74b5c6f4c53ff8f8a9a9cfe3ab57a16ba0a6df47b0fa696a",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    },
+    {
+      "id": "design-project-detail",
+      "name": "detalhes-projeto.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\detalhes-projeto.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-project-detail.md",
+      "original_sha256": "22a9517dad17b530cade5c4f2ff122d3dd8c6e68bb0353e1b2229f9ee251730f",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "d03d702e3d1f38286fc783511291f90e0f65a198f075e6c1d3bc60a72107dee2",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    },
+    {
+      "id": "design-task-detail",
+      "name": "detalhes-tarefa.html",
+      "type": "design HTML e anotações de produto",
+      "origin": "C:\\Users\\maari\\Downloads\\nexum-scope\\design\\detalhes-tarefa.html",
+      "status": "normalized",
+      "path": "../../scopes/2026-09-09-nexum-scope/sources/design-task-detail.md",
+      "original_sha256": "ae9042401a12d605aba55416b8a867f85380782d2d5cb52bd7398727918b8c1f",
+      "hash_unavailable_reason": null,
+      "normalized_sha256": "7e3d61eb714e36630590ff11a71de51a1703260fa125fe3f49dafe076a672f14",
+      "extraction_method": "leitura estática integral do HTML UTF-8; texto extraído e scripts preservados como evidência inerte, sem execução.",
+      "fully_read": true,
+      "decision_reconciliation": "completed"
+    }
+  ],
+  "repository": {
+    "stack": [
+      "PHP 8.4",
+      "Laravel 13",
+      "Livewire 4",
+      "Tailwind CSS 4, DaisyUI 5 e Alpine.js 3",
+      "MySQL e Eloquent",
+      "Pest 5 e PHPUnit 12",
+      "r2luna/brain 4.1",
+      "Laravel Auditing 14"
+    ],
+    "vocabulary": [
+      {
+        "term": "Usuário",
+        "evidence_paths": [
+          "app/Models/User.php",
+          "docs/agents/domain_rules.md",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Administrador",
+        "evidence_paths": [
+          "app/Enums/TypeUsers.php",
+          "sources/design-users.md"
+        ]
+      },
+      {
+        "term": "Gestor",
+        "evidence_paths": [
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Membro",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-dashboard.md",
+          "sources/design-new-task.md"
+        ]
+      },
+      {
+        "term": "Projeto",
+        "evidence_paths": [
+          "sources/design-projects.md",
+          "sources/design-new-project.md",
+          "sources/design-edit-project.md"
+        ]
+      },
+      {
+        "term": "Tarefa",
+        "evidence_paths": [
+          "sources/design-tasks.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Situação da tarefa",
+        "evidence_paths": [
+          "sources/design-board.md",
+          "sources/design-new-task.md",
+          "sources/design-edit-task.md"
+        ]
+      },
+      {
+        "term": "Prioridade da tarefa",
+        "evidence_paths": [
+          "sources/design-new-task.md",
+          "sources/design-tasks.md"
+        ]
+      },
+      {
+        "term": "Projeto arquivado",
+        "evidence_paths": [
+          "sources/design-edit-project.md",
+          "sources/design-board.md",
+          "sources/design-projects.md"
+        ]
+      }
+    ],
+    "exclusions": [
+      "vendor/** e node_modules/**",
+      ".git/**",
+      "storage/logs/**, caches e arquivos temporários",
+      "public/build/**, artefatos Vite e relatórios de cobertura",
+      ".env*, credenciais, chaves privadas e tokens",
+      "binários e conteúdo gerado sem relevância funcional"
+    ]
+  },
+  "classification": {
+    "suggested_type": "Feature",
+    "rationale": "Gestão do ciclo de vida da tarefa, colaboração e rastreabilidade aprovada como Feature no catálogo.",
+    "confirmed_type": "Feature",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T12:49:58.674427Z"
+  },
+  "similarity": {
+    "searched_at": "2026-09-10T12:49:58.674427Z",
+    "candidates": [],
+    "decision": "new-demand",
+    "confirmed_by": "Mário Tinelli",
+    "confirmed_at": "2026-09-10T12:49:58.674427Z"
+  },
+  "decisions": [
+    {
+      "id": "creation-confirmation",
+      "statement": "Mário Tinelli respondeu sim à prévia completa de Gestão de Tarefa, nova Feature sem categoria. Busca encontrou somente as cinco Features anteriores, sem duplicidade.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T12:49:58.674427Z",
+      "status": "valid"
+    },
+    {
+      "id": "q39",
+      "statement": "Somente gestores criam e gerenciam tarefas; atribuição é permitida a qualquer participante para qualquer participante, inclusive para si. Alcance sobre alteração de situação ainda precisa ser explicitado.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q40",
+      "statement": "Não permitir trocar o projeto de uma tarefa após criação neste MVP.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q41",
+      "statement": "Datas de tarefas opcionais e independentes, aceitando passado; prazo igual ou posterior ao início quando ambas existirem.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q42",
+      "statement": "Estimativa em horas, maior que zero e no máximo seis; 4.25 equivale a 4h15min. A expressão inteiros conflita com o exemplo decimal; incremento/precisão precisa ser confirmado.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q43",
+      "statement": "Preservar responsável inativo nas tarefas existentes, identificando inatividade; impedir novas atribuições a contas inativas.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q44",
+      "statement": "Arquivadas saem de listas de trabalho, quadro e numerador/denominador do progresso; detalhe e registros permanecem somente consulta por participantes, sem reativação nesta entrega.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "reopened",
+      "reopened_at": "2026-09-10T13:56:28.689551Z",
+      "reopened_reason": "Formulação anterior substituída pelas decisões posteriores Q57–Q62 e pelo entendimento confirmado: Desarquivar permitido; Cancelada somente consulta; Finalizada mantém colaboração/atribuição. Revisão resolvida e catálogo aprovado, sem lacuna pendente."
+    },
+    {
+      "id": "q45",
+      "statement": "Qualquer participante ativo pode comentar, inclusive em tarefa concluída; editar/excluir somente próprios comentários enquanto projeto e tarefa não arquivados; exclusão confirmada.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "reopened",
+      "reopened_at": "2026-09-10T13:56:28.689551Z",
+      "reopened_reason": "Formulação anterior substituída pelas decisões posteriores Q57–Q62 e pelo entendimento confirmado: Desarquivar permitido; Cancelada somente consulta; Finalizada mantém colaboração/atribuição. Revisão resolvida e catálogo aprovado, sem lacuna pendente."
+    },
+    {
+      "id": "q46",
+      "statement": "Editor de texto rico/Markdown com formatação e inserção de imagens em descrição e comentários. Substitui a restrição anterior sem imagens; limites da inclusão de imagens precisam de confirmação.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q47",
+      "statement": "Histórico também registra título, descrição, data inicial e arquivamento, além dos eventos previstos; autor, data/hora, valores anteriores/novos quando aplicáveis, ordem cronológica; salvar sem alterações não gera evento.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q48",
+      "statement": "Impedir sobrescrita silenciosa após edição concorrente, informar atualização e pedir revisão preservando texto digitado.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:00:40.971157Z",
+      "status": "valid"
+    },
+    {
+      "id": "q49",
+      "statement": "Ninguém altera diretamente a situação da tarefa; mudanças decorrem de ações. Ações, gatilhos e permissões precisam ser definidos; não assumir que apenas gestores acionam mudanças nem que todas dependem do cronômetro.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:04:49.195049Z",
+      "status": "valid"
+    },
+    {
+      "id": "q50",
+      "statement": "Estimativa opcional em horas decimais com até duas casas, maior que zero e até seis horas; aceitar ponto/vírgula, converter para horas/minutos arredondando ao minuto mais próximo. 4,25=4h15min; 4,5=4h30min; 4,10=4h06min.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:04:49.195049Z",
+      "status": "valid"
+    },
+    {
+      "id": "q51",
+      "statement": "Qualquer participante pode retirar a atribuição, inclusive de tarefa concluída, enquanto tarefa e projeto não arquivados; registrar no histórico sem conceder edição de outros campos.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:04:49.195049Z",
+      "status": "reopened",
+      "reopened_at": "2026-09-10T13:56:28.689551Z",
+      "reopened_reason": "Formulação anterior substituída pelas decisões posteriores Q57–Q62 e pelo entendimento confirmado: Desarquivar permitido; Cancelada somente consulta; Finalizada mantém colaboração/atribuição. Revisão resolvida e catálogo aprovado, sem lacuna pendente."
+    },
+    {
+      "id": "q52",
+      "statement": "Incluir anexos de tarefa no MVP em área própria, separada da descrição. A resposta amplia o escopo; relação com imagens no editor, permissões e limites de arquivos precisam ser confirmados.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:04:49.195049Z",
+      "status": "valid"
+    },
+    {
+      "id": "q53",
+      "statement": "Novo fluxo exclusivo por ações: Iniciar → Em andamento; Finalizar → Finalizada; Cancelar → Cancelada; Pausar → Pausada; Arquivar → Arquivada. Remover Retomar, Bloquear/Bloqueada, Concluir/Concluída, Devolver à fila e Reabrir. A lista final usa Finalizada, prevalecendo sobre a menção intermediária Finalizado. Situação inicial, origens permitidas, permissões e efeitos nas integrações ainda precisam ser esclarecidos.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:32:35.475433Z",
+      "status": "valid"
+    },
+    {
+      "id": "q54",
+      "statement": "Manter imagens no editor da descrição e comentários, além da área separada de Anexos.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:32:35.475433Z",
+      "status": "valid"
+    },
+    {
+      "id": "q55",
+      "statement": "Qualquer participante ativo pode anexar e baixar arquivos, inclusive em tarefa finalizada; excluir somente próprios anexos mediante confirmação. Em tarefa ou projeto arquivado, somente consulta/download; acesso restrito à participação.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:32:35.475433Z",
+      "status": "reopened",
+      "reopened_at": "2026-09-10T13:56:28.689551Z",
+      "reopened_reason": "Formulação anterior substituída pelas decisões posteriores Q57–Q62 e pelo entendimento confirmado: Desarquivar permitido; Cancelada somente consulta; Finalizada mantém colaboração/atribuição. Revisão resolvida e catálogo aprovado, sem lacuna pendente."
+    },
+    {
+      "id": "q56",
+      "statement": "Aceitar anexos PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:32:35.475433Z",
+      "status": "valid"
+    },
+    {
+      "id": "q57",
+      "statement": "Tarefa nasce Pendente. Pendente: Iniciar/Finalizar/Cancelar/Arquivar. Em andamento: Pausar/Finalizar. Pausada: Iniciar/Finalizar/Cancelar/Arquivar. Finalizada: nenhuma ação de situação. Cancelada: Arquivar. Arquivada: Desarquivar → Pendente. Usar o nome Desarquivar dentre as alternativas dadas. Inclusão de desarquivamento substitui exclusão anterior; sua permissão e efeito sobre cancelada arquivada precisam de confirmação.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:37:52.476182Z",
+      "status": "valid"
+    },
+    {
+      "id": "q58",
+      "statement": "Responsável atual e gestores podem Iniciar, Pausar e Finalizar quando a situação permitir. Cancelar e Arquivar somente gestores. Criação e edição de dados somente gestores; atribuição/desatribuição segue participação.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:37:52.476182Z",
+      "status": "reopened",
+      "reopened_at": "2026-09-10T14:08:05.421145Z",
+      "reopened_reason": "Substituída pela correção explícita responsible-only-correction-001, já resolvida pelo usuário."
+    },
+    {
+      "id": "q59",
+      "statement": "Ações de situação funcionam na Gestão de Tarefa sem exigir cronômetro. Gestão de Tempo entrega posteriormente a integração de execução/horas.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:37:52.476182Z",
+      "status": "valid"
+    },
+    {
+      "id": "q60",
+      "statement": "Finalizadas mantêm comentários, anexos e atribuição conforme aprovado, sem ações de situação. Canceladas ficam somente consulta, exceto Arquivar pelo gestor; sem edição, atribuição ou colaboração.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:37:52.476182Z",
+      "status": "valid"
+    },
+    {
+      "id": "q61",
+      "statement": "Progresso = Finalizadas/(Pendentes+Em andamento+Pausadas+Finalizadas), zero sem tarefas nesse conjunto. Canceladas e arquivadas excluídas do progresso e atraso; apenas Pendentes/Em andamento/Pausadas ficam atrasadas pelo prazo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:37:52.476182Z",
+      "status": "valid"
+    },
+    {
+      "id": "q62",
+      "statement": "Desarquivar é exclusivo dos gestores em projeto ativo, retornando sempre a Pendente, inclusive quando a tarefa estava Cancelada antes de arquivar. Permitir Cancelada → Arquivada → Pendente, sem ação direta Reabrir.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:38:56.883789Z",
+      "status": "valid"
+    },
+    {
+      "id": "understanding-confirmation-001",
+      "statement": "Mário Tinelli respondeu sim à síntese completa de Gestão de Tarefa, confirmando Q39–Q62 e a preparação da revisão do catálogo.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:42:06.815366Z",
+      "status": "valid"
+    },
+    {
+      "id": "task-reconciliation-final-001",
+      "statement": "Auditoria Q39–Q62 concluída e entendimento confirmado. Descendentes antes pendentes estão resolvidos nas decisões posteriores. Desarquivamento substitui a exclusão de Q44; Q60 restringe colaboração/atribuição em Cancelada. Requisito proposto com 26 critérios de aceite, sem pendências funcionais. Catálogo revisado aprovado por Mário Tinelli com resposta sim.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T13:56:28.689551Z",
+      "status": "valid"
+    },
+    {
+      "id": "responsible-only-correction-001",
+      "statement": "Correção explícita do usuário: Iniciar, Pausar e Finalizar são exclusivos do responsável atual; gestor somente se também responsável. Sem responsável, ninguém executa essas três ações até uma atribuição válida.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T14:08:05.421145Z",
+      "status": "valid"
+    },
+    {
+      "id": "catalog-time-reconciliation-001",
+      "statement": "Metadados reconciliados com catalog-time-review-001 aprovado por Mário Tinelli. Documento revisado aprovado nesta conversa; nova publicação pendente em requirements-time-review.json. Não reutilizar nem reescrever operações remotas concluídas do run inicial.",
+      "decided_by": "Mário Tinelli",
+      "decided_at": "2026-09-10T18:57:55.794421Z",
+      "status": "valid"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "create-task-001",
+      "kind": "create-payload",
+      "subject_sha256": "b2ec44371a7bb8610b085488cf71cee6b82f16609dc0ce36a11254c6a0f8ce36",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:49:58.674427Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T13:48:21.045751Z",
+      "invalidated_reason": "Entrega reconciliada com o catálogo revisado aprovado; operações concluídas preservadas, sem autorização para nova criação ou repetição de relação."
+    },
+    {
+      "id": "relation-project-task-001",
+      "kind": "relation-payload",
+      "subject_sha256": "7ebf75e5bc7eee8a05c235927bc6a95ac85527ee91798ce8c2a610bae84a7d53",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:51:45.424963Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T13:48:21.045751Z",
+      "invalidated_reason": "Entrega reconciliada com o catálogo revisado aprovado; operações concluídas preservadas, sem autorização para nova criação ou repetição de relação."
+    },
+    {
+      "id": "requirement-task-001",
+      "kind": "requirement",
+      "subject_sha256": "177bf15d5ad696debaaf5d93261998b004e8f1cef5f9f6918b74ebd4660145d4",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T14:14:32.187427Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T18:57:55.794421Z",
+      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+    },
+    {
+      "id": "publish-task-001",
+      "kind": "publish-payload",
+      "subject_sha256": "89b99b34f37500e0742409d76df12a2b9e2c6fcdc2462538b2293cd3f32c5989",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T14:19:39.686734Z",
+      "status": "invalidated",
+      "invalidated_at": "2026-09-10T18:57:55.794421Z",
+      "invalidated_reason": "Reconciliação com catalog-time-review-001. Operações remotas anteriores permanecem concluídas; conteúdo preservado mantém a proveniência da aprovação original."
+    },
+    {
+      "id": "requirement-time-review-1014454-001",
+      "kind": "requirement",
+      "subject_sha256": "5e758dcfb4faa537d6870fb600d9d57a693fe2741550e5bfd0006755424564a7",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T18:55:05.870661Z",
+      "status": "valid"
+    },
+    {
+      "id": "publish-time-review-1014454-001",
+      "kind": "publish-payload",
+      "subject_sha256": "dd053cbd1d7051b60858d126797d86eacad113bf5e45d5cc80753aab6f59257e",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T19:05:24.933185Z",
+      "status": "valid"
+    }
+  ],
+  "deferred_questions": [
+    {
+      "id": "catalog-reapproval-task-001",
+      "question": "Aprovação do catálogo revisado após esclarecer permissões, estimativa e imagens.",
+      "responsible_role": "Mário Tinelli",
+      "reason": "Etapa de aprovação exigida pelo fluxo após mudança da entrega; não representa adiamento solicitado pelo usuário.",
+      "blocked_decisions": [
+        "requirement-approval",
+        "publication",
+        "next-scope-item"
+      ],
+      "status": "resolved",
+      "asked_at": "2026-09-10T13:00:40.971157Z",
+      "resolution": {
+        "answer": "sim — catálogo completo revisado aprovado.",
+        "source": "Mário Tinelli, conversa após apresentação de catalog-task-review.md.",
+        "resolved_at": "2026-09-10T13:48:21.045751Z"
+      }
+    },
+    {
+      "id": "catalog-responsible-only-001",
+      "question": "Aprovação do catálogo completo corrigido e do requisito com execução exclusiva pelo responsável.",
+      "responsible_role": "Mário Tinelli",
+      "reason": "Gate de revisão do catálogo exigido pelo fluxo; não é dúvida funcional nem adiamento do usuário.",
+      "blocked_decisions": [
+        "requirement-approval",
+        "publication",
+        "next-scope-item"
+      ],
+      "status": "resolved",
+      "asked_at": "2026-09-10T14:08:05.421145Z",
+      "resolution": {
+        "answer": "aprovado — catálogo completo corrigido e requisito.",
+        "source": "Mário Tinelli, conversa após prévia conjunta.",
+        "resolved_at": "2026-09-10T14:14:32.187427Z"
+      }
+    }
+  ],
+  "pauses": [
+    {
+      "id": "task-catalog-revision-001",
+      "status": "resumed",
+      "kind": "decision-deferred",
+      "previous_phase": "interviewing",
+      "resume_phase": "interviewing",
+      "reason": "Q39 altera permissões anteriormente aprovadas; Q42 muda estimativa de minutos para horas até seis; Q46 inclui imagens antes excluídas. Reconciliar o catálogo e as integrações afetadas.",
+      "resume_condition": "Esclarecer o alcance das mudanças e aprovar o catálogo completo revisado, preservando issues e relações existentes.",
+      "paused_at": "2026-09-10T13:00:40.971157Z",
+      "resumed_at": "2026-09-10T13:48:21.045751Z",
+      "resume_evidence": "Aprovação catalog-task-review-001 confirma o catálogo revisado; identidade #1014454 e relação 662 conferidas e preservadas."
+    },
+    {
+      "id": "task-responsible-only-001",
+      "status": "resumed",
+      "kind": "decision-deferred",
+      "previous_phase": "requirement-proposed",
+      "resume_phase": "requirement-proposed",
+      "reason": "Correção explícita do usuário: Iniciar, Pausar e Finalizar são exclusivos do responsável atual; gestor somente se também responsável.",
+      "resume_condition": "Aprovar a projeção completa corrigida do catálogo e o requisito correspondente, preservando identidades, ordem e relações.",
+      "paused_at": "2026-09-10T14:08:05.421145Z",
+      "resumed_at": "2026-09-10T14:14:32.187427Z",
+      "resume_evidence": "Catálogo e requisito corrigidos aprovados explicitamente; issue #1014454 e relação 662 preservadas."
+    }
+  ],
+  "lock": {
+    "acquired_at": "2026-09-10T12:49:58.756173Z",
+    "item_key": "nexum:manage-task",
+    "lock_id": "c7a6d08f-d371-4d2d-b11e-3d43856f8674",
+    "path": "docs/harness/.locks/05de92877f9ce70a01150f86723047c66736b287f6a638f87cd53dadda2bc4e6.lock.json"
+  },
+  "remote_operations": {
+    "create": {
+      "status": "completed",
+      "payload_sha256": "b2ec44371a7bb8610b085488cf71cee6b82f16609dc0ce36a11254c6a0f8ce36",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T12:49:58.674427Z",
+      "attempts": [
+        {
+          "id": "create-attempt-001",
+          "attempted_at": "2026-09-10T12:50:11Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T12:50:46.068185Z",
+      "observation_id": "create-response-001"
+    },
+    "publish": {
+      "status": "completed",
+      "payload_sha256": "89b99b34f37500e0742409d76df12a2b9e2c6fcdc2462538b2293cd3f32c5989",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-10T14:19:39.686734Z",
+      "attempts": [
+        {
+          "id": "publish-attempt-001",
+          "attempted_at": "2026-09-10T14:20:23.480227Z",
+          "outcome": "completed"
+        }
+      ],
+      "completed_at": "2026-09-10T14:20:23.480227Z",
+      "observation_id": "publish-response-001"
+    },
+    "relations": []
+  },
+  "remote_observations": [
+    {
+      "id": "create-response-001",
+      "operation_key": "create",
+      "observed_at": "2026-09-10T12:50:46.068185Z",
+      "outcome": "matched",
+      "remote_sha256": "604d72b70172b0ad585a623c2e5ce130776d7e17cb84a66002ddd318b4a7ac6f",
+      "summary": "Redmine confirmou issue 1014454, Feature New e descrição aprovada; hash do conteúdo gerenciado em CRLF."
+    },
+    {
+      "id": "prepublication-read-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T14:15:54.451129Z",
+      "outcome": "matched",
+      "remote_sha256": "604d72b70172b0ad585a623c2e5ce130776d7e17cb84a66002ddd318b4a7ac6f",
+      "summary": "Releitura confirmou descrição inicial intacta, um par de delimitadores e nenhum conteúdo externo. Status New e relação 662 preservados; nenhuma divergência humana."
+    },
+    {
+      "id": "publish-response-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T14:20:23.480227Z",
+      "outcome": "matched",
+      "summary": "Redmine confirmou atualização da descrição da issue #1014454. Nenhum status enviado; resultado persistido antes da releitura."
+    },
+    {
+      "id": "publish-verification-001",
+      "operation_key": "publish",
+      "observed_at": "2026-09-10T14:21:28.748645Z",
+      "outcome": "matched",
+      "remote_sha256": "d6a016ba56c41888237e19ef76d30cc62b20842d8aaea3e34f39d47a1dceca4a",
+      "summary": "Releitura confirmou descrição aprovada, status New, relação 662 preservada e nenhum conteúdo externo. Requisito e operações reconciliados."
+    },
+    {
+      "id": "time-review-publish-response-1014454-001",
+      "operation_key": "time-review-publish-1014454-001",
+      "observed_at": "2026-09-10T19:07:50.066090Z",
+      "outcome": "matched",
+      "summary": "Redmine confirmou a atualização da descrição aprovada; resultado persistido antes da releitura. Nenhum outro campo enviado."
+    },
+    {
+      "id": "time-review-publish-verification-1014454-001",
+      "operation_key": "time-review-publish-1014454-001",
+      "observed_at": "2026-09-10T19:07:53.949996Z",
+      "outcome": "matched",
+      "remote_sha256": "81d7a3438c47354df84098c176574cf32d56444eb9b350207c908f3ce681a35a",
+      "summary": "Releitura confirmou descrição aprovada, status New, relações e conteúdo externo preservados. Hash gerenciado conforme retornado pelo Redmine."
+    }
+  ],
+  "requirement_divergences": [],
+  "title_convention": {
+    "surfaces": [
+      "WEB"
+    ],
+    "audiences": [
+      "PUBLICO",
+      "ADMIN",
+      "OPERACIONAL"
+    ],
+    "audience_mode": "aggregate",
+    "shared_public_rule": "PUBLICO: acesso sem sessão. ADMIN: administração de usuários. OPERACIONAL: interfaces compartilhadas pelos usuários autenticados. Administradores podem acessar e administrar qualquer projeto sem participação; gestores e membros seguem seus papéis. Iniciar/Pausar/Finalizar tarefa são exclusivos do responsável atual, inclusive para administradores; ninguém controla manualmente cronômetro alheio. Estados de somente consulta continuam aplicáveis. Minhas Tarefas mantém o recorte pessoal. O prefixo não concede permissões adicionais.",
+    "confirmation": {
+      "statement": "Prefixos WEB, PUBLICO, ADMIN e OPERACIONAL preservados. Alcance administrativo confirmado por Mário Tinelli em Q84, com exceções Q90/Q92/Q95 e confirmação explícita do entendimento de Gestão de Tempo.",
+      "confirmed_by": "Mário Tinelli",
+      "confirmed_at": "2026-09-10T17:49:11.029268Z"
+    }
+  },
+  "delivery": {
+    "surface": "WEB",
+    "audiences": [
+      "OPERACIONAL"
+    ],
+    "name": "Gestão de Tarefa",
+    "title": "[WEB] [OPERACIONAL] Gestão de Tarefa",
+    "visible_delivery": "Criação e edição por gestores do projeto e administradores, consulta, atribuição, ações de situação, arquivamento/desarquivamento, editor rico com imagens, anexos e histórico. Integra tarefas e progresso por quantidade no projeto; execução e horas pertencem à Gestão de Tempo.",
+    "user_result": "Planejar e acompanhar uma tarefa, colaborar no seu detalhe e preservar a rastreabilidade.",
+    "included": [
+      "Gestores do projeto e administradores criam tarefas e editam seus dados. Participantes ativos e administradores podem atribuir a qualquer participante ativo, inclusive a si quando participante, ou deixar sem responsável, respeitando as situações de somente consulta.",
+      "Cadastrar projeto fixo após criação, título, situação inicial Pendente, prioridade Média e autor automático; descrição, responsável, datas e estimativa opcionais. Estimativa em horas decimais até duas casas, maior que zero e até seis, convertida ao minuto mais próximo; aceitar ponto ou vírgula.",
+      "Restringir criação a projeto ativo gerenciado ou administrado; consultas dependem de participação ou acesso administrativo. Somente o responsável atual pode Iniciar, Pausar e Finalizar, inclusive quando gestor ou administrador. Gestores do projeto e administradores podem Cancelar, Arquivar e Desarquivar quando permitido. Preservar responsável inativo existente, sem novas atribuições a inativos.",
+      "Manter prioridades Baixa/Média/Alta/Urgente. Situação muda somente por ações: Iniciar → Em andamento; Pausar → Pausada; Finalizar → Finalizada; Cancelar → Cancelada; Arquivar → Arquivada; Desarquivar → Pendente. Finalizar registra data. Não oferecer edição direta, Bloquear, Retomar, Reabrir ou Devolver à fila.",
+      "Consultar detalhe, autor, responsável, datas, estimativa e situação. Arquivar com confirmação retira das listas de trabalho, quadro e progresso. Gestores do projeto e administradores podem Desarquivar em projeto ativo, sempre para Pendente, inclusive após Cancelada → Arquivada.",
+      "Permitir a participantes ativos e administradores comentar e anexar em tarefas finalizadas, editar/excluir somente os próprios comentários e excluir somente próprios anexos com confirmação. Descrição e comentários usam editor rico com imagens no conteúdo; anexos ficam em área separada. Sem comentários privados ou menções.",
+      "Registrar criação e alterações de situação por ação, responsável, prioridade, prazo, estimativa, título, descrição, data inicial e arquivamento/desarquivamento, com autoria, data/hora e valores anterior/novo quando aplicáveis; histórico cronológico sem evento ao salvar sem mudanças.",
+      "Integrar tarefas, atraso e progresso no projeto. Progresso = Finalizadas/(Pendentes + Em andamento + Pausadas + Finalizadas), com 0% no conjunto vazio. Canceladas/arquivadas excluídas; atraso somente nas três situações não finalizadas. Remoção confirmada de participante deixa tarefas sem responsável e preserva comentários, horas e histórico.",
+      "Validar campos e datas opcionais, permitindo passado e prazo igual/posterior ao início. Impedir sobrescrita silenciosa em edição simultânea, preservando texto para revisão. Oferecer estados acessíveis de consulta, loading, vazio, erro e sucesso em desktop/mobile.",
+      "Manter campos personalizados, workflow configurável, comentários privados, menções e notificações de negócio fora do MVP. Imagens no editor e anexos da tarefa estão incluídos por decisão explícita; situações e prioridades são fixas.",
+      "Aplicar as transições: Pendente → Iniciar/Finalizar/Cancelar/Arquivar; Em andamento → Pausar/Finalizar; Pausada → Iniciar/Finalizar/Cancelar/Arquivar; Finalizada → nenhuma ação de situação; Cancelada → Arquivar; Arquivada → Desarquivar para Pendente. Ações funcionam sem cronômetro nesta entrega.",
+      "Aceitar anexos separados da descrição: PDF, imagens, documentos de texto, planilhas e ZIP, até 20 MB por arquivo. Participantes ativos e administradores podem adicionar/baixar, excluir somente próprios com confirmação; imagens também podem ser inseridas no editor da descrição e comentários.",
+      "Finalizadas mantêm colaboração e atribuição, sem ações de situação. Canceladas ficam somente consulta exceto Arquivar por gestor do projeto ou administrador; arquivadas permitem consulta/download e Desarquivar por gestor do projeto ou administrador em projeto ativo. Projeto arquivado impede mutações."
+    ],
+    "boundary_reason": "Criação, manutenção, colaboração e rastreabilidade pertencem ao mesmo detalhe de tarefa. Consulta transversal, organização diária e quadro têm entregas próprias; consomem a mesma regra de transição sem duplicar sua responsabilidade."
+  },
+  "scope_item": {
+    "state_path": "../../scopes/2026-09-09-nexum-scope/scope-state.json",
+    "catalog_item_id": "manage-task",
+    "catalog_sha256": "89759a4f2b30efdc34031fcc634de9df05328bbd7704229d7205a02d43d509b0"
+  }
+}

@@ -11,6 +11,8 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 
 from validate_state import validate
+from artifact_paths import artifact_root, contained_path
+from artifact_layout import approved_document
 
 
 START = "<!-- project-flow:start -->"
@@ -170,10 +172,8 @@ def main():
             raise ValueError("requires exactly one valid canonical approval")
         approval = approvals[0]
         item_type = state["item_type"]
-        document_path = args.state.parent / f"{item_type.lower()}.md"
-        document_bytes = document_path.read_bytes()
-        if hashlib.sha256(document_bytes).hexdigest() != approval["subject_sha256"]:
-            raise ValueError("canonical bytes differ from the approved requirement")
+        document_path = contained_path(artifact_root(args.state), f"{item_type.lower()}.md")
+        document_bytes = approved_document(document_path, approval["subject_sha256"])
         document = document_bytes.decode("utf-8")
         canonical_path = canonical_reference_path(document_path)
         before = read_issue(args.before)

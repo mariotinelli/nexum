@@ -5,11 +5,13 @@ description: Turn readable conversation, file, URL, image, or design evidence in
 
 # Project Flow
 
-Respond in Brazilian Portuguese (pt-BR) from the first announcement, including questions, progress, preflight diagnostics, approval previews, final summaries, and authored requirements in local artifacts and Redmine. Preserve technical identifiers, schema keys, commands, and quoted source text. Apply this language choice when invoking the supporting disciplines unless the user explicitly requests another language.
+Respond in Brazilian Portuguese (pt-BR) from the first announcement, including questions, progress, preflight diagnostics, approval previews, final summaries, and authored requirements in local artifacts and Redmine. Translate prose from skill instructions, references, and tool diagnostics when explaining or citing it to the user, including excerpts used to justify an approval request or blocker; identify translated quotations as translations. Preserve technical identifiers, schema keys, commands, and file paths. Keep original source evidence verbatim in its evidence artifacts; when the user requests an exact quotation, include the original with a translation. Apply this language choice when invoking the supporting disciplines unless the user explicitly requests another language.
 
 Deliver approved requirements: `new-scope` discovers an ordered Feature/Bug catalog and completes every item in that order; `new-issue` handles one Feature or Bug. The local Markdown is canonical; Redmine preserves its approved functional content through the [checked projection](references/redmine-publication.md). Product decisions belong to the user, and implementation decisions belong to later roles.
 
 ## Preflight before intake
+
+For an explicitly requested local artifact organization, follow [artifact organization](references/artifact-organization.md) instead of demand intake. This filesystem branch uses local validators and performs no Redmine preflight or remote mutation.
 
 Treat the user's demand text as opaque until this phase passes. Create no file and do not interpret, summarize, classify, search for, or quote the demand yet.
 
@@ -31,7 +33,7 @@ Present the projects returned by Redmine and require an explicit project selecti
 
 ## Recover or start
 
-After preflight and before reading new intake, look for incomplete Project Flow state under `docs/harness/.runs/`, `docs/harness/features/`, and `docs/harness/bugs/`. If one matches the requested item, read [pause and resume](references/pause-resume.md), validate it, acquire its item lock, and offer to resume it. Never interpret demand text or create an artifact before preflight merely to decide whether a run matches.
+After preflight and before reading new intake, look for incomplete Project Flow state under `docs/harness/.runs/`, `docs/harness/features/`, `docs/harness/bugs/`, and `docs/harness/scopes/`, checking both legacy root states and `.flow/` states. Exclude `.work/` candidates; reconcile duplicate states for the same identity before proceeding. If one matches the requested item, read [pause and resume](references/pause-resume.md), validate it, acquire its item lock, and offer to resume it. Never interpret demand text or create an artifact before preflight merely to decide whether a run matches.
 
 For a fresh run, derive a stable item key from the confirmed project and intended artifact identity, then acquire the lock before the first write. Runs for different keys remain independent. A conflicting live lock stops this run with its non-secret owner and acquisition time; recovery requires the explicit abandoned-lock procedure in the pause reference.
 
@@ -39,7 +41,7 @@ For a fresh run, derive a stable item key from the confirmed project and intende
 
 ## Run the selected path
 
-Now read [the source intake contract](references/intake.md) and [the artifact contract](references/artifact-contract.md) before the first local write. For `new-scope`, read [the new-scope workflow](references/new-scope.md); for `new-issue`, read [the shared item workflow](references/new-issue.md). Both paths route the selected item through that same shared Feature or Bug cycle. Read [the design contract](references/design-inputs.md) only when an input is presented as a design or design evidence. Read [the Redmine projection contract](references/redmine-publication.md) before preparing either remote write.
+Now read [the source intake contract](references/intake.md) and [the artifact contract](references/artifact-contract.md) before the first local write. Follow its storage and retention policy for every generated file; prepare new directories with `manage_artifacts.py`. For `new-scope`, read [the new-scope workflow](references/new-scope.md); for `new-issue`, read [the shared item workflow](references/new-issue.md). Both paths route the selected item through that same shared Feature or Bug cycle. Read [the design contract](references/design-inputs.md) only when an input is presented as a design or design evidence. Read [the Redmine projection contract](references/redmine-publication.md) before preparing either remote write.
 
 Invoke `requirements-grilling` for a `new-issue` interview. For `new-scope`, follow the catalog-first interview gate in `references/new-scope.md`: build and approve the complete product-capability catalog, create and persist the selected issue, and only then invoke `requirements-grilling` for that one item. Invoke `domain-modeling` only if the item interview resolves a reusable canonical term or exposes a genuine architecture candidate under that skill's triggers. Do not invoke it merely because a requirement uses domain language.
 

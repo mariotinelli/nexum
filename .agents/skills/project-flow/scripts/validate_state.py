@@ -14,6 +14,8 @@ from typing import Any
 
 sys.dont_write_bytecode = True
 
+from artifact_paths import artifact_root, checked_path, relocated_path
+
 
 PHASES = (
     "mode-confirmed",
@@ -201,7 +203,7 @@ def validate_source(source: object, index: int, state_path: Path) -> tuple[str, 
         if source["fully_read"] is not True:
             fail(f"{label}.fully_read must be true")
         extraction_method = require_text(source["extraction_method"], f"{label}.extraction_method")
-        source_path = state_path.parent / normalized_path
+        source_path = checked_path(artifact_root(state_path) / normalized_path)
         if not source_path.is_file() or source_path.is_symlink() or source_path.parent.is_symlink():
             fail(f"normalized source file not found or is a symlink: {source_path}")
         digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
@@ -354,6 +356,8 @@ def validate_history(state: dict[str, Any]) -> None:
 
 
 def validate(path: Path) -> dict[str, Any]:
+    path = relocated_path(path)
+    artifact_root(path)
     state = json.loads(path.read_text(encoding="utf-8"))
     state = require_object(state, "state")
     decision_keys = {"classification", "similarity"}
@@ -394,7 +398,7 @@ def validate(path: Path) -> dict[str, Any]:
             scope_path = Path(require_text(link["state_path"], "scope_item.state_path"))
             if scope_path.is_absolute():
                 fail("scope_item.state_path must be relative")
-            scope = validate_scope_file(path.parent / scope_path)
+            scope = validate_scope_file(checked_path(artifact_root(path) / scope_path))
             known_catalog = any(a["kind"] == "complete-catalog-and-order" and a["subject_sha256"] == link["catalog_sha256"] for a in scope["approvals"])
             if scope["schema_version"] != 3 or not known_catalog:
                 fail("scope item must inherit the confirmed catalog projection")

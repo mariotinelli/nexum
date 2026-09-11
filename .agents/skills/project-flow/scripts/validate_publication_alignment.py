@@ -14,6 +14,8 @@ sys.dont_write_bytecode = True
 
 from render_publication import canonical_reference_path, check_projection, issue_snapshot
 from validate_state import validate as validate_requirement
+from artifact_paths import artifact_root, contained_path, relocated_path
+from artifact_layout import approved_document
 
 
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
@@ -68,13 +70,7 @@ def uuid(value, label):
 
 def relative_path(root, value, label):
     text(value, label)
-    path = Path(value)
-    if path.is_absolute() or ".." in path.parts:
-        fail(f"{label} must be a contained relative path")
-    resolved = (root / path).resolve()
-    if resolved != root.resolve() and root.resolve() not in resolved.parents:
-        fail(f"{label} escapes the alignment directory")
-    return resolved
+    return relocated_path(contained_path(root, value))
 
 
 def file_hash(path):
@@ -165,7 +161,7 @@ def validate_v2(state, path):
     if not match or UUID(match.group(1)) != UUID(state["alignment_id"]):
         fail("v2 filename must be publication-alignment-<alignment_id>.json")
     validate_status_history(state)
-    root = path.parent
+    root = artifact_root(path)
 
     exact(state["issue"], {"issue_id", "subject"}, "issue")
     issue_id = identifier(state["issue"]["issue_id"], "issue.issue_id")
@@ -176,8 +172,7 @@ def validate_v2(state, path):
     document_path = relative_path(root, state["canonical"]["document_path"], "canonical.document_path")
     approval_id = text(state["canonical"]["approval_id"], "canonical.approval_id")
     canonical_sha = sha256(state["canonical"]["sha256"], "canonical.sha256")
-    if not document_path.is_file() or file_hash(document_path) != canonical_sha:
-        fail("canonical document does not match its SHA-256")
+    document_bytes = approved_document(document_path, canonical_sha)
     requirement = validate_requirement(state_path)
     if requirement["phase"] != "completed" or str(requirement["redmine"]["issue_id"]) != str(issue_id):
         fail("alignment requires the completed state for the same issue")
@@ -308,7 +303,7 @@ def validate_v2(state, path):
         current = issue_snapshot(json.loads(readback_path.read_text(encoding="utf-8")), baseline["subject"])
         if description_hash(current) != state["readback"]["description_sha256"]:
             fail("readback description hash differs")
-        check_projection(document_path.read_text(encoding="utf-8"), requirement["item_type"], canonical_reference_path(document_path), approvals[0]["approved_by"], baseline, current)
+        check_projection(document_bytes.decode("utf-8"), requirement["item_type"], canonical_reference_path(document_path), approvals[0]["approved_by"], baseline, current)
         if current["description"] != payload["changes"]["description"]:
             fail("readback does not match the approved payload")
         completion_checks = (
@@ -331,6 +326,8 @@ def validate_v2(state, path):
 
 
 def validate(path):
+    path = relocated_path(path)
+    artifact_root(path)
     state = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(state, dict):
         fail("publication alignment must be an object")

@@ -1,7 +1,0 @@
-{
-  "project_id": 65221,
-  "tracker_id": 2,
-  "status_id": 1,
-  "subject": "[WEB] [OPERACIONAL] Consulta de Tarefas",
-  "description": "<!-- project-flow:start -->\nPermitir encontrar tarefas nos projetos dos quais o usuário participa, pela interface WEB responsiva em português.\n\nA entrega inclui:\n- Buscar por título e combinar filtros de projeto, responsável, situação, prioridade, prazo e apenas atrasadas.\n- Ordenar por criação, prazo, prioridade ou atualização.\n- Aplicar, limpar e preservar filtros durante a sessão.\n- Paginar tarefas não arquivadas dos projetos acessíveis, mostrando título, situação, responsável, prazo, prioridade, atraso e acesso ao detalhe.\n- Apresentar tabela no desktop, cards no mobile e estados de carregamento, vazio, erro e sucesso.\n\nDepende de Gestão de Tarefa (#1014454). Criação e manutenção de tarefas, execução, horas e organização em Minhas Tarefas pertencem às respectivas Features.\n\nRequisitos em coleta. As regras detalhadas e os critérios de aceite serão definidos na entrevista desta Feature.\n<!-- project-flow:end -->"
-}

@@ -165,8 +165,8 @@ O painel não exige novo filtro de data de finalização na Consulta de Tarefas.
 ## Designs e evidências
 
 - [Painel](../../scopes/2026-09-09-nexum-scope/sources/design-dashboard.md), [guia](../../scopes/2026-09-09-nexum-scope/sources/design-guide.md) e [apontamentos](../../scopes/2026-09-09-nexum-scope/sources/design-time-entries.md).
-- [Entrevista](interview.md): Q111–Q120 e confirmação explícita do entendimento por Mário Tinelli.
-- [Catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/catalog-time-review.md): recortes por papel, situações e fórmula de progresso.
+- [Entrevista](history/interview.md): Q111–Q120 e confirmação explícita do entendimento por Mário Tinelli.
+- [Catálogo revisado aprovado](../../scopes/2026-09-09-nexum-scope/.flow/reviews/catalog-time-review.md): recortes por papel, situações e fórmula de progresso.
 - Q111 fecha papéis mistos; Q112 limita a projetos ativos; Q113/Q119 definem período e uso; Q114/Q115 definem paginação e arredondamento; Q116–Q118 definem populações de tarefas e horas; Q120 limita atalhos aos recortes suportados. Regras antigas de perfis e situações nas referências são substituídas pelos requisitos aprovados.
 
 ## Dentro do escopo

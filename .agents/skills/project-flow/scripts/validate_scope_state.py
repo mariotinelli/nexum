@@ -15,6 +15,7 @@ from typing import Any
 sys.dont_write_bytecode = True
 
 from validate_state import validate_source
+from artifact_paths import artifact_root, relocated_path
 from catalog_contract import SCOPE_FIELDS, ITEM_FIELDS, validate_scope, projection
 
 
@@ -493,6 +494,8 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
 
 
 def validate(path: Path) -> dict[str, Any]:
+    path = relocated_path(path)
+    artifact_root(path)
     state = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(state, dict) or state.get("mode") != "new-scope":
         fail("scope state must be a new-scope object")

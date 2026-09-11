@@ -4,7 +4,7 @@
 
 Catálogo funcional do MVP Nexum revisado e aprovado por Mário Tinelli a partir de 17 fontes. A revisão reúne operações coesas e explicita quem entrega cada comportamento e integração entre telas.
 
-O catálogo tem 11 Features ativas e 59 comportamentos cobertos. Seis entradas anteriores permanecem retiradas e endereçáveis. A versão humana anterior está em [scope.legacy.md](scope.legacy.md); o estado anterior completo permanece em `legacy_review.previous_state` no [estado canônico](scope-state.json).
+O catálogo tem 11 Features ativas e 59 comportamentos cobertos. Seis entradas anteriores permanecem retiradas e endereçáveis. A versão humana anterior está em [scope.legacy.md](.flow/legacy/scope.legacy.md); o estado anterior completo permanece em `legacy_review.previous_state` no [estado canônico](.flow/scope-state.json).
 
 <!-- project-flow:catalog:start -->
 ## Convenção de títulos
@@ -2845,7 +2845,7 @@ O catálogo tem 11 Features ativas e 59 comportamentos cobertos. Seis entradas a
 - Registro: `catalog-review-approval-2026-09-09`.
 - Data e hora: `2026-09-09T22:24:15.557849+00:00`.
 - Resposta do usuário: “aprovado”.
-- Projeção integral aprovada: [catalog-preview.review.md](catalog-preview.review.md).
+- Projeção integral aprovada: [catalog-preview.review.md](.flow/reviews/catalog-preview.review.md).
 - SHA-256: `4c82e64741b3207bc726a943dd526b96e15e26283d5e37d93cce64ab94120e34`.
 - Escopo da aprovação: catálogo completo, entregas, cobertura, públicos, dependências e ordem.
 
@@ -2863,7 +2863,7 @@ Dez bloqueios ativos planejados; nenhuma relação publicada. Das 11 relações 
 
 ## Alterações do catálogo
 
-Registro `catalog-review-2026-09-09-approved` no estado canônico. Gestão de Projeto reúne consulta, criação, edição e arquivamento/reativação. Gestão de Tarefa reúne criação, edição, detalhe, comentários e histórico. Gestão de Tempo e Minhas Tarefas completam a cobertura revelada pelas referências incluídas. [Histórico da revisão e validações](catalog-review.md).
+Registro `catalog-review-2026-09-09-approved` no estado canônico. Gestão de Projeto reúne consulta, criação, edição e arquivamento/reativação. Gestão de Tarefa reúne criação, edição, detalhe, comentários e histórico. Gestão de Tempo e Minhas Tarefas completam a cobertura revelada pelas referências incluídas. [Histórico da revisão e validações](.flow/reviews/catalog-review.md).
 
 ## Gaps funcionais dos itens processados
 
@@ -2883,10 +2883,10 @@ Dez planejadas, nove legadas retiradas, nenhuma publicada.
 
 ### Artefatos
 
-- [Catálogo canônico](scope.md) e [estado canônico](scope-state.json).
-- [Projeção aprovada](catalog-preview.review.md).
-- [Revisão e decisões](catalog-review.md).
-- [Catálogo legado preservado](scope.legacy.md).
+- [Catálogo canônico](scope.md) e [estado canônico](.flow/scope-state.json).
+- [Projeção aprovada](.flow/reviews/catalog-preview.review.md).
+- [Revisão e decisões](.flow/reviews/catalog-review.md).
+- [Catálogo legado preservado](.flow/legacy/scope.legacy.md).
 - 17 fontes normalizadas sob `sources/`.
 
 ### Aprovações
@@ -2903,7 +2903,7 @@ Prosseguir para Recuperação de Acesso, conforme autorização do usuário. Aut
 
 ## Atualização — Recuperação de Senha
 
-Renomeação solicitada pelo usuário aplicada ao item recover-access. Issue #1014447 criada como Feature New, sem categoria; entrevista iniciada em [interview.md](../../features/1014447-recuperacao-de-senha/interview.md). Nove Features ainda não iniciadas.
+Renomeação solicitada pelo usuário aplicada ao item recover-access. Issue #1014447 criada como Feature New, sem categoria; entrevista iniciada em [interview.md](../../features/1014447-recuperacao-de-senha/history/interview.md). Nove Features ainda não iniciadas.
 
 ## Conclusão de Recuperação de Senha
 
@@ -2975,15 +2975,15 @@ Issue #1014493, Feature New, sem categoria, criada após aprovação explícita.
 
 ## Prévia de revisão após Gestão de Tempo
 
-Entendimento de Q70–Q95 confirmado por Mário Tinelli. [Impactos e comparação](catalog-time-impact.md) e [catálogo completo revisado](catalog-time-review.md) preparados para aprovação. O catálogo aprovado acima permanece como referência vigente; o escopo continua pausado até aprovar a revisão e reconciliar requisitos afetados. Issues, fontes, relações, ordem e artefatos preservados.
+Entendimento de Q70–Q95 confirmado por Mário Tinelli. [Impactos e comparação](.flow/reviews/catalog-time-impact.md) e [catálogo completo revisado](.flow/reviews/catalog-time-review.md) preparados para aprovação. O catálogo aprovado acima permanece como referência vigente; o escopo continua pausado até aprovar a revisão e reconciliar requisitos afetados. Issues, fontes, relações, ordem e artefatos preservados.
 
 ## Catálogo aprovado e requisitos em revisão
 
-Mário Tinelli aprovou o catálogo completo revisado (catalog-time-review-001). A aprovação está persistida no candidato; aplicação coordenada aguarda os [quatro requisitos preparados](requirements-time-review.md). Gestão de Tempo e correções de Projeto/Tarefa/Consulta têm documentos completos para aprovação. As oito issues e as operações anteriores permanecem preservadas.
+Mário Tinelli aprovou o catálogo completo revisado (catalog-time-review-001). A aprovação está persistida no candidato; aplicação coordenada aguarda os [quatro requisitos preparados](.flow/reviews/requirements-time-review.md). Gestão de Tempo e correções de Projeto/Tarefa/Consulta têm documentos completos para aprovação. As oito issues e as operações anteriores permanecem preservadas.
 
 ## Revisão local aplicada; publicação preparada
 
-Catálogo completo e quatro requisitos aprovados e aplicados localmente. Estados de todas as oito issues validados; conteúdo dos quatro primeiros requisitos preservado. [Prévia completa das quatro publicações](publication-time-review.md) aguardando autorização. Redmine relido: quatro issues New, conteúdo gerenciado conforme último registro e sem conteúdo externo.
+Catálogo completo e quatro requisitos aprovados e aplicados localmente. Estados de todas as oito issues validados; conteúdo dos quatro primeiros requisitos preservado. [Prévia completa das quatro publicações](.flow/publications/9d198d4b-f169-5bad-bfd9-6eb11ded3745/publication-time-review.md) aguardando autorização. Redmine relido: quatro issues New, conteúdo gerenciado conforme último registro e sem conteúdo externo.
 
 ## Gestão de Tempo e correções publicadas
 
@@ -3084,7 +3084,7 @@ Todas as dez relações nativas `blocks` foram relidas nos dois extremos e corre
 - #1014548: [[WEB] [OPERACIONAL] Quadro do Projeto](../../features/1014548-quadro-do-projeto/feature.md)
 - #1014550: [[WEB] [OPERACIONAL] Painel Gerencial](../../features/1014550-painel-gerencial/feature.md)
 
-Evidências de conferência: [reconciliação](final-reconciliation.json) e [releituras do Redmine](final-remote-snapshots.json). O catálogo, as fontes e as decisões permanecem em scope.md e scope-state.json.
+Evidências de conferência: [reconciliação](.flow/publications/942519db-a6b4-5399-8072-62d236a05cc6/final-reconciliation.json) e [releituras do Redmine](.flow/publications/942519db-a6b4-5399-8072-62d236a05cc6/final-remote-snapshots.json). O catálogo, as fontes e as decisões permanecem em scope.md e scope-state.json.
 
 ## Aprovações
 
