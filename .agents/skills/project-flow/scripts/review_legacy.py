@@ -34,12 +34,18 @@ def validate_scope_revision(previous, current, draft=False):
         if key not in mutable:
             preserved(value, current.get(key), key)
     items = {item["id"]: item for item in current["catalog"]}
+    previous_progress = {record["catalog_item_id"]: record for record in previous.get("item_progress", [])}
     for old in previous["catalog"]:
         new = items.get(old["id"])
         if new is None or new["type"] != old["type"]:
             raise ValueError("legacy revision must retain every item ID and type")
         if old.get("lifecycle") == "retired" and new["lifecycle"] != "retired":
             raise ValueError("legacy revision cannot reactivate a retired item")
+        if old.get("lifecycle") != "retired" and new["lifecycle"] == "retired":
+            progress = previous_progress.get(old["id"], {})
+            retained = ("issue_id", "artifact_path", "state_path", "requirement_phase", "started_at", "completed_at")
+            if old.get("status") != "pending" or progress.get("status") != "pending" or any(progress.get(field) is not None for field in retained):
+                raise ValueError("only unstarted, unpublished catalog items can be retired by legacy review")
         if new["lifecycle"] == "retired":
             for key, value in old.items():
                 if key not in {"status", "lifecycle"}:
@@ -69,7 +75,11 @@ def validate_relation_history(previous, current, allow_progress=False):
         if allow_progress and old["status"] == "planned" and new and new["status"] in {"planned", "completed"}:
             identity = ("stable_key", "from_item_id", "to_item_id", "relation_type")
             endpoints = ("from_issue_id", "to_issue_id", "approval_id")
-            if all(new[key] == old[key] for key in identity) and all(old[key] is None or new[key] == old[key] for key in endpoints):
+            same_identity = all(new[key] == old[key] for key in identity)
+            retained_endpoints = all(old[key] is None or new[key] == old[key] for key in endpoints)
+            pending = new["status"] == "planned" and new["reconciliation_status"] == "pending" and new["completed_at"] is None
+            completed = new["status"] == "completed" and all(new[key] is not None for key in endpoints) and new["reconciliation_status"] == "completed" and new["completed_at"] is not None
+            if same_identity and retained_endpoints and (pending or completed):
                 continue
         if (
             old["status"] == "planned"

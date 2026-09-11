@@ -1,6 +1,6 @@
 ---
 name: project-flow
-description: Turn readable conversation, file, URL, image, or design evidence into an approved Feature/Bug catalog or canonical requirements with recoverable Redmine projections. Use for new-scope and new-issue work, including multi-item scope completion, safe pause, resume, catalog revision, relations, publication alignment of its completed items, and partial-failure reconciliation; this flow does not edit an existing issue as a new demand.
+description: Turn readable conversation, file, URL, image, or design evidence into an approved Feature/Bug catalog or canonical requirements with recoverable Redmine projections. Use for new-scope and new-issue work, including multi-item scope completion, safe pause, resume, catalog revision, relations, publication alignment of completed items, and partial-failure reconciliation; this flow does not edit an existing issue as a new demand.
 ---
 
 # Project Flow
@@ -13,19 +13,19 @@ Deliver approved requirements: `new-scope` discovers an ordered Feature/Bug cata
 
 Treat the user's demand text as opaque until this phase passes. Create no file and do not interpret, summarize, classify, search for, or quote the demand yet.
 
-1. Discover the Redmine tools available in this session, using the host's tool discovery/search when tools are deferred. Treat discovery as paginated: when `tools/list` or its host equivalent returns `nextCursor` or another continuation token, request the next page with that token and repeat until the response omits it or returns it empty. Accumulate names and schemas from every page before checking capabilities; a first page, page-size count, or partial search result cannot prove absence. Match exposed names and schemas to the capabilities below; host namespace prefixes may differ. Confirm that the connected Redmine MCP exposes `redmine_get_context`, `redmine_list_projects`, `redmine_get_project`, `redmine_list_trackers`, `redmine_list_statuses`, `redmine_list_categories`, `redmine_search_issues`, `redmine_get_issue`, `redmine_create_issue`, `redmine_update_issue`, and `redmine_create_relation`. A connected status or tool count alone does not establish which capabilities exist; an initially hidden tool does not establish absence. If discovery is incomplete or a check fails, read [Redmine preflight diagnostics](references/redmine-preflight.md) before reporting a blocker.
+1. Discover the Redmine tools available in this session, using the host's tool discovery/search when tools are deferred. Treat discovery as paginated: when `tools/list` or its host equivalent returns `nextCursor` or another continuation token, request the next page with that token and repeat until the response omits it or returns it empty. Accumulate names and schemas across pages; a first page, page-size count, or partial search result cannot prove absence. When the host exposes search instead of a pageable inventory, search each unresolved capability by its exact name (especially `redmine_create_relation`), then by its operation name such as `create_relation` if needed, and inspect the returned schema. Positive discovery of every required tool completes capability verification even if unrelated tools remain undiscovered. Match exposed names and schemas to the capabilities below; host namespace prefixes may differ. Confirm that the connected Redmine MCP exposes `redmine_get_context`, `redmine_list_projects`, `redmine_get_project`, `redmine_list_trackers`, `redmine_list_statuses`, `redmine_list_categories`, `redmine_search_issues`, `redmine_get_issue`, `redmine_create_issue`, `redmine_update_issue`, and `redmine_create_relation`. A connected status or tool count alone does not establish which capabilities exist; an initially hidden tool does not establish absence. If discovery is incomplete or a check fails, read [Redmine preflight diagnostics](references/redmine-preflight.md) before reporting a blocker.
 2. Call `redmine_get_context`. A successful response must identify the server and authenticated user without exposing credentials.
 3. Call the read-only project, tracker, and status list tools to prove access. Do not probe write tools by mutating Redmine.
 
 If a required capability remains unavailable, authentication fails, identity is missing, or a read fails, stop before intake and report the observed failure and its evidence-based corrective action using the diagnostic reference. Distinguish a connected server missing a capability from an unconfigured server. The valid outcome is failure before intake: no demand content processed and no artifact written.
 
-**Complete when:** discovery pagination is exhausted, every mandatory tool is present in the accumulated inventory, the authenticated identity is known, and the three read probes succeeded without reading or displaying a credential.
+**Complete when:** every mandatory tool and its schema are confirmed through accumulated discovery pages or targeted host searches, the authenticated identity is known, and the three read probes succeeded without reading or displaying a credential.
 
-For an explicitly requested publication alignment of a completed item created by this flow, reuse the confirmed project and identity after preflight and follow [the completed-publication branch](references/redmine-publication.md#aligning-an-already-completed-publication). This branch preserves the completed catalog and interview; it does not restart intake or issue creation.
+For an explicitly requested publication alignment of a completed item created by this flow, reuse the confirmed project and identity after preflight and follow the completed-publication branch in [the Redmine projection contract](references/redmine-publication.md). This branch preserves the completed catalog and interview; it does not restart intake or issue creation.
 
 ## Select the context
 
-Present the projects returned by Redmine and require an explicit project selection. Read that project and its categories. Retain the available trackers for classification, map the initial/approved statuses, and require confirmation when a needed mapping is not a literal equivalent. Ask the user to confirm the authenticated identity for approval attribution.
+Present the projects returned by Redmine and require an explicit project selection. Read that project and its categories. Retain the available trackers for classification, map only the initial issue status, and require confirmation when a needed mapping is not a literal equivalent. Ask the user to confirm the authenticated identity for approval attribution.
 
 **Complete when:** project and identity are explicitly confirmed, categories are available, and any non-literal tracker/status mapping is confirmed.
 
@@ -46,5 +46,7 @@ Invoke `requirements-grilling` for a `new-issue` interview. For `new-scope`, fol
 **Complete when:** `new-issue` validates at `completed`; or `new-scope` validates at `completed` with every active item completed in approved order, every relation and remote operation reconciled, every approval and validation recorded, no open functional gap or undecided candidate, and a final summary. After each scope item, the user explicitly chooses to continue or stop; either choice is durable and preserves the catalog and progress.
 
 ## Boundaries
+
+Requirement approval and flow completion are local workflow milestones. Publication preserves the current Redmine issue status; follow the publication contract for the exact update payload and legacy mappings.
 
 This flow never edits an existing issue found by similarity search or creates categories. It never creates commits, technical tasks, architecture decisions, or extra issues automatically. Closing, canceling, relating, or otherwise mutating Redmine always consumes an explicit recorded approval; a retry may reuse an approval only when its payload fingerprint is unchanged.

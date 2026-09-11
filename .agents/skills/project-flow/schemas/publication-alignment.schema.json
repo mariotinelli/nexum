@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/project-flow/publication-alignment-v2.json",
+  "title": "Project Flow publication alignment state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "alignment_id",
+    "status",
+    "status_history",
+    "issue",
+    "canonical",
+    "lock",
+    "baseline",
+    "preview",
+    "payload",
+    "approval",
+    "attempts",
+    "observations",
+    "readback",
+    "completed_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "kind": {
+      "const": "publication-alignment"
+    },
+    "alignment_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "approved",
+        "unknown",
+        "completed"
+      ]
+    },
+    "status_history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/status_transition"
+      }
+    },
+    "issue": {
+      "$ref": "#/$defs/issue_identity"
+    },
+    "canonical": {
+      "$ref": "#/$defs/canonical"
+    },
+    "lock": {
+      "$ref": "#/$defs/lock"
+    },
+    "baseline": {
+      "$ref": "#/$defs/baseline"
+    },
+    "preview": {
+      "$ref": "#/$defs/file_reference"
+    },
+    "payload": {
+      "$ref": "#/$defs/file_reference"
+    },
+    "approval": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/approval"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attempt"
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/observation"
+      }
+    },
+    "readback": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/readback"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "completed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "status_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "recorded_at"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "approved",
+            "unknown",
+            "completed"
+          ]
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "issue_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issue_id",
+        "subject"
+      ],
+      "properties": {
+        "issue_id": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "canonical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state_path",
+        "document_path",
+        "approval_id",
+        "sha256"
+      ],
+      "properties": {
+        "state_path": {
+          "$ref": "#/$defs/path"
+        },
+        "document_path": {
+          "$ref": "#/$defs/path"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "lock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_key",
+        "lock_id",
+        "path",
+        "acquired_at",
+        "released_at",
+        "release_reason"
+      ],
+      "properties": {
+        "item_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lock_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "acquired_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "released_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "release_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "description_sha256",
+        "captured_at",
+        "sanitized",
+        "status",
+        "relations"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "description_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sanitized": {
+          "const": true
+        },
+        "status": {},
+        "relations": {
+          "type": "array"
+        }
+      }
+    },
+    "file_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "subject_sha256",
+        "approved_by",
+        "approved_at",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "const": "publish-payload"
+        },
+        "subject_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "approved_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "const": "valid"
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "attempted_at",
+        "payload_sha256",
+        "outcome"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attempted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "outcome": {
+          "enum": [
+            "failed",
+            "unknown",
+            "completed"
+          ]
+        },
+        "response_received_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "error_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sanitized_message": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "observed_at",
+        "kind",
+        "outcome",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "kind": {
+          "enum": [
+            "response",
+            "readback"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "failed",
+            "unknown",
+            "absent",
+            "diverged",
+            "matched",
+            "completed"
+          ]
+        },
+        "description_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "readback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "observed_at",
+        "issue_id",
+        "description_sha256",
+        "payload_reconciled",
+        "functional_projection",
+        "unmanaged_content_preserved",
+        "status_preserved",
+        "relations_preserved"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "issue_id": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "description_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "payload_reconciled": {
+          "type": "boolean"
+        },
+        "functional_projection": {
+          "enum": [
+            "pending",
+            "passed"
+          ]
+        },
+        "unmanaged_content_preserved": {
+          "type": "boolean"
+        },
+        "status_preserved": {
+          "type": "boolean"
+        },
+        "relations_preserved": {
+          "type": "boolean"
+        }
+      }
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

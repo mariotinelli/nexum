@@ -40,7 +40,7 @@ As soon as both endpoint issue IDs exist for a planned relation, preview and obt
 
 After each completed item, show current issues, relations, catalog progress, remaining order, and blockers. Ask the user to choose `continue` or `stop`; after the final item offer `finish` or `stop`. Persist the attributed decision before acting.
 
-`continue` returns to step 3. `stop` appends a `voluntary-stop` pause with the first incomplete item and objective resume condition, preserving the entire catalog, item progress, issues, relations, approvals, sources, and histories. Resume reruns preflight and reconciliation, validates the scope and item states, then selects the same first incomplete active item in approved order.
+`continue` returns to step 3. `stop` appends a `voluntary-stop` pause with the first incomplete item and objective resume condition, preserving the entire catalog, item progress, issues, relations, approvals, sources, and histories. Resume reruns preflight and reconciliation, validates the scope and item states, marks that pause resumed, and appends a new attributed `continue` or `finish` decision for the same completed item without rewriting the original `stop`; then it selects the same first incomplete active item in approved order.
 
 **Complete when:** one decision follows the completed item; continuation has not skipped an item, or stopping has a valid resumable pause and no remote mutation follows it.
 
@@ -54,6 +54,6 @@ The scope may reach `completed` only when every active item is completed, every 
 
 ## Catalog revision
 
-New evidence that changes names, audiences, deliveries, coverage, conventions, or divides, combines, adds, removes, retypes, reorders, or changes dependencies pauses the scope before mutation. Show its effect on names, audiences, deliveries, coverage, candidate mapping, source ownership, graph, order, issues, relations, and artifacts. Invalidate the prior catalog approval, append an approved `catalog_changes` record, retain retired entries and every created issue/artifact, update the active catalog, and obtain approval of the complete revised projection. A split or merge never closes, deletes, reuses, or rewrites an existing issue automatically; any later remote disposition is a separate previewed decision.
+New evidence that changes names, audiences, deliveries, coverage, conventions, or divides, combines, adds, removes, retypes, reorders, or changes dependencies pauses the scope before mutation. Show its effect on names, audiences, deliveries, coverage, candidate mapping, source ownership, graph, order, issues, relations, and artifacts. Invalidate the prior catalog approval, append an approved `catalog_changes` record, retain retired entries and every created issue/artifact, update the active catalog, and obtain approval of the complete revised projection. Only unstarted, unpublished items and relations may retire locally; a split or merge never closes, deletes, reuses, retires, or rewrites an existing issue automatically. Any later remote disposition is a separate previewed decision.
 
 **Complete when:** history is append-only, every prior issue ID remains in item progress, the revised active graph/order/source allocation validate, and exactly one approval covers the current complete catalog.

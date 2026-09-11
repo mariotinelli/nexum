@@ -458,7 +458,7 @@ def validate(path: Path) -> dict[str, Any]:
 
     redmine = require_object(state["redmine"], "redmine")
     redmine_keys = {"project_id", "project_name", "tracker_id", "tracker_name", "initial_status_id", "initial_status_name", "approved_status_id", "approved_status_name", "mapping_confirmations", "category", "issue_id"}
-    require_keys(redmine, redmine_keys - {"issue_id", "category"}, "redmine")
+    require_keys(redmine, redmine_keys - {"issue_id", "category", "approved_status_id", "approved_status_name"}, "redmine")
     allow_keys(redmine, redmine_keys, "redmine")
     if not isinstance(redmine["mapping_confirmations"], list):
         fail("redmine.mapping_confirmations must be an array")

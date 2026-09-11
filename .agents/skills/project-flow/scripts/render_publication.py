@@ -81,6 +81,32 @@ def projection(document, item_type, canonical_path, approved_by):
     return f"\n{content}\n\n## {FOOTER}\n\nDocumento aprovado por {approved_by}: {canonical_path}\n"
 
 
+def issue_snapshot(value, subject_fallback=None):
+    if not isinstance(value, dict):
+        raise ValueError("issue snapshot must be an object")
+    nested = value.get("issue")
+    if nested is not None and not isinstance(nested, dict):
+        raise ValueError("issue must be an object")
+    records = [value, nested] if nested is not None else [value]
+    identifiers = [record[key] for record in records for key in ("id", "issue_id") if key in record]
+    if not identifiers:
+        raise ValueError("issue snapshot requires id or issue_id")
+    if len({str(identifier) for identifier in identifiers}) != 1:
+        raise ValueError("issue snapshot contains conflicting IDs")
+    result = {"id": identifiers[0]}
+    for field in ("subject", "description", "status", "status_id", "relations"):
+        values = [record[field] for record in records if field in record]
+        if values:
+            if any(candidate != values[0] for candidate in values[1:]):
+                raise ValueError(f"issue snapshot contains conflicting {field}")
+            result[field] = values[0]
+    if "subject" not in result and subject_fallback is not None:
+        result["subject"] = subject_fallback
+    if not isinstance(result.get("subject"), str) or not isinstance(result.get("description"), str):
+        raise ValueError("issue snapshot requires subject and description")
+    return result
+
+
 def build_payload(document, item_type, canonical_path, approved_by, issue):
     title = document.splitlines()[0].removeprefix("# ").strip()
     if title != issue["subject"]:
@@ -91,8 +117,11 @@ def build_payload(document, item_type, canonical_path, approved_by, issue):
 
 
 def check_projection(document, item_type, canonical_path, approved_by, before, current):
-    if current["id"] != before["id"] or current["subject"] != before["subject"]:
+    if str(current["id"]) != str(before["id"]) or current["subject"] != before["subject"]:
         raise ValueError("issue identity or title changed")
+    for field in ("status", "status_id", "relations"):
+        if field in before and current.get(field) != before[field]:
+            raise ValueError(f"issue {field} changed")
     prefix, _, suffix = split_managed(before["description"])
     current_prefix, managed, current_suffix = split_managed(current["description"])
     if (prefix, suffix) != (current_prefix, current_suffix):
@@ -100,7 +129,8 @@ def check_projection(document, item_type, canonical_path, approved_by, before, c
     parsed = sections(managed)
     if not parsed or parsed[-1][0] != FOOTER:
         raise ValueError("canonical reference footer missing")
-    if not managed.lstrip().startswith("## " + parsed[0][0] + "\n") and not managed.lstrip().startswith("## " + parsed[0][0] + "\r\n"):
+    normalized = managed.replace("\r\n", "\n").lstrip()
+    if not normalized.startswith("## " + parsed[0][0] + "\n"):
         raise ValueError("unexpected content before functional sections")
     if parsed[:-1] != functional_sections(document, item_type):
         raise ValueError("functional projection differs: omitted, merged, reordered or changed content")
@@ -113,22 +143,29 @@ def check_projection(document, item_type, canonical_path, approved_by, before, c
         raise ValueError("canonical reference or approval attribution differs")
 
 
-def read_issue(path):
-    value = json.loads(path.read_text(encoding="utf-8"))
-    return value.get("issue", value)
+def read_issue(path, subject_fallback=None):
+    return issue_snapshot(json.loads(path.read_text(encoding="utf-8")), subject_fallback)
+
+
+def canonical_reference_path(document_path):
+    parts = document_path.resolve().parts
+    anchors = [index for index in range(len(parts) - 1) if parts[index:index + 2] == ("docs", "harness")]
+    if not anchors:
+        raise ValueError("canonical document must be under docs/harness")
+    return Path(*parts[anchors[-1]:]).as_posix()
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("state", type=Path)
-    parser.add_argument("--before", type=Path, required=True, help="Fresh issue JSON, including id, subject and description")
+    parser.add_argument("--before", type=Path, required=True, help="Fresh issue JSON with identity, subject and description")
     parser.add_argument("--output", type=Path, help="Complete description preview")
     parser.add_argument("--payload", type=Path, help="Exact redmine_update_issue arguments")
     parser.add_argument("--check", type=Path, help="Issue JSON to compare with the approved canonical sections")
     args = parser.parse_args()
     try:
         state = validate(args.state)
-        approvals = [a for a in state["approvals"] if a["kind"] == "requirement" and a["status"] == "valid"]
+        approvals = [approval for approval in state["approvals"] if approval["kind"] == "requirement" and approval["status"] == "valid"]
         if len(approvals) != 1:
             raise ValueError("requires exactly one valid canonical approval")
         approval = approvals[0]
@@ -138,19 +175,15 @@ def main():
         if hashlib.sha256(document_bytes).hexdigest() != approval["subject_sha256"]:
             raise ValueError("canonical bytes differ from the approved requirement")
         document = document_bytes.decode("utf-8")
-        parts = document_path.resolve().parts
-        anchors = [i for i in range(len(parts) - 1) if parts[i:i + 2] == ("docs", "harness")]
-        if not anchors:
-            raise ValueError("canonical document must be under docs/harness")
-        canonical_path = Path(*parts[anchors[-1]:]).as_posix()
+        canonical_path = canonical_reference_path(document_path)
         before = read_issue(args.before)
-        if before["id"] != state["redmine"]["issue_id"]:
+        if str(before["id"]) != str(state["redmine"]["issue_id"]):
             raise ValueError("snapshot belongs to another issue")
         payload = build_payload(document, item_type, canonical_path, approval["approved_by"], before)
         if args.check:
-            check_projection(document, item_type, canonical_path, approval["approved_by"], before, read_issue(args.check))
-        targets = [p.resolve() for p in (args.output, args.payload) if p]
-        inputs = {p.resolve() for p in (args.state, args.before, document_path, args.check) if p}
+            check_projection(document, item_type, canonical_path, approval["approved_by"], before, read_issue(args.check, before["subject"]))
+        targets = [path.resolve() for path in (args.output, args.payload) if path]
+        inputs = {path.resolve() for path in (args.state, args.before, document_path, args.check) if path}
         if len(targets) != len(set(targets)) or inputs.intersection(targets):
             raise ValueError("outputs must be distinct from inputs and each other")
         encoded = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
@@ -161,7 +194,7 @@ def main():
             with args.payload.open("w", encoding="utf-8", newline="") as stream:
                 stream.write(encoded)
         print("valid" if args.check else hashlib.sha256(encoded.encode("utf-8")).hexdigest())
-    except (OSError, ValueError, TypeError, KeyError) as error:
+    except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError, UnicodeDecodeError) as error:
         print(f"invalid: {error}", file=sys.stderr)
         return 1
     return 0

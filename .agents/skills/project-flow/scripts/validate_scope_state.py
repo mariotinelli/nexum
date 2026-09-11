@@ -376,7 +376,7 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
             if any(progress_by_id[later]["status"] != "pending" for later in order[position + 1:]):
                 fail("an open functional gap blocks the next item and later flows")
 
-    decisions, decision_by_item = state["continuation_decisions"], {}
+    decisions, decision_by_item, last_decided_at = state["continuation_decisions"], {}, None
     if not isinstance(decisions, list):
         fail("continuation_decisions must be an array")
     for index, decision in enumerate(decisions):
@@ -387,21 +387,27 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
             fail("continuation decision must follow a completed item")
         if item_id in decision_by_item:
             previous_decision = next(entry for entry in reversed(decisions[:index]) if entry["after_item_id"] == item_id)
-            resumed = any(
-                pause.get("kind") == "voluntary-stop"
-                and pause.get("status") == "resumed"
-                and datetime.fromisoformat(previous_decision["decided_at"].replace("Z", "+00:00"))
-                <= datetime.fromisoformat(pause["paused_at"].replace("Z", "+00:00"))
-                <= datetime.fromisoformat(pause["resumed_at"].replace("Z", "+00:00"))
-                <= datetime.fromisoformat(decision["decided_at"].replace("Z", "+00:00"))
-                for pause in state["pauses"]
-            )
+            previous_at = datetime.fromisoformat(previous_decision["decided_at"].replace("Z", "+00:00"))
+            current_at = datetime.fromisoformat(decision["decided_at"].replace("Z", "+00:00"))
+            resumed = False
+            for pause in state["pauses"]:
+                if pause.get("kind") != "voluntary-stop" or pause.get("status") != "resumed":
+                    continue
+                paused_at = datetime.fromisoformat(pause["paused_at"].replace("Z", "+00:00"))
+                resumed_at = datetime.fromisoformat(pause["resumed_at"].replace("Z", "+00:00"))
+                preceding = [entry for entry in decisions[:index] if datetime.fromisoformat(entry["decided_at"].replace("Z", "+00:00")) <= paused_at]
+                if preceding and preceding[-1] is previous_decision and previous_at <= paused_at <= resumed_at <= current_at:
+                    resumed = True
+                    break
             if previous_decision["decision"] != "stop" or decision["decision"] not in {"continue", "finish"} or not resumed:
-                fail("repeated continuation requires an explicitly resumed voluntary stop")
+                fail("repeated continuation requires its explicitly resumed voluntary stop")
         if decision["decision"] not in {"continue", "stop", "finish"}:
             fail(f"continuation_decisions[{index}].decision is invalid")
         text(decision["decided_by"], f"continuation_decisions[{index}].decided_by")
-        timestamp(decision["decided_at"], f"continuation_decisions[{index}].decided_at")
+        decided_at = timestamp(decision["decided_at"], f"continuation_decisions[{index}].decided_at")
+        if last_decided_at is not None and decided_at < last_decided_at:
+            fail("continuation decisions must remain in chronological order")
+        last_decided_at = decided_at
         decision_by_item[item_id] = decision["decision"]
     for index, item_id in enumerate(order):
         if progress_by_id[item_id]["status"] == "completed" and item_id not in decision_by_item:
@@ -429,7 +435,7 @@ def validate_v2(state: dict[str, Any], path: Path) -> dict[str, Any]:
             if relation["approval_id"] is not None or relation["completed_at"] is not None or relation["reconciliation_status"] != "pending":
                 fail("only unpublished, unapproved planned relations can be retired locally")
             continue
-        if relation["status"] not in {"planned", "completed"}:
+        if relation["status"] not in {"pending", "planned", "completed"}:
             fail("invalid relation status")
         if pair in relation_pairs:
             fail("duplicate active relation pair")

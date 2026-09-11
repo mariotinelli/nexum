@@ -4,7 +4,7 @@ Use this branch only after the shared workflow confirms `Feature` and the run lo
 
 Interview for objective and success, actors and permissions, inputs and observable results, primary and alternate flows, states, validation and recovery, functional integrations, and scope boundaries. Follow `requirements-grilling`'s frontier and completion gate; implementation choices and non-functional requirements not explicit in the evidence remain outside the interview.
 
-Draft `feature.md` from `templates/feature.md`. Its objective explains actor, need, observable change, value, and essential limits. Numbered user stories cover every confirmed functional behavior without an artificial limit. Cover main and alternate flows, rules, observable data, verifiable acceptance criteria, dependencies, evidence, and scope boundaries. Each criterion states a condition, action, and result and traces to a described flow or rule. Identify business rules as `R1`, `R2`, etc. and acceptance criteria as `CA1`, `CA2`, etc.; preserve those identifiers and references in the publication.
+Draft `feature.md` from `templates/feature.md`. Its objective explains actor, need, observable change, value, and essential limits. Numbered user stories cover every confirmed functional behavior without an artificial limit. Cover main and alternate flows, rules, observable data, verifiable acceptance criteria, dependencies, evidence, and scope boundaries. Each criterion states a condition, action, and result and traces to a described flow or rule.
 
 When late evidence exists, the shared workflow must reconcile its confirmed, contradicted, and reopened decisions before this contract can pass.
 

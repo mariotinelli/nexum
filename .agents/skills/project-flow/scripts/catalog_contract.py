@@ -97,7 +97,10 @@ def projection(state):
     if "legacy_review" in state:
         review = state["legacy_review"]
         previous = json.dumps(review["previous_state"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-        result["legacy_review"] = {"reason": review["reason"], "previous_state_sha256": hashlib.sha256(previous.encode("utf-8")).hexdigest()}
+        result["legacy_review"] = {
+            "reason": review["reason"],
+            "previous_state_sha256": hashlib.sha256(previous.encode("utf-8")).hexdigest(),
+        }
     retired_relations = [relation for relation in state.get("relations", []) if relation["status"] == "retired"]
     if retired_relations:
         result["retired_relations"] = retired_relations

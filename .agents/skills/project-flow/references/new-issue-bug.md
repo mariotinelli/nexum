@@ -22,7 +22,7 @@ Do not ask the user to diagnose a cause or choose a fix. Keep technical hypothes
 
 ## Draft the Bug
 
-Draft `bug.md` from `templates/bug.md`. User stories are not required. State the current and expected behavior under comparable conditions, preserve known evidence and uncertainty, and distinguish reach from frequency. Criteria of correction must be implementation-independent and observable; each states the condition or population, the action or event, and the externally visible corrected result. Give correction criteria stable `CC1`, `CC2`, etc. identifiers and preserve them in the publication. Add a criterion for a non-deterministic Bug that makes the agreed evidence window or sampling boundary explicit.
+Draft `bug.md` from `templates/bug.md`. User stories are not required. State the current and expected behavior under comparable conditions, preserve known evidence and uncertainty, and distinguish reach from frequency. Criteria of correction must be implementation-independent and observable; each states the condition or population, the action or event, and the externally visible corrected result. Add a criterion for a non-deterministic Bug that makes the agreed evidence window or sampling boundary explicit.
 
 When late evidence exists, the shared workflow must reconcile its confirmed, contradicted, and reopened decisions before this contract can pass.
 
