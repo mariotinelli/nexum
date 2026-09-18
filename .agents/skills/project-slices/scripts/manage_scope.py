@@ -99,7 +99,7 @@ def require_timestamp(value: Any, label: str) -> str:
     return text
 
 
-def contracts() -> tuple[Any, Any, Any, Any, Any, Any, Any]:
+def contracts() -> tuple[Any, Any, Any, Any, Any, Any, Any, Any]:
     package = Path(__file__).resolve().parents[1]
     project_flow = package.parent / "project-flow" / "scripts"
     if not project_flow.is_dir():
@@ -108,6 +108,7 @@ def contracts() -> tuple[Any, Any, Any, Any, Any, Any, Any]:
         if str(directory) not in sys.path:
             sys.path.insert(0, str(directory))
     try:
+        from artifact_layout import resolve_path
         from catalog_contract import digest as catalog_digest
         import manage_publication as publication_contract
         import manage_dependencies as dependency_contract
@@ -117,6 +118,7 @@ def contracts() -> tuple[Any, Any, Any, Any, Any, Any, Any]:
     except ImportError as error:
         fail(f"cannot load packaged verification contracts: {error}")
     return (
+        resolve_path,
         catalog_digest,
         validate_scope_state,
         validate_requirement_state,
@@ -155,7 +157,7 @@ def scope_paths(scope_dir: Path) -> tuple[Path, Path]:
 
 def approved_scope(scope_dir: Path) -> tuple[Path, Path, Path, dict[str, Any], str]:
     scope_dir, state_path = scope_paths(scope_dir)
-    catalog_digest, validate_scope_state, _, _, _, _, _ = contracts()
+    _, catalog_digest, validate_scope_state, _, _, _, _, _ = contracts()
     try:
         state = validate_scope_state(state_path)
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
@@ -176,22 +178,31 @@ def progress_by_item(scope: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {item["catalog_item_id"]: item for item in progress}
 
 
-def mapped_path(harness: Path, value: Any, label: str) -> Path:
+def mapped_path(harness: Path, scope_dir: Path, value: Any, label: str, resolve_path: Any) -> Path:
     text = require_text(value, label).replace("\\", "/")
     if text.startswith("docs/harness/"):
-        return contained(harness.parent.parent, text, label)
-    return contained(harness, text, label)
+        return resolve_path(contained(harness.parent.parent, text, label))
+    relative = Path(text)
+    if relative.is_absolute() or relative.anchor:
+        fail(f"{label} must be a contained relative path")
+    candidate = (scope_dir / relative).absolute()
+    try:
+        candidate.relative_to(harness.absolute())
+    except ValueError:
+        fail(f"{label} escapes the harness root")
+    assert_safe_path(candidate)
+    return resolve_path(candidate)
 
 
-def feature_paths(harness: Path, item: dict[str, Any], progress: dict[str, Any]) -> tuple[Path, Path] | None:
+def feature_paths(harness: Path, scope_dir: Path, item: dict[str, Any], progress: dict[str, Any], resolve_path: Any) -> tuple[Path, Path] | None:
     artifact_value = progress.get("artifact_path")
     state_value = progress.get("state_path")
     if artifact_value is None and state_value is None:
         return None
     if artifact_value is None or state_value is None:
         fail(f"catalog item {item['id']} has an incomplete Feature artifact mapping")
-    artifact = mapped_path(harness, artifact_value, f"{item['id']} artifact_path")
-    state_path = mapped_path(harness, state_value, f"{item['id']} state_path")
+    artifact = mapped_path(harness, scope_dir, artifact_value, f"{item['id']} artifact_path", resolve_path)
+    state_path = mapped_path(harness, scope_dir, state_value, f"{item['id']} state_path", resolve_path)
     if artifact.is_dir():
         artifact = artifact / "feature.md"
     if artifact.name != "feature.md" or not artifact.is_file() or not state_path.is_file():
@@ -367,7 +378,7 @@ def inspect_scope(scope_dir: Path) -> dict[str, Any]:
         scope,
         catalog_sha,
     ) = approved_scope(scope_dir)
-    _, _, _, validate_feature, validate_slices_state, publication, dependencies = contracts()
+    resolve_path, _, _, _, validate_feature, validate_slices_state, publication, dependencies = contracts()
     progress = progress_by_item(scope)
     catalog = {item["id"]: item for item in scope["catalog"]}
     ordered_ids = [item_id for item_id in scope["suggested_order"] if item_id in catalog]
@@ -379,7 +390,7 @@ def inspect_scope(scope_dir: Path) -> dict[str, Any]:
         item = catalog[item_id]
         if item["lifecycle"] != "active" or item["type"] != "Feature":
             continue
-        mapped = feature_paths(harness, item, progress[item_id])
+        mapped = feature_paths(harness, scope_dir, item, progress[item_id], resolve_path)
         record: dict[str, Any] = {
             "catalog_item_id": item_id,
             "position": item["suggested_position"],
@@ -401,7 +412,7 @@ def inspect_scope(scope_dir: Path) -> dict[str, Any]:
         link = requirement.get("scope_item")
         linked_scope = None
         if isinstance(link, dict) and isinstance(link.get("state_path"), str):
-            linked_scope = Path(os.path.abspath(feature_dir / link["state_path"]))
+            linked_scope = resolve_path(Path(os.path.abspath(feature_dir / link["state_path"])))
             assert_safe_path(linked_scope)
         if (
             requirement.get("mode") != "new-scope"
