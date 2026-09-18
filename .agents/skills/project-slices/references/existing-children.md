@@ -6,7 +6,11 @@ Leia o pai com `children`, percorra todas as páginas das filhas abertas e fecha
 
 Para cada filha, registre no `existing_children_review` do plano uma decisão `adopt` ligada a uma key proposta ou `keep-external`. Uma adoção nomeia toda divergência aceita entre a entrega proposta e o baseline remoto; projeto ou pai divergentes impedem a adoção. Uma decisão externa não seleciona key nem autoriza alteração. O snapshot completo, seu hash, o ator, o instante e o motivo entram na revisão de publicação aprovada.
 
-**Concluído quando:** cada ID descoberto possui exatamente uma decisão do tech lead, toda adoção referencia uma key única e toda divergência está visível ou bloqueia a prévia.
+Antes de pedir a decisão, apresente cada filha como `#<ID> — <título completo exatamente como no Redmine>`, preservando todos os prefixos e o sufixo. Mostre a ação proposta (adotar ou manter externa), tracker, status, estimativa, relações e divergências. Para adoção, identifique também o título completo do slice de destino quando diferir do título remoto; a key é apenas um detalhe secundário. Nos bloqueios, identifique cada tarefa relacionada pelo título completo e ID confirmado quando existir. A pergunta de aprovação deve remeter a essa lista identificada, sem substituir títulos por `dev-1`, `qa`, somente sufixos ou resumos como “QA da Autenticação”.
+
+Exemplo: `#1014746 — [DEV] [WEB] [PUBLICO] Autenticação - Entrada e navegação de contas ativas`; ação proposta: adotar como a entrega de mesmo título (chave interna `dev-1`). Exibir o título na revisão é necessário para identificar a tarefa; ele continua fora do corpo da descrição publicada.
+
+**Concluído quando:** cada filha foi apresentada com ID, título completo e ação proposta, cada ID descoberto possui exatamente uma decisão do tech lead, toda adoção referencia uma key única e toda divergência está visível ou bloqueia a prévia.
 
 ## Retomar sem duplicar
 

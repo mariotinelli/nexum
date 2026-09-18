@@ -519,7 +519,7 @@ def atomic_batch_write(files: dict[Path, bytes]) -> None:
                 pass
 
 
-def render_preview(revision: dict[str, Any], children: list[dict[str, Any]], relations: list[dict[str, Any]], native_fields: dict[str, Any], metadata: dict[str, Any]) -> str:
+def render_preview(revision: dict[str, Any], children: list[dict[str, Any]], relations: list[dict[str, Any]], native_fields: dict[str, Any], metadata: dict[str, Any], review: dict[str, Any] | None = None) -> str:
     feature = revision["proposal"]["feature"]
     native = children[0]["attributes"]
     priority = native_fields["default_priority_id"]
@@ -541,25 +541,35 @@ def render_preview(revision: dict[str, Any], children: list[dict[str, Any]], rel
     ]
     for child in children:
         lines.extend([
-            f"### {child['key']} — {child['title']}", "",
+            f"### {'#' + str(child['remote_id']) + ' — ' if child.get('remote_id') else ''}{child['title']}", "",
+            f"- Chave interna: `{child['key']}`",
             f"- Tipo: {child['kind'].upper()}",
-            *([f"- Origem: {'filha existente adotada' if child.get('source') == 'adopted' else 'nova filha a criar'}"] if revision.get("existing_children_review") else []),
+            *([f"- Origem: {'filha existente adotada' if child.get('source') == 'adopted' else 'nova filha a criar'}"] if review else []),
             *([f"- ID adotado: `{child['remote_id']}`"] if child.get("source") == "adopted" else []),
             f"- Estimativa: {child['estimate_hours']:g}h",
             f"- Payload SHA-256: `{child['payload_sha256']}`", "",
             child["description"], "",
         ])
     lines.extend(["## Bloqueios nativos", ""])
+    children_by_key = {child["key"]: child for child in children}
+
+    def child_label(key: str) -> str:
+        child = children_by_key[key]
+        identity = f"#{child['remote_id']} — " if child.get("remote_id") else ""
+        return f"{identity}{child['title']}"
+
     if relations:
-        lines.extend(f"- `{item['source_key']}` bloqueia `{item['target_key']}` (`blocks`)." for item in relations)
+        lines.extend(f"- {child_label(item['source_key'])} bloqueia {child_label(item['target_key'])} (`blocks`)." for item in relations)
     else:
         lines.append("- Nenhum; a Feature possui cobertura existente integral e segue somente para QA.")
-    review = revision.get("existing_children_review")
     if review:
+        snapshot = load_json(Path(review["snapshot_path"]))
+        titles = {issue["id"]: issue["subject"] for issue in snapshot["children"]}
         lines.extend(["", "## Filhas descobertas e decisões", ""])
         for decision in review["decisions"]:
-            destination = f"adotada como `{decision['target_key']}`" if decision["disposition"] == "adopt" else "mantida fora do conjunto gerenciado"
-            lines.append(f"- `{decision['issue_id']}`: {destination}; decisão de {decision['decided_by']} em {decision['decided_at']} — {decision['reason']}")
+            target_title = next((item["title"] for item in revision["proposal"]["slices"] if f"dev-{item['number']}" == decision["target_key"]), f"[QA] {feature['title']}")
+            destination = f"adotar como {target_title} (chave interna `{decision['target_key']}`)" if decision["disposition"] == "adopt" else "manter fora do conjunto gerenciado"
+            lines.append(f"- #{decision['issue_id']} — {titles[decision['issue_id']]}: {destination}; decisão de {decision['decided_by']} em {decision['decided_at']} — {decision['reason']}")
     return "\n".join(lines) + "\n"
 
 
@@ -642,7 +652,7 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         }
     validate_publication_state(state, check_files=False)
     outputs = {Path(child["description_path"]): child["description"].encode("utf-8") for child in children}
-    outputs[preview_path] = render_preview(revision, children, relations, native, metadata).encode("utf-8")
+    outputs[preview_path] = render_preview(revision, children, relations, native, metadata, review).encode("utf-8")
     outputs[state_path] = canonical_bytes(state) + b"\n"
     atomic_batch_write(outputs)
     print(json.dumps({"status": state["status"], "revision": revision_record["number"], "publication_sha256": revision_record["publication_sha256"]}))
