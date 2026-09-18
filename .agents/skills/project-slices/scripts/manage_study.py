@@ -272,9 +272,9 @@ def input_feature(input_path: Path) -> tuple[Path, dict[str, Any], str, int]:
     return feature_dir, input_check, title, state["redmine"]["issue_id"]
 
 
-def render_description(title: str, question: str, expected_result: str, effort_limit: str) -> str:
+def render_description(question: str, expected_result: str, effort_limit: str) -> str:
     return "\n".join([
-        f"# {title}", "", "## Pergunta técnica", "", question, "",
+        "## Pergunta técnica", "", question, "",
         "## Resultado esperado", "", expected_result, "", "## Limite de esforço", "", effort_limit, "",
     ])
 
@@ -354,7 +354,7 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     estimate = hours(study_plan["estimate_hours"], "study.estimate_hours")
     title = f"[DEV] {feature_title} - Estudo: {subject}"
     identity = digest({"feature_issue_id": issue_id, "requirement_sha256": input_check["requirement_sha256"], "subject": subject})
-    description = render_description(title, question, expected_result, effort_limit)
+    description = render_description(question, expected_result, effort_limit)
     description += f"\n<!-- project-slices-study:{identity} -->\n"
     description_path = feature_dir / "slices" / "descriptions" / "study.md"
     study = {

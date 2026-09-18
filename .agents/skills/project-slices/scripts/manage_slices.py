@@ -700,18 +700,17 @@ def render_markdown(proposal: dict[str, Any], revision: int, proposal_sha: str) 
                 f"- Resultado: {evidence['result']}", "",
             ])
     lines.extend(["", "## Descrições completas", ""])
-    labels = {"success": "Sucesso", "error": "Erro", "permission": "Permissão"}
     for slice_value in proposal["slices"]:
         description = slice_value["description"]
         lines.extend([
             f"### {slice_value['number']}. {slice_value['title']}", "", "#### Entrega", "", description["delivery"], "",
             "#### Escopo e limites", "", description["limits"], "", "#### Critérios de aceite", "",
         ])
-        lines.extend(f"- {labels[item['kind']]}: {item['text']}" for item in description["criteria"])
+        lines.extend(f"- {item['text']}" for item in description["criteria"])
         lines.extend(["", "#### Dependências", "", description["dependencies"]])
         if description.get("technical_context"):
             lines.extend(["", "#### Contexto técnico", "", description["technical_context"]])
-        lines.extend(["", "#### Rastreabilidade", "", f"Feature Redmine `{proposal['feature']['issue_id']}`; regras/critérios {', '.join(description['traceability'])}.", ""])
+        lines.extend(["", "#### Referências", "", f"Item pai Redmine `#{proposal['feature']['issue_id']}`; regras/critérios {', '.join(description['traceability'])}.", ""])
     return "\n".join(lines).rstrip() + "\n"
 
 

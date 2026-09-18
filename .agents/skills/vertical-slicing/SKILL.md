@@ -33,7 +33,7 @@ Declare somente bloqueios que impedem iniciar o slice. Para outra Feature, nomei
 
 Preserve integralmente o nome e os prefixos da Feature. Prefixe desenvolvimento com `[DEV]` e acrescente o sufixo da entrega. Para uma entrega de API consumível já prevista no requisito, insira `[API]` depois de `[WEB]`, como `[DEV] [WEB] [API] [OPERACIONAL] Gestão de Usuários - Cadastro`; endpoints internos de outro comportamento não recebem o marcador.
 
-Escreva para a pessoa que implementará: entrega, limites, critérios concretos de sucesso/erro/permissão relevantes, dependências, contexto técnico necessário e rastreabilidade. Use uma única seção de critérios de aceite. Evite copiar a Feature inteira, listar arquivos previstos ou antecipar a receita de implementação e testes.
+Antes de redigir ou revisar descrições, aplique [escrita de tarefas para quem executa](references/task-writing.md). Use os campos existentes para contexto funcional e mudança esperada, limites relevantes, critérios verificáveis, dependências e referências. Contexto técnico permanece opcional e não antecipa a receita de implementação e testes.
 
 Compare cada requisito atribuído ao slice com a descrição completa. Expresse nos critérios as condições observáveis necessárias para verificar a entrega; uma referência em `traceability` não substitui essa explicação. Preserve condições de acessibilidade, responsividade, prazo e permissão quando fizerem parte do requisito, em vez de resumi-las a qualificadores genéricos como “acessível”. Corrija omissões e contradições entre critérios, limites e tabela de cobertura antes de apresentar a proposta.
 

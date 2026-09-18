@@ -44,9 +44,17 @@ Há exatamente uma QA por item pai. O título é `[QA]` seguido do título compl
 
 A QA verifica o item pai completo, incluindo os comportamentos classificados como `existing`. Traduza esses cenários em jornadas e critérios verificáveis, preservando as condições do requisito aprovado; a classificação dispensa trabalho DEV, mas não a verificação integrada.
 
+Escreva `objective` como um objetivo curto. Em `integrated_journeys`, separe cenários por comportamento e informe junto de cada cenário a preparação necessária: perfis, dados, dispositivos e condições de sessão ou tempo. Use `rules_permissions` para restrições relevantes e `related_impacts` para comportamentos relacionados que precisam ser preservados, sem repetir as jornadas. Em `completion_criteria`, explique os resultados e evidências necessários para concluir e como registrar impedimentos. Mantenha estimativas em seu campo próprio e decisões administrativas no estado do fluxo.
+
+Exemplo de separação: em vez de reunir todo o ciclo de Lembrar-me em um item, descreva o retorno pelo mesmo navegador dentro de 30 dias e, em outro item, o retorno após o prazo sem sessão válida, incluindo que acessos intermediários não prorrogam a lembrança. Preserve também os demais cenários aprovados, inclusive saída e desativação; o exemplo não substitui a cobertura completa.
+
 **Concluído quando:** identidade do pai, trackers derivados, status inicial, prioridade, heranças, estimativas e bloqueios QA estão explícitos no plano sanitizado, a QA cobre também o comportamento existente e nenhuma credencial foi persistida.
 
 ## Prévia e aprovação final
+
+O título da filha pertence ao campo `subject` do Redmine. A descrição começa diretamente em `Entrega` para DEV, `Objetivo` para QA ou `Pergunta técnica` para Study, sem repetir o título. Na prévia agrupada, identifique cada filha fora do corpo da descrição.
+
+Aplique a [revisão editorial](../../vertical-slicing/references/task-writing.md) também à QA, preservando suas jornadas e condições de conclusão. DEV usa “Critérios de aceite”; QA usa “Critérios de conclusão”. A geração apresenta os critérios DEV sem os rótulos internos de classificação. Referências identificam o pai e os requisitos cobertos. Novas renderizações não reescrevem descrições armazenadas em publicações anteriores nem seus hashes; alterações de conteúdo aprovado seguem uma nova revisão e aprovação.
 
 Execute:
 

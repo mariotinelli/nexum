@@ -57,6 +57,8 @@ Uma única filha DEV é válida. Seis horas são referência, não limite: toda 
 
 ## Aprovar a decomposição
 
+Conclua a revisão editorial de [descrições para quem executa](../vertical-slicing/references/task-writing.md): mudança esperada e preservação explícitas, cenários verificáveis, relações identificadas pelo nome e texto livre de comentários administrativos. Aplique a revisão a novas propostas e revisões; preserve os estados, hashes e aprovações históricos.
+
 Antes de solicitar aprovação, conclua a conferência entre requisitos, cobertura e descrições definida em `vertical-slicing`; a validação estrutural do helper não verifica equivalência de significado. Mostre as descrições completas renderizadas. Elas devem ser humanas e conter entrega, limites, critérios verificáveis de sucesso, erro e permissão quando relevantes, dependências e rastreabilidade. Renderize contexto técnico somente quando houver conteúdo aprovado. Use uma única seção de critérios; planejamento de arquivos, código e testes automatizados pertence à implementação posterior.
 
 Rode `approve` informando o tech lead e o instante da decisão, depois `validate --previous` contra o estado anterior. Esta decisão aprova a decomposição; a autorização para publicar depende da prévia final separada.

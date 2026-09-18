@@ -107,21 +107,20 @@ def approved_source(path: Path) -> tuple[dict[str, Any], dict[str, Any], dict[st
     return state, revision, approvals[0]
 
 
-def description_markdown(title: str, description: dict[str, Any], kind: str) -> str:
+def description_markdown(description: dict[str, Any], kind: str, parent_issue_id: int) -> str:
     if kind == "dev":
-        labels = {"success": "Sucesso", "error": "Erro", "permission": "Permissão"}
         lines = [
-            f"# {title}", "", "## Entrega", "", description["delivery"], "",
-            "## Escopo e limites", "", description["limits"], "", "## Critérios de conclusão", "",
+            "## Entrega", "", description["delivery"], "",
+            "## Escopo e limites", "", description["limits"], "", "## Critérios de aceite", "",
         ]
-        lines.extend(f"- **{labels[item['kind']]}:** {item['text']}" for item in description["criteria"])
+        lines.extend(f"- {item['text']}" for item in description["criteria"])
         lines.extend(["", "## Dependências", "", description["dependencies"]])
         if description.get("technical_context"):
             lines.extend(["", "## Contexto técnico", "", description["technical_context"]])
-        lines.extend(["", "## Rastreabilidade", "", ", ".join(description["traceability"]), ""])
+        lines.extend(["", "## Referências", "", f"Item pai Redmine #{parent_issue_id}; regras/critérios {', '.join(description['traceability'])}.", ""])
         return "\n".join(lines)
     lines = [
-        f"# {title}", "", "## Objetivo", "", description["objective"], "",
+        "## Objetivo", "", description["objective"], "",
         "## Jornadas integradas", "",
     ]
     lines.extend(f"- {item}" for item in description["integrated_journeys"])
@@ -131,7 +130,7 @@ def description_markdown(title: str, description: dict[str, Any], kind: str) -> 
     lines.extend(f"- {item}" for item in description["related_impacts"])
     lines.extend(["", "## Critérios de conclusão", ""])
     lines.extend(f"- {item}" for item in description["completion_criteria"])
-    lines.extend(["", "## Referências de requisitos", "", ", ".join(description["requirement_references"]), ""])
+    lines.extend(["", "## Referências", "", f"Item pai Redmine #{parent_issue_id}; regras/critérios {', '.join(description['requirement_references'])}.", ""])
     return "\n".join(lines)
 
 
@@ -584,13 +583,13 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     children: list[dict[str, Any]] = []
     for item in revision["proposal"]["slices"]:
         key = f"dev-{item['number']}"
-        document = description_markdown(item["title"], item["description"], "dev")
+        document = description_markdown(item["description"], "dev", parent["id"])
         identity = digest({"slices_state_sha256": file_digest(slices_path), "slicing_revision": revision["number"], "child_key": key})
         document += f"\n<!-- project-slices-child:{identity} -->\n"
         children.append({"key": key, "identity": identity, "kind": "dev", "title": item["title"], "estimate_hours": float(item["estimate_hours"]), "description": document, "base_description": document.removesuffix(f"\n<!-- project-slices-child:{identity} -->\n")})
     qa = plan["qa"]
     qa_identity = digest({"slices_state_sha256": file_digest(slices_path), "slicing_revision": revision["number"], "child_key": "qa"})
-    qa_document = description_markdown(qa["title"], qa["description"], "qa") + f"\n<!-- project-slices-child:{qa_identity} -->\n"
+    qa_document = description_markdown(qa["description"], "qa", parent["id"]) + f"\n<!-- project-slices-child:{qa_identity} -->\n"
     children.append({"key": "qa", "identity": qa_identity, "kind": "qa", "title": qa["title"], "estimate_hours": float(qa["estimate_hours"]), "description": qa_document, "base_description": qa_document.removesuffix(f"\n<!-- project-slices-child:{qa_identity} -->\n")})
     for child in children:
         child["attributes"] = child_attributes(child, native, parent)

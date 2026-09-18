@@ -19,24 +19,23 @@
 
 #### Entrega
 
-<resultado humano e verificável>
+<contexto funcional comprovado, quando relevante; mudança esperada e comportamento a preservar>
 
 #### Escopo e limites
 
-<incluído e excluído>
+<fronteiras necessárias para esclarecer a responsabilidade desta tarefa>
 
 #### Critérios de aceite
 
-- Sucesso: <resultado observável>.
-- Erro: <tratamento observável>.
-- Permissão: <regra observável, quando relevante>.
+- <condição e resultado observável de um comportamento>.
+- <outro cenário verificável, preservando as condições do requisito>.
 
 #### Dependências
 
-<capacidades que realmente impedem o início, ou nenhuma>
+<capacidade e tarefa responsável; distinguir bloqueio de início de integração para conclusão; usar nome e link confirmado quando disponível>
 
-#### Rastreabilidade
+#### Referências
 
 Feature Redmine `<id>`; regras/critérios `<ids>`.
 
-Inclua `Contexto técnico` antes da rastreabilidade somente quando uma decisão aprovada exigir esse contexto; omita a seção nos demais casos.
+Inclua `Contexto técnico` antes das referências somente quando uma decisão aprovada exigir esse contexto; omita a seção nos demais casos. Aplique a [disciplina de escrita](../../vertical-slicing/references/task-writing.md) antes de apresentar a descrição.
