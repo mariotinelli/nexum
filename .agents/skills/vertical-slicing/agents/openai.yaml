@@ -1,0 +1,6 @@
+interface:
+  display_name: "Vertical Slicing"
+  short_description: "Draft behavior-sized DEV slices"
+  default_prompt: "Use $vertical-slicing to turn this approved Feature and inspected code evidence into vertical DEV slices with estimates, blockers, human descriptions, and exhaustive coverage."
+policy:
+  allow_implicit_invocation: true

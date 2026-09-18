@@ -1,0 +1,11 @@
+interface:
+  display_name: "Project Slices"
+  short_description: "Slice Features or scopes with safe resume"
+  default_prompt: "Use $project-slices to process this approved project-flow Feature or scope, review each DEV and QA breakdown with me, and publish only my individually approved content to Redmine with safe resume."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "redmine"
+      description: "Authenticated Feature checks and approved child publication"
+policy:
+  allow_implicit_invocation: true
