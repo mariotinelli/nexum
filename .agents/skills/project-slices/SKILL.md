@@ -1,23 +1,23 @@
 ---
 name: project-slices
-description: Prepare, approve, publish, and safely resume vertical DEV and QA child issues for an approved project-flow Feature or scope. Use when a tech lead wants an implementation breakdown, sequential scope slicing, native Redmine children and blockers, or interrupted publication reconciliation.
+description: Prepare, approve, publish, and safely resume vertical DEV and QA child issues for an approved project-flow Feature, Bug, or scope. Use when a tech lead wants an implementation breakdown, sequential scope slicing, native Redmine children and blockers, or interrupted publication reconciliation.
 ---
 
 # Project Slices
 
-Responda em português brasileiro (pt-BR) desde o primeiro anúncio. Este fluxo é operado e aprovado exclusivamente pelo tech lead. Ele transforma Features canônicas do `project-flow` em trabalho DEV e QA publicado; preserva o estado de execução das Features e nunca atribui à QA uma decisão de aprovação.
+Responda em português brasileiro (pt-BR) desde o primeiro anúncio. Este fluxo é operado e aprovado exclusivamente pelo tech lead. Ele transforma Features e Bugs canônicos do `project-flow` em trabalho DEV e QA publicado; preserva o estado de execução dos itens pais e nunca atribui à QA uma decisão de aprovação.
 
 ## Escolher o ramo
 
-Com uma Feature informada, siga diretamente o fluxo individual abaixo. Com um escopo informado, ou sem entrada, leia [fatiamento sequencial de escopo](references/scope-orchestration.md). O ramo de escopo seleciona e acompanha Features, mas chama este mesmo fluxo individual para cada uma; suas aprovações nunca são coletivas.
+Com uma Feature ou Bug informado, siga diretamente o fluxo individual abaixo. Com um escopo informado, ou sem entrada, leia [fatiamento sequencial de escopo](references/scope-orchestration.md). O ramo de escopo seleciona e acompanha Features e Bugs, mas chama este mesmo fluxo individual para cada um; suas aprovações nunca são coletivas.
 
-**Concluído quando:** a entrada foi classificada como Feature ou escopo e, sem entrada, o tech lead escolheu entre os escopos elegíveis apresentados.
+**Concluído quando:** a entrada foi classificada como Feature, Bug ou escopo e, sem entrada, o tech lead escolheu entre os escopos elegíveis apresentados.
 
 ## Preparar a entrada
 
-Leia [entrada e persistência](references/input-and-persistence.md) antes de gravar qualquer artefato. Exija o diretório de uma Feature com `feature.md`, estado concluído, aprovação local válida e `redmine.issue_id`. Consulte a Feature pelo MCP Redmine, salve apenas o objeto estruturado e sanitizado da issue na área temporária e rode `check-input`. O helper reutiliza o verificador funcional do `project-flow`, inclusive para layouts que preservam os bytes aprovados e alteram somente destinos de links. Uma divergência entre requisito canônico, estado ou projeção remota interrompe a aprovação.
+Leia [entrada e persistência](references/input-and-persistence.md) antes de gravar qualquer artefato. Exija o diretório de uma Feature ou Bug com seu documento canônico (`feature.md` ou `bug.md`), estado concluído, aprovação local válida e `redmine.issue_id`. Consulte o item pai pelo MCP Redmine, salve apenas o objeto estruturado e sanitizado da issue na área temporária e rode `check-input`. O helper reutiliza o verificador funcional do `project-flow`, inclusive para layouts que preservam os bytes aprovados e alteram somente destinos de links. Uma divergência entre requisito canônico, estado ou projeção remota interrompe a aprovação.
 
-**Concluído quando:** a identidade da Feature, o hash aprovado, o vínculo Redmine e o alinhamento remoto foram conferidos sem divergência.
+**Concluído quando:** a identidade do item pai, o hash aprovado, o vínculo Redmine e o alinhamento remoto foram conferidos sem divergência.
 
 ## Revisar mudança do requisito
 
@@ -33,11 +33,11 @@ Quando uma mudança funcional possuir a autorização localizada corrente, leia 
 
 ## Inspecionar o código
 
-Leia a Feature com `children` e siga [filhas existentes e caminho somente QA](references/existing-children.md) quando ela já possuir filhas. Toda filha descoberta precisa de uma decisão explícita do tech lead antes da proposta final.
+Leia o item pai com `children` e siga [filhas existentes e caminho somente QA](references/existing-children.md) quando ele já possuir filhas. Toda filha descoberta precisa de uma decisão explícita do tech lead antes da proposta final.
 
-Inspecione obrigatoriamente o repositório e as capacidades relacionadas antes de propor cortes. Registre evidências suficientes para classificar cada parte como criação, adaptação ou comportamento existente. Inclua arquivos ou símbolos somente como evidência da inspeção; contexto técnico na descrição é opcional e depende de decisão aprovada, sem virar receita de implementação.
+Inspecione obrigatoriamente o repositório e as capacidades relacionadas antes de propor cortes, aplicando [evidência da inspeção](../vertical-slicing/references/inspection-evidence.md). Registre as origens e conclusões em `inspection` e a justificativa de cada destino em `coverage.evidence`, conforme o contrato de entrada. Inclua arquivos ou símbolos somente como evidência da inspeção; contexto técnico na descrição é opcional e depende de decisão aprovada, sem virar receita de implementação.
 
-**Concluído quando:** todo comportamento da Feature tem evidência técnica e nenhuma lacuna funcional ou divergência permanece aberta.
+**Concluído quando:** todo comportamento do item pai tem classificação sustentada pela inspeção completa, adaptações e incertezas estão explícitas e nenhuma lacuna funcional ou divergência permanece aberta.
 
 Se a inspeção ou os cortes propuserem comportamento ausente do requisito aprovado, leia [divergências materiais e alinhamento do pai](references/divergences.md). Mostre ao tech lead a correção exata e o impacto nas filhas. Rejeição mantém requisito e pai intactos e bloqueia as filhas; aprovação alinha primeiro o requisito canônico local e depois o pai remoto, com operação retomável e readback. API consumível ausente do requisito é sempre divergência material. Depois do alinhamento, descarte a autoridade das aprovações anteriores e refaça proposta e aprovação ordinárias sobre a fonte corrigida.
 
@@ -57,7 +57,7 @@ Uma única filha DEV é válida. Seis horas são referência, não limite: toda 
 
 ## Aprovar a decomposição
 
-Mostre as descrições completas renderizadas antes da aprovação. Elas devem ser humanas e conter entrega, limites, critérios verificáveis de sucesso, erro e permissão quando relevantes, dependências e rastreabilidade. Renderize contexto técnico somente quando houver conteúdo aprovado. Use uma única seção de critérios; planejamento de arquivos, código e testes automatizados pertence à implementação posterior.
+Antes de solicitar aprovação, conclua a conferência entre requisitos, cobertura e descrições definida em `vertical-slicing`; a validação estrutural do helper não verifica equivalência de significado. Mostre as descrições completas renderizadas. Elas devem ser humanas e conter entrega, limites, critérios verificáveis de sucesso, erro e permissão quando relevantes, dependências e rastreabilidade. Renderize contexto técnico somente quando houver conteúdo aprovado. Use uma única seção de critérios; planejamento de arquivos, código e testes automatizados pertence à implementação posterior.
 
 Rode `approve` informando o tech lead e o instante da decisão, depois `validate --previous` contra o estado anterior. Esta decisão aprova a decomposição; a autorização para publicar depende da prévia final separada.
 
@@ -65,9 +65,9 @@ Rode `approve` informando o tech lead e o instante da decisão, depois `validate
 
 ## Preparar e publicar filhas
 
-Leia [publicação DEV e QA](references/publication.md). Confirme os metadados nativos, componha uma QA para a Feature e materialize a prévia final com descrições e campos completos. Obtenha a aprovação explícita do tech lead para o hash dessa prévia antes da primeira mutação. Publique pelo MCP Redmine existente e registre cada resultado no helper local; após resultado incerto, leia antes de repetir. Ao final, releia pai, filhas e relações e só conclua quando todos os campos e bloqueios aprovados estiverem conferidos.
+Leia [publicação DEV e QA](references/publication.md). Derive DEV como `Task` para mãe `Feature` ou `Bug` para mãe `Bug`, QA sempre como `Deliverable`, status inicial sempre como `New` e prioridade inicial sempre como `Normal`; não pergunte ao tech lead por esses campos. Componha uma QA para o item pai e materialize a prévia final com descrições e campos completos. Obtenha a aprovação explícita do tech lead para o hash dessa prévia antes da primeira mutação. Publique pelo MCP Redmine existente e registre cada resultado no helper local; após resultado incerto, leia antes de repetir. Ao final, releia pai, filhas e relações e só conclua quando todos os campos e bloqueios aprovados estiverem conferidos.
 
-**Concluído quando:** todas as filhas possuem IDs reconciliados, cada DEV necessária bloqueia nativamente a QA, o readback integral confere e o estado de execução original da Feature permanece igual.
+**Concluído quando:** todas as filhas possuem IDs reconciliados, cada DEV necessária bloqueia nativamente a QA, o readback integral confere e o estado de execução original do item pai permanece igual.
 
 ## Configurar dependências externas
 
@@ -77,4 +77,4 @@ Quando a decomposição aprovada contém `external_blockers`, siga [dependência
 
 ## Limites
 
-Cada execução individual trabalha uma Feature dependente por vez e gerencia somente as filhas que o tech lead adotou ou aprovou criar. O ramo de escopo somente as coordena na ordem do catálogo. Filhas mantidas fora permanecem intocadas. A fase de divergência corrige somente o pai necessário aos cortes correntes e nunca amplia escopo silenciosamente. Scripts deste pacote manipulam somente JSON e Markdown locais; todo acesso remoto acontece exclusivamente pelo MCP Redmine e sua sessão protegida.
+Cada execução individual trabalha um item pai por vez e gerencia somente as filhas que o tech lead adotou ou aprovou criar. O ramo de escopo somente as coordena na ordem do catálogo. Filhas mantidas fora permanecem intocadas. A fase de divergência corrige somente o pai necessário aos cortes correntes e nunca amplia escopo silenciosamente. Scripts deste pacote manipulam somente JSON e Markdown locais; todo acesso remoto acontece exclusivamente pelo MCP Redmine e sua sessão protegida.

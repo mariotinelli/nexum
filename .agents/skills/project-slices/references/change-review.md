@@ -1,6 +1,6 @@
 # Revisão de mudança do requisito
 
-Use esta fase quando a Feature aprovada atual não tiver o mesmo SHA-256 do requisito que fundamentou a publicação concluída. Leia primeiro a [disciplina de mudança semântica](../../vertical-slicing/references/semantic-changes.md). O fluxo registra a análise e a decisão; não implementa a política geral de atualizar ou remover tarefas.
+Use esta fase quando o item pai aprovado atual não tiver o mesmo SHA-256 do requisito que fundamentou a publicação concluída. Leia primeiro a [disciplina de mudança semântica](../../vertical-slicing/references/semantic-changes.md). O fluxo registra a análise e a decisão; não implementa a política geral de atualizar ou remover tarefas.
 
 ## Preparar o plano
 

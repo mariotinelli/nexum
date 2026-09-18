@@ -2,7 +2,7 @@
 
 ## Layout
 
-Preserve o layout canônico do `project-flow`: `feature.md` continua sendo o único documento na raiz da Feature. Use:
+Preserve o layout canônico do `project-flow`: `feature.md` ou `bug.md` continua sendo o único documento de requisito na raiz do item pai. Use:
 
 - `.work/slices-remote.json` para o snapshot sanitizado e descartável da leitura Redmine;
 - `.flow/slices-input-check.json` para a evidência durável da conferência funcional;
@@ -22,9 +22,9 @@ Preserve o layout canônico do `project-flow`: `feature.md` continua sendo o ún
 
 Rejeite links simbólicos em qualquer caminho gravado. Grave candidatos na mesma pasta e substitua atomicamente somente depois de validar. Preserve o estado anterior para executar a validação de transição; revisões e aprovações são append-only.
 
-## Conferência da Feature
+## Conferência do item pai
 
-O helper aceita estados v2–v4 do `project-flow`, mas a entrada deve ser Feature, estar `completed`, conter `redmine.issue_id`, uma aprovação `requirement` válida e nenhuma divergência pendente. O snapshot sanitizado é a resposta estruturada da issue, limitada aos campos públicos necessários pelo verificador (`id`/`issue_id`, `subject`, `description` e, quando presentes, `status`, `status_id` e `relations`). Ele não contém cabeçalhos, credenciais ou configuração do MCP. Exemplo abreviado:
+O helper aceita estados v2–v4 do `project-flow`, mas a entrada deve ser Feature ou Bug, estar `completed`, conter `redmine.issue_id`, uma aprovação `requirement` válida e nenhuma divergência pendente. O snapshot sanitizado é a resposta estruturada da issue, limitada aos campos públicos necessários pelo verificador (`id`/`issue_id`, `subject`, `description` e, quando presentes, `status`, `status_id` e `relations`). Ele não contém cabeçalhos, credenciais ou configuração do MCP. Exemplo abreviado:
 
 ```json
 {

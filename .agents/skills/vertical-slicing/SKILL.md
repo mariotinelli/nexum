@@ -9,7 +9,7 @@ Transforme uma Feature aprovada e evidências de código em entregas DEV estreit
 
 ## Encontrar os cortes
 
-Mapeie cada regra e critério a um comportamento observável. Para cada comportamento, confronte o código e classifique-o como criação, adaptação ou já existente. Agrupe mudanças que precisam atravessar juntas as camadas necessárias para produzir o resultado; não crie tarefas por camada e não inclua uma camada que o comportamento não exige.
+Mapeie cada regra e critério a um comportamento observável. Antes de classificar criação, adaptação ou comportamento existente, leia e aplique [evidência da inspeção](references/inspection-evidence.md). Agrupe mudanças que precisam atravessar juntas as camadas necessárias para produzir o resultado; não crie tarefas por camada e não inclua uma camada que o comportamento não exige.
 
 Integre preparação técnica comum ao primeiro slice que a utiliza. Separe uma preparação apenas quando ela tiver propósito verificável próprio e a exceção ficar explícita para aprovação. Uma Feature pequena pode ser um único slice DEV; comportamento já implementado recebe evidência e cobertura, não trabalho inventado. Quando toda a Feature estiver implementada, proponha slices vazio e cobertura `existing` integral para o fluxo chamador confirmar a decisão por revisão e encaminhar somente a QA.
 
@@ -35,7 +35,9 @@ Preserve integralmente o nome e os prefixos da Feature. Prefixe desenvolvimento 
 
 Escreva para a pessoa que implementará: entrega, limites, critérios concretos de sucesso/erro/permissão relevantes, dependências, contexto técnico necessário e rastreabilidade. Use uma única seção de critérios de aceite. Evite copiar a Feature inteira, listar arquivos previstos ou antecipar a receita de implementação e testes.
 
-**Concluído quando:** título e descrição identificam o resultado e seus limites sem depender da conversa nem prescrever o plano técnico.
+Compare cada requisito atribuído ao slice com a descrição completa. Expresse nos critérios as condições observáveis necessárias para verificar a entrega; uma referência em `traceability` não substitui essa explicação. Preserve condições de acessibilidade, responsividade, prazo e permissão quando fizerem parte do requisito, em vez de resumi-las a qualificadores genéricos como “acessível”. Corrija omissões e contradições entre critérios, limites e tabela de cobertura antes de apresentar a proposta.
+
+**Concluído quando:** título e descrição identificam o resultado e seus limites sem depender da conversa nem prescrever o plano técnico, e cada requisito atribuído possui suas condições verificáveis representadas nos critérios.
 
 ## Mudanças de requisito
 

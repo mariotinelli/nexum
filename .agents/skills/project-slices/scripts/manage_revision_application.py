@@ -381,6 +381,10 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     if len(created_keys) != len(set(created_keys)):
         fail("new task keys must be unique")
     for item in operations:
+        if item["action"] == "create":
+            expected_tracker = publication_revision["native_fields"]["qa_tracker_id"] if item["attributes"]["subject"].startswith("[QA] ") else publication_revision["native_fields"]["dev_tracker_id"]
+            if item["attributes"]["tracker_id"] != expected_tracker:
+                fail("created task tracker differs from the derived DEV/QA contract")
         if item["action"] == "cancel" and set(item["replacement_keys"]) - planned_task_keys:
             fail(f"cancellation {item['key']} references replacement tasks outside the approved plan")
         if item["action"] == "relation-add":

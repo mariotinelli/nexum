@@ -200,15 +200,15 @@ def feature_paths(harness: Path, scope_dir: Path, item: dict[str, Any], progress
     if artifact_value is None and state_value is None:
         return None
     if artifact_value is None or state_value is None:
-        fail(f"catalog item {item['id']} has an incomplete Feature artifact mapping")
+        fail(f"catalog item {item['id']} has an incomplete parent artifact mapping")
     artifact = mapped_path(harness, scope_dir, artifact_value, f"{item['id']} artifact_path", resolve_path)
     state_path = mapped_path(harness, scope_dir, state_value, f"{item['id']} state_path", resolve_path)
     if artifact.is_dir():
-        artifact = artifact / "feature.md"
-    if artifact.name != "feature.md" or not artifact.is_file() or not state_path.is_file():
-        fail(f"catalog item {item['id']} does not map to real Feature artifacts")
+        artifact = artifact / f"{item['type'].lower()}.md"
+    if artifact.name != f"{item['type'].lower()}.md" or not artifact.is_file() or not state_path.is_file():
+        fail(f"catalog item {item['id']} does not map to real {item['type']} artifacts")
     if artifact.parent not in state_path.parents:
-        fail(f"catalog item {item['id']} Feature state belongs to another directory")
+        fail(f"catalog item {item['id']} state belongs to another directory")
     return artifact.parent, state_path
 
 
@@ -388,7 +388,7 @@ def inspect_scope(scope_dir: Path) -> dict[str, Any]:
     items = []
     for item_id in ordered_ids:
         item = catalog[item_id]
-        if item["lifecycle"] != "active" or item["type"] != "Feature":
+        if item["lifecycle"] != "active":
             continue
         mapped = feature_paths(harness, scope_dir, item, progress[item_id], resolve_path)
         record: dict[str, Any] = {
@@ -416,14 +416,14 @@ def inspect_scope(scope_dir: Path) -> dict[str, Any]:
             assert_safe_path(linked_scope)
         if (
             requirement.get("mode") != "new-scope"
-            or requirement.get("item_type") != "Feature"
+            or requirement.get("item_type") != item["type"]
             or not isinstance(link, dict)
             or link.get("catalog_item_id") != item_id
             or link.get("catalog_sha256") != catalog_sha
             or linked_scope != scope_path.absolute()
             or requirement.get("delivery") != item["delivery"]
         ):
-            fail(f"Feature state for catalog item {item_id} has a stale scope identity")
+            fail(f"parent state for catalog item {item_id} has a stale scope identity")
         record["feature_dir"] = str(feature_dir.relative_to(harness)).replace("\\", "/")
         record["feature_state_path"] = str(feature_state_path.relative_to(harness)).replace("\\", "/")
         if requirement.get("phase") != "completed":
@@ -432,11 +432,11 @@ def inspect_scope(scope_dir: Path) -> dict[str, Any]:
         try:
             _, checked_state, checked_requirement, approval, _ = validate_feature(feature_dir)
         except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as error:
-            fail(f"completed Feature for catalog item {item_id} is not eligible: {error}")
+            fail(f"completed {item['type']} for catalog item {item_id} is not eligible: {error}")
         if checked_state.absolute() != feature_state_path.absolute():
-            fail(f"catalog item {item_id} points to a stale Feature state path")
+            fail(f"catalog item {item_id} points to a stale {item['type']} state path")
         if str(checked_requirement["redmine"]["issue_id"]) != str(progress[item_id].get("issue_id")):
-            fail(f"catalog item {item_id} Redmine identity differs from its Feature")
+            fail(f"catalog item {item_id} Redmine identity differs from its parent item")
         record["issue_id"] = checked_requirement["redmine"]["issue_id"]
         record["requirement_sha256"] = approval["subject_sha256"]
         record["status"], record["publication_evidence_sha256"], record["dependency_status"], record["dependency_evidence_sha256"] = publication_evidence(

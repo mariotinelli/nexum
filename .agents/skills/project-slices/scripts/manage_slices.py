@@ -159,36 +159,39 @@ def validate_feature_approval(feature_dir: Path, *, permit_divergence: bool = Fa
     if not feature_dir.is_dir() or is_link_like(feature_dir):
         fail("feature directory must be a regular directory")
     approved_document, resolve_path, _, _ = project_flow_contract()
-    canonical = resolve_path(feature_dir / "feature.md")
-    candidates = [feature_dir / ".flow" / "feature-state.json", feature_dir / "feature-state.json"]
+    candidates = [
+        feature_dir / ".flow" / "feature-state.json", feature_dir / "feature-state.json",
+        feature_dir / ".flow" / "bug-state.json", feature_dir / "bug-state.json",
+    ]
     states = []
     for candidate in candidates:
         resolved = resolve_path(candidate)
         if resolved.is_file() and resolved not in states:
             states.append(resolved)
     if len(states) != 1:
-        fail("exactly one project-flow Feature state is required")
+        fail("exactly one project-flow Feature or Bug state is required")
     state = load_json(states[0])
     if state.get("schema_version") not in (2, 3, 4):
         fail("unsupported project-flow requirement state")
-    if state.get("item_type") != "Feature":
-        fail("project-slices accepts only a Feature")
+    if state.get("item_type") not in {"Feature", "Bug"}:
+        fail("project-slices accepts only a Feature or Bug")
+    canonical = resolve_path(feature_dir / f"{state['item_type'].lower()}.md")
     if state.get("phase") != "completed":
-        fail("project-flow Feature must be completed")
+        fail("project-flow parent item must be completed")
     redmine = state.get("redmine")
     if not isinstance(redmine, dict) or not isinstance(redmine.get("issue_id"), int) or redmine["issue_id"] < 1:
-        fail("completed Feature must have a Redmine issue_id")
+        fail("completed parent item must have a Redmine issue_id")
     approvals = [
         item for item in state.get("approvals", [])
         if isinstance(item, dict) and item.get("kind") == "requirement" and item.get("status") == "valid"
     ]
     if len(approvals) != 1:
-        fail("Feature requires exactly one valid local requirement approval")
+        fail("parent item requires exactly one valid local requirement approval")
     approval = approvals[0]
     try:
         canonical_content = approved_document(canonical, approval.get("subject_sha256"))
     except (OSError, ValueError, TypeError) as error:
-        fail(f"feature.md does not match its valid local requirement approval: {error}")
+        fail(f"canonical parent requirement does not match its valid local approval: {error}")
     divergences = state.get("requirement_divergences", [])
     if not isinstance(divergences, list) or any(
         isinstance(item, dict) and item.get("status") == "pending" for item in divergences
@@ -252,9 +255,9 @@ def validate_input_linkage(feature_dir: Path, proposal: dict[str, Any], input_ch
     try:
         approved_title = canonical_content.decode("utf-8").splitlines()[0].removeprefix("# ").strip()
     except (UnicodeDecodeError, IndexError) as error:
-        fail(f"cannot read the approved Feature title: {error}")
+        fail(f"cannot read the approved parent title: {error}")
     if feature["title"] != approved_title:
-        fail("proposal Feature title differs from the approved Feature")
+        fail("proposal parent title differs from the approved parent")
     if any(item.get("api_delivery") is True for item in proposal.get("slices", []) if isinstance(item, dict)):
         approved_text = canonical_content.decode("utf-8")
         if "[API]" not in approved_title and re.search(r"\bAPI\b", approved_text, re.IGNORECASE) is None:
@@ -273,13 +276,13 @@ def command_check_input(arguments: argparse.Namespace) -> None:
     try:
         issue = issue_snapshot(remote)
         if str(issue["id"]) != str(redmine["issue_id"]):
-            fail("remote issue identity differs from the local Feature")
+            fail("remote issue identity differs from the local parent")
         document = canonical_content.decode("utf-8")
         if document.splitlines()[0].removeprefix("# ").strip() != issue["subject"]:
-            fail("remote issue title differs from the approved Feature")
+            fail("remote issue title differs from the approved parent")
         check_projection(
             document,
-            "Feature",
+            state["item_type"],
             canonical_reference_path(canonical),
             require_text(approval.get("approved_by"), "requirement approval approved_by"),
             issue,
@@ -380,7 +383,7 @@ def validate_proposal(proposal: dict[str, Any]) -> None:
         if not isinstance(slice_value["api_delivery"], bool):
             fail(f"slices[{index}].api_delivery must be boolean")
         if slice_value["title"] != expected_title(parent_title, suffix, slice_value["api_delivery"]):
-            fail(f"slices[{index}].title does not preserve the approved Feature title")
+            fail(f"slices[{index}].title does not preserve the approved parent title")
         estimate = slice_value["estimate_hours"]
         if not isinstance(estimate, (int, float)) or isinstance(estimate, bool) or estimate <= 0:
             fail(f"slices[{index}].estimate_hours must be positive")

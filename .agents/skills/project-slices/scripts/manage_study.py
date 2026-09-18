@@ -267,7 +267,7 @@ def input_feature(input_path: Path) -> tuple[Path, dict[str, Any], str, int]:
     feature_dir = input_path.parent.parent
     canonical, _, state, approval, content = validate_feature_approval(feature_dir)
     if canonical.absolute() != Path(input_check["feature_path"]).absolute() or state["redmine"]["issue_id"] != input_check["issue_id"] or approval["subject_sha256"] != input_check["requirement_sha256"]:
-        fail("Study input check is stale for the approved Feature")
+        fail("Study input check is stale for the approved parent")
     title = content.decode("utf-8").splitlines()[0].removeprefix("# ").strip()
     return feature_dir, input_check, title, state["redmine"]["issue_id"]
 
@@ -282,13 +282,12 @@ def render_description(title: str, question: str, expected_result: str, effort_l
 def child_attributes(study: dict[str, Any], native: dict[str, Any], parent: dict[str, Any]) -> dict[str, Any]:
     attributes: dict[str, Any] = {
         "project_id": native["project_id"], "parent_issue_id": parent["id"],
-        "tracker_id": native["tracker_id"], "status_id": native["initial_status_id"],
+        "tracker_id": native["dev_tracker_id"], "status_id": native["initial_status_id"],
         "subject": study["title"], "description": study["description"],
         "assigned_to_id": None, "start_date": None, "due_date": None,
         "estimated_hours": study["estimate_hours"],
     }
-    if native["priority_override_id"] is not None:
-        attributes["priority_id"] = native["priority_override_id"]
+    attributes["priority_id"] = native["default_priority_id"]
     category_id = named_id(parent, "category", required=False)
     version_id = named_id(parent, "fixed_version", required=False)
     if category_id is not None:
@@ -311,36 +310,42 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     exact(plan, {"source", "parent_snapshot", "metadata_snapshot", "native_fields", "study"}, "Study plan")
     source = exact(plan["source"], {"input_check_path", "input_check_sha256"}, "Study source")
     if Path(source["input_check_path"]).absolute() != input_path.absolute() or source["input_check_sha256"] != file_digest(input_path):
-        fail("Study plan source differs from the checked Feature")
+        fail("Study plan source differs from the checked parent")
     parent_path = evidence_path(feature_dir, plan["parent_snapshot"], "parent snapshot")
     parent = issue_object(load_json(parent_path))
     if positive_int(parent.get("id"), "parent.id") != issue_id or require_text(parent.get("subject"), "parent.subject") != feature_title:
-        fail("Study parent snapshot differs from the approved Feature")
+        fail("Study parent snapshot differs from the approved parent")
     native = exact(plan["native_fields"], {
-        "project_id", "tracker_id", "initial_status_id", "default_priority_id",
+        "project_id", "dev_tracker_id", "initial_status_id", "default_priority_id",
         "priority_override_id", "priority_override_reason",
     }, "native fields")
     if named_id(parent, "project") != positive_int(native["project_id"], "native_fields.project_id"):
-        fail("Study must use the parent Feature project")
-    for field in ("tracker_id", "initial_status_id", "default_priority_id"):
+        fail("Study must use the parent project")
+    for field in ("dev_tracker_id", "initial_status_id", "default_priority_id"):
         positive_int(native[field], f"native_fields.{field}")
-    if native["priority_override_id"] is None:
-        if native["priority_override_reason"] is not None:
-            fail("default priority cannot carry an override reason")
-    else:
-        positive_int(native["priority_override_id"], "native_fields.priority_override_id")
-        require_text(native["priority_override_reason"], "native_fields.priority_override_reason")
+    if native["priority_override_id"] is not None or native["priority_override_reason"] is not None:
+        fail("Study priority is fixed as Normal and cannot be overridden")
     metadata_path = evidence_path(feature_dir, plan["metadata_snapshot"], "metadata snapshot")
     metadata = load_json(metadata_path)
     exact(metadata, {"trackers", "statuses", "priorities"}, "metadata snapshot")
-    selections = (("trackers", "tracker_id"), ("statuses", "initial_status_id"), ("priorities", "default_priority_id"))
-    for collection, field in selections:
-        matches = [item for item in metadata[collection] if isinstance(item, dict) and item.get("id") == native[field]] if isinstance(metadata[collection], list) else []
+    parent_tracker = parent.get("tracker")
+    parent_tracker_name = require_text(parent_tracker.get("name") if isinstance(parent_tracker, dict) else None, "parent.tracker.name")
+    expected_dev_tracker = "Task" if parent_tracker_name == "Feature" else "Bug" if parent_tracker_name == "Bug" else None
+    if expected_dev_tracker is None:
+        fail("Study parent tracker must be Feature or Bug")
+    trackers = metadata["trackers"]
+    tracker_matches = [item for item in trackers if isinstance(item, dict) and item.get("name") == expected_dev_tracker] if isinstance(trackers, list) else []
+    if len(tracker_matches) != 1:
+        fail(f"Study tracker {expected_dev_tracker} must exist exactly once in confirmed MCP metadata")
+    if positive_int(tracker_matches[0].get("id"), f"tracker {expected_dev_tracker}.id") != native["dev_tracker_id"]:
+        fail(f"Study DEV tracker must be {expected_dev_tracker} for a {parent_tracker_name} parent")
+    selections = (("statuses", "New", "initial_status_id"), ("priorities", "Normal", "default_priority_id"))
+    for collection, expected_name, field in selections:
+        matches = [item for item in metadata[collection] if isinstance(item, dict) and item.get("name") == expected_name] if isinstance(metadata[collection], list) else []
         if len(matches) != 1:
-            fail(f"Study metadata does not contain {field}")
-    defaults = [item for item in metadata["priorities"] if item.get("id") == native["default_priority_id"]]
-    if defaults[0].get("is_default") is not True:
-        fail("default_priority_id requires evidence that it is the default")
+            fail(f"Study {collection} value {expected_name} must exist exactly once in confirmed MCP metadata")
+        if positive_int(matches[0].get("id"), f"{collection} {expected_name}.id") != native[field]:
+            fail("Study status and priority contract requires status=New and priority=Normal")
     study_plan = exact(plan["study"], {"subject", "question", "expected_result", "effort_limit", "estimate_hours"}, "Study")
     subject = require_text(study_plan["subject"], "study.subject").strip()
     question = require_text(study_plan["question"], "study.question")
@@ -391,7 +396,7 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     validate_state(state, check_files=False)
     preview = "\n".join([
         f"# Previa excepcional de Study para {feature_title}", "",
-        "A publicacao deste Study nao conclui o fatiamento nem a Feature.", "",
+        "A publicacao deste Study nao conclui o fatiamento nem o item pai.", "",
         f"Hash da previa: `{revision['publication_sha256']}`", "", description,
     ])
     atomic_batch_write({

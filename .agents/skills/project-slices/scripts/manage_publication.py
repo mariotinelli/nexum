@@ -138,7 +138,7 @@ def description_markdown(title: str, description: dict[str, Any], kind: str) -> 
 def validate_qa(qa: Any, feature_title: str, dev_keys: set[str], *, qa_only: bool) -> dict[str, Any]:
     qa = exact(qa, {"title", "estimate_hours", "blocked_by", "description"}, "qa")
     if qa["title"] != f"[QA] {feature_title}":
-        fail("QA title must be [QA] followed by the full Feature title")
+        fail("QA title must be [QA] followed by the full parent title")
     hours(qa["estimate_hours"], "qa.estimate_hours")
     blockers = qa["blocked_by"]
     if not isinstance(blockers, list) or len(blockers) != len(set(blockers)):
@@ -185,42 +185,52 @@ def validate_plan(plan: dict[str, Any], slices_path: Path) -> tuple[dict[str, An
     if isinstance(parent_children, list) and parent_children and "existing_children_review" not in plan:
         fail("existing parent children require a complete tech-lead review before publication preview")
     native = exact(plan["native_fields"], {
-        "project_id", "tracker_id", "initial_status_id", "default_priority_id", "priority_override_id", "priority_override_reason",
+        "project_id", "dev_tracker_id", "qa_tracker_id", "initial_status_id", "default_priority_id", "priority_override_id", "priority_override_reason",
     }, "native_fields")
     project_id = positive_int(native["project_id"], "native_fields.project_id")
     if named_id(parent, "project") != project_id:
-        fail("publication must use the parent Feature project")
-    for field in ("tracker_id", "initial_status_id", "default_priority_id"):
+        fail("publication must use the parent project")
+    for field in ("dev_tracker_id", "qa_tracker_id", "initial_status_id", "default_priority_id"):
         positive_int(native[field], f"native_fields.{field}")
-    optional_int(native["priority_override_id"], "native_fields.priority_override_id")
-    if native["priority_override_id"] is None:
-        if native["priority_override_reason"] is not None:
-            fail("default priority cannot carry an override reason")
-    else:
-        require_text(native["priority_override_reason"], "native_fields.priority_override_reason")
+    if native["priority_override_id"] is not None or native["priority_override_reason"] is not None:
+        fail("child priority is fixed as Normal and cannot be overridden")
     metadata_path = feature_evidence_path(feature_dir, plan["metadata_snapshot"], "metadata_snapshot")
     metadata = load_json(metadata_path)
     exact(metadata, {"trackers", "statuses", "priorities"}, "metadata snapshot")
     selected: dict[str, Any] = {"path": str(metadata_path.absolute()), "sha256": file_digest(metadata_path)}
-    for collection, selected_field, output_field in (
-        ("trackers", "tracker_id", "tracker"), ("statuses", "initial_status_id", "initial_status"),
-        ("priorities", "default_priority_id", "default_priority"),
+    parent_tracker = parent.get("tracker")
+    parent_tracker_name = require_text(parent_tracker.get("name") if isinstance(parent_tracker, dict) else None, "parent.tracker.name")
+    if parent_tracker_name not in {"Feature", "Bug"}:
+        fail("parent tracker must be Feature or Bug")
+    expected_dev_tracker = "Task" if parent_tracker_name == "Feature" else "Bug"
+    trackers = metadata["trackers"]
+    if not isinstance(trackers, list):
+        fail("confirmed trackers metadata must be an array")
+    for expected_name, selected_field, output_field in (
+        (expected_dev_tracker, "dev_tracker_id", "dev_tracker"),
+        ("Deliverable", "qa_tracker_id", "qa_tracker"),
+    ):
+        matches = [item for item in trackers if isinstance(item, dict) and item.get("name") == expected_name]
+        if len(matches) != 1:
+            fail(f"tracker {expected_name} must exist exactly once in confirmed MCP metadata")
+        tracker_id = positive_int(matches[0].get("id"), f"tracker {expected_name}.id")
+        if native[selected_field] != tracker_id:
+            fail(f"tracker contract requires DEV={expected_dev_tracker} and QA=Deliverable for a {parent_tracker_name} parent")
+        selected[output_field] = {"id": tracker_id, "name": expected_name}
+    for collection, expected_name, selected_field, output_field in (
+        ("statuses", "New", "initial_status_id", "initial_status"),
+        ("priorities", "Normal", "default_priority_id", "default_priority"),
     ):
         values = metadata[collection]
-        matches = [item for item in values if isinstance(item, dict) and item.get("id") == native[selected_field]] if isinstance(values, list) else []
+        matches = [item for item in values if isinstance(item, dict) and item.get("name") == expected_name] if isinstance(values, list) else []
         if len(matches) != 1:
-            fail(f"confirmed {collection} metadata does not contain the selected native field")
-        selected[output_field] = {"id": matches[0]["id"], "name": require_text(matches[0].get("name"), f"{collection}.name")}
-    default = next(item for item in metadata["priorities"] if item.get("id") == native["default_priority_id"])
-    if default.get("is_default") is not True:
-        fail("default_priority_id requires MCP evidence that it is the default")
-    if native["priority_override_id"] is not None:
-        overrides = [item for item in metadata["priorities"] if item.get("id") == native["priority_override_id"]]
-        if len(overrides) != 1:
-            fail("priority override is absent from confirmed MCP metadata")
-        selected["priority_override"] = {"id": overrides[0]["id"], "name": require_text(overrides[0].get("name"), "priority override name")}
-    else:
-        selected["priority_override"] = None
+            fail(f"{collection} value {expected_name} must exist exactly once in confirmed MCP metadata")
+        selected_id = positive_int(matches[0].get("id"), f"{collection} {expected_name}.id")
+        if native[selected_field] != selected_id:
+            fail("child status and priority contract requires status=New and priority=Normal")
+        selected[output_field] = {"id": selected_id, "name": expected_name}
+    selected["parent_tracker"] = {"id": named_id(parent, "tracker"), "name": parent_tracker_name}
+    selected["priority_override"] = None
     dev_keys = {f"dev-{item['number']}" for item in revision["proposal"]["slices"]}
     coverage = revision["proposal"]["coverage"]
     qa_only = not dev_keys and bool(coverage) and all(item["disposition"] == "existing" for item in coverage)
@@ -235,7 +245,7 @@ def child_attributes(child: dict[str, Any], native: dict[str, Any], parent: dict
     attributes: dict[str, Any] = {
         "project_id": native["project_id"],
         "parent_issue_id": parent["id"],
-        "tracker_id": native["tracker_id"],
+        "tracker_id": native["qa_tracker_id"] if child["kind"] == "qa" else native["dev_tracker_id"],
         "status_id": native["initial_status_id"],
         "subject": child["title"],
         "description": child["description"],
@@ -244,9 +254,7 @@ def child_attributes(child: dict[str, Any], native: dict[str, Any], parent: dict
         "due_date": None,
         "estimated_hours": child["estimate_hours"],
     }
-    priority = native["priority_override_id"]
-    if priority is not None:
-        attributes["priority_id"] = priority
+    attributes["priority_id"] = native["default_priority_id"]
     category_id = named_id(parent, "category", required=False)
     version_id = named_id(parent, "fixed_version", required=False)
     if category_id is not None:
@@ -515,16 +523,18 @@ def atomic_batch_write(files: dict[Path, bytes]) -> None:
 def render_preview(revision: dict[str, Any], children: list[dict[str, Any]], relations: list[dict[str, Any]], native_fields: dict[str, Any], metadata: dict[str, Any]) -> str:
     feature = revision["proposal"]["feature"]
     native = children[0]["attributes"]
-    priority = native_fields["priority_override_id"] or native_fields["default_priority_id"]
+    priority = native_fields["default_priority_id"]
     lines = [
         f"# Publicação das filhas de {feature['title']}", "",
-        f"Feature pai Redmine: `{feature['issue_id']}`", "",
+        f"Item pai Redmine: `{feature['issue_id']}`", "",
         "## Campos nativos aprovados", "",
         f"- Projeto: `{native['project_id']}`",
         f"- Pai nativo: `{native['parent_issue_id']}`",
-        f"- Tracker: {metadata['tracker']['name']} (`{native['tracker_id']}`)",
+        f"- Tracker da mãe: {metadata['parent_tracker']['name']} (`{metadata['parent_tracker']['id']}`)",
+        f"- Tracker DEV: {metadata['dev_tracker']['name']} (`{native_fields['dev_tracker_id']}`)",
+        f"- Tracker QA: {metadata['qa_tracker']['name']} (`{native_fields['qa_tracker_id']}`)",
         f"- Status inicial: {metadata['initial_status']['name']} (`{native['status_id']}`)",
-        f"- Prioridade efetiva: {(metadata['priority_override'] or metadata['default_priority'])['name']} (`{priority}`, {'override explícito' if native_fields['priority_override_id'] else 'padrão'})",
+        f"- Prioridade inicial: {metadata['default_priority']['name']} (`{priority}`, regra fixa)",
         f"- Categoria herdada: `{native.get('category_id')}`",
         f"- Versão herdada: `{native.get('fixed_version_id')}`",
         "- Responsável, início e vencimento: vazios", "",
@@ -678,6 +688,9 @@ def validate_publication_state(state: dict[str, Any], *, check_files: bool = Tru
                 fail("new child cannot carry adoption evidence")
             if child["payload_sha256"] != digest({"attributes": child["attributes"]}):
                 fail("child payload hash differs")
+            expected_tracker = revision["native_fields"]["qa_tracker_id"] if child["kind"] == "qa" else revision["native_fields"]["dev_tracker_id"]
+            if child["attributes"].get("tracker_id") != expected_tracker:
+                fail("child tracker differs from the derived DEV/QA contract")
         relation_keys = set()
         for relation in revision["relations"]:
             if relation.get("relation_type") != "blocks" or relation.get("source_key") not in keys or relation.get("target_key") not in keys or relation.get("source_key") == relation.get("target_key") or relation.get("key") in relation_keys:
@@ -1024,7 +1037,7 @@ def command_complete(arguments: argparse.Namespace) -> None:
     parent = snapshot["parent"]
     baseline = current["parent_baseline"]
     if positive_int(parent.get("id"), "parent.id") != baseline["issue_id"] or named_id(parent, "status") != baseline["status_id"] or parent["status"].get("name") != baseline["status_name"]:
-        fail("parent Feature execution status changed")
+        fail("parent execution status changed")
     children = snapshot["children"]
     review = current.get("existing_children_review")
     external_decisions = [] if review is None else [item for item in review["decisions"] if item["disposition"] == "keep-external"]

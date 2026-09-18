@@ -4,11 +4,11 @@ Use esta fase somente depois de a decomposição corrente estar `approved`. O he
 
 ## Confirmar campos
 
-Se a Feature possuir filhas, conclua primeiro a revisão de [filhas existentes e caminho somente QA](existing-children.md). `prepare` recusa uma lista não vazia sem decisões completas.
+Se o item pai possuir filhas, conclua primeiro a revisão de [filhas existentes e caminho somente QA](existing-children.md). `prepare` recusa uma lista não vazia sem decisões completas.
 
-Leia novamente a Feature com filhos e relações e consulte projeto, trackers, status e prioridades. Confirme com o tech lead o tracker e o status inicial das filhas. Use o mesmo `project_id` e `parent_issue_id` nativo da Feature; herde `category_id` e `fixed_version_id` quando existirem no pai. Deixe responsável, início e vencimento vazios. Use a prioridade padrão confirmada sem enviar override; envie `priority_id` apenas quando o tech lead decidir explicitamente outro valor. Grave a estimativa em `estimated_hours`.
+Leia novamente o item pai com filhos e relações e consulte projeto, trackers, status e prioridades. Derive esses campos sem perguntar ao tech lead: QA usa sempre o tracker nativo `Deliverable`; DEV usa `Task` quando a mãe usa `Feature` e `Bug` quando a mãe usa `Bug`; o status inicial é sempre `New`; a prioridade inicial é sempre `Normal`. Resolva os IDs pelos nomes no catálogo nativo e interrompa se algum estiver ausente ou ambíguo. Use o mesmo `project_id` e `parent_issue_id` nativo da mãe; herde `category_id` e `fixed_version_id` quando existirem no pai. Deixe responsável, início e vencimento vazios. Envie explicitamente o `priority_id` de `Normal` e não aceite override. Grave a estimativa em `estimated_hours`.
 
-Salve a resposta sanitizada da Feature em `.work/slices-publication-parent.json` e monte `.work/slices-publication-plan.json` com:
+Salve a resposta sanitizada do item pai em `.work/slices-publication-parent.json` e monte `.work/slices-publication-plan.json` com:
 
 ```json
 {
@@ -17,14 +17,15 @@ Salve a resposta sanitizada da Feature em `.work/slices-publication-parent.json`
   "metadata_snapshot": "<caminho absoluto com trackers, statuses e priorities>",
   "native_fields": {
     "project_id": 7,
-    "tracker_id": 2,
+    "dev_tracker_id": 2,
+    "qa_tracker_id": 7,
     "initial_status_id": 1,
     "default_priority_id": 4,
     "priority_override_id": null,
     "priority_override_reason": null
   },
   "qa": {
-    "title": "[QA] <título completo da Feature>",
+    "title": "[QA] <título completo do item pai>",
     "estimate_hours": 9,
     "blocked_by": ["dev-1"],
     "description": {
@@ -39,9 +40,11 @@ Salve a resposta sanitizada da Feature em `.work/slices-publication-parent.json`
 }
 ```
 
-Há exatamente uma QA por Feature. O título é `[QA]` seguido do título completo da Feature, sem sufixo. Sua estimativa é própria e não usa a referência de seis horas das DEV. A descrição cobre objetivo, jornadas integradas, regras e permissões, impactos relacionados e critérios de conclusão; referencia os requisitos sem copiar as DEV integralmente. `blocked_by` contém todas e somente as DEV necessárias para liberar a verificação integrada. Ele fica vazio somente quando a decomposição aprovada possui slices vazio e cobertura `existing` integral.
+Há exatamente uma QA por item pai. O título é `[QA]` seguido do título completo da Feature ou Bug, sem sufixo. Sua estimativa é própria e não usa a referência de seis horas das DEV. A descrição cobre objetivo, jornadas integradas, regras e permissões, impactos relacionados e critérios de conclusão; referencia os requisitos sem copiar as DEV integralmente. `blocked_by` contém todas e somente as DEV necessárias para liberar a verificação integrada. Ele fica vazio somente quando a decomposição aprovada possui slices vazio e cobertura `existing` integral.
 
-**Concluído quando:** identidade do pai, tracker, status inicial, prioridade, heranças, estimativas e bloqueios QA estão explícitos no plano sanitizado e nenhuma credencial foi persistida.
+A QA verifica o item pai completo, incluindo os comportamentos classificados como `existing`. Traduza esses cenários em jornadas e critérios verificáveis, preservando as condições do requisito aprovado; a classificação dispensa trabalho DEV, mas não a verificação integrada.
+
+**Concluído quando:** identidade do pai, trackers derivados, status inicial, prioridade, heranças, estimativas e bloqueios QA estão explícitos no plano sanitizado, a QA cobre também o comportamento existente e nenhuma credencial foi persistida.
 
 ## Prévia e aprovação final
 
@@ -51,7 +54,7 @@ Execute:
 python <project-slices>/scripts/manage_publication.py prepare .flow/slices-publication.json .work/slices-publication-plan.json --slices-state .flow/slices-state.json --preview slices/publication.md --descriptions-dir slices/descriptions --actor "<tech lead>" --at "<ISO-8601>" --reason "<motivo>"
 ```
 
-O helper deriva cada DEV da revisão aprovada. O título DEV é `[DEV]` seguido do título completo da Feature e do sufixo aprovado; uma entrega de API externa pode conter `[API]` depois de `[WEB]`. As descrições individuais ficam em `slices/descriptions/dev-N.md` e `qa.md`; a prévia conjunta em `slices/publication.md` mostra o conteúdo integral, campos e hashes.
+O helper deriva cada DEV da revisão aprovada. O título DEV é `[DEV]` seguido do título completo do item pai e do sufixo aprovado; uma entrega de API externa pode conter `[API]` depois de `[WEB]`. As descrições individuais ficam em `slices/descriptions/dev-N.md` e `qa.md`; a prévia conjunta em `slices/publication.md` mostra o conteúdo integral, campos e hashes.
 
 Mostre essa prévia ao tech lead. Revisões antes da publicação são append-only e invalidam a aprovação final anterior. Depois da confirmação explícita, execute `approve` e preserve uma cópia anterior para `validate --previous`:
 
@@ -85,13 +88,13 @@ Falha parcial preserva todos os IDs e relações confirmados. Em retomada, valid
 
 Inclua no readback todas as filhas gerenciadas e todas as descobertas que o tech lead manteve fora. O helper confere o baseline das adotadas, o plano das novas e o fingerprint contratual das externas sem hashear campos voláteis como journals ou attachments.
 
-Leia a Feature pai e todas as filhas com relações. Salve `.work/slices-publication-readback.json` como `{"parent": {...}, "children": [...]}` e execute `complete`. O helper compara projeto, parentesco, tracker, status inicial, prioridade efetiva, categoria, versão, responsável, datas, estimativa, título, descrição e todos os bloqueios `blocks`. Ele também exige que ID e nome do status da Feature pai sejam iguais ao baseline.
+Leia o item pai e todas as filhas com relações. Salve `.work/slices-publication-readback.json` como `{"parent": {...}, "children": [...]}` e execute `complete`. O helper compara projeto, parentesco, tracker, status inicial, prioridade efetiva, categoria, versão, responsável, datas, estimativa, título, descrição e todos os bloqueios `blocks`. Ele também exige que ID e nome do status do item pai sejam iguais ao baseline.
 
 ```sh
 python <project-slices>/scripts/manage_publication.py complete .flow/slices-publication.json --readback .work/slices-publication-readback.json --at "<ISO-8601>"
 ```
 
-O fluxo preserva a Feature pai. QA é uma filha de verificação e não aprova decomposição, conteúdo ou conclusão.
+O fluxo preserva a Feature ou Bug pai. QA é uma filha de verificação e não aprova decomposição, conteúdo ou conclusão.
 
 **Concluído quando:** `slices-publication.json` está `completed`, contém o hash do readback e preserva o histórico completo de revisão, aprovação, IDs, tentativas, observações e progresso.
 

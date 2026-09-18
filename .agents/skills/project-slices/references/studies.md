@@ -1,6 +1,6 @@
 # Estudo excepcional e retomada
 
-Este ramo publica uma única filha DEV excepcional quando a disciplina de `vertical-slicing` identifica uma incerteza que impede a proposta completa. Ele não publica DEV ou QA restantes e nunca conclui o fatiamento, a Feature ou o item corrente do escopo.
+Este ramo publica uma única filha DEV excepcional quando a disciplina de `vertical-slicing` identifica uma incerteza que impede a proposta completa. Ele não publica DEV ou QA restantes e nunca conclui o fatiamento, o item pai ou o item corrente do escopo.
 
 ## Preparar e aprovar
 
@@ -10,7 +10,7 @@ Registre `.work/slices-study-plan.json` com a fonte `slices-input-check.json`, s
 python <project-slices>/scripts/manage_study.py prepare .flow/slices-study.json .work/slices-study-plan.json --input-check .flow/slices-input-check.json --preview slices/study.md --actor "<tech lead>" --at "<ISO-8601>" --reason "<motivo>"
 ```
 
-O helper deriva exatamente `[DEV] <título completo da Feature> - Estudo: <assunto>`, preservando todos os tokens do pai, e grava `slices/descriptions/study.md`. Mostre a prévia integral e seu hash. A aprovação é específica para esse hash e exclusivamente do tech lead:
+O helper deriva exatamente `[DEV] <título completo do item pai> - Estudo: <assunto>`, preservando todos os tokens do pai, e grava `slices/descriptions/study.md`. Mostre a prévia integral e seu hash. A aprovação é específica para esse hash e exclusivamente do tech lead:
 
 ```sh
 python <project-slices>/scripts/manage_study.py approve .flow/slices-study.json --actor "<tech lead>" --at "<ISO-8601>"
@@ -27,7 +27,7 @@ python <project-slices>/scripts/manage_study.py begin-create .flow/slices-study.
 python <project-slices>/scripts/manage_study.py finish-create .flow/slices-study.json --attempt 1 --outcome completed --issue-id 501 --at "<ISO-8601>"
 ```
 
-O estado passa a `awaiting-result`, que significa fatiamento em andamento/pausado por evidência. Não prepare a publicação DEV/QA ordinária nem marque a Feature ou o escopo como concluído.
+O estado passa a `awaiting-result`, que significa fatiamento em andamento/pausado por evidência. Não prepare a publicação DEV/QA ordinária nem marque o item pai ou o escopo como concluído.
 
 **Concluído quando:** a criação está reconciliada uma única vez, o ID remoto é durável e nenhuma filha futura foi antecipada.
 
