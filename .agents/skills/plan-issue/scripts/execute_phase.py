@@ -207,6 +207,29 @@ def ensure_not_cancelled() -> None:
         raise EffectError(f"execution cancelled by signal {CANCELLED_SIGNAL}", "cancelled")
 
 
+def agent_failure_message(mode: str, stderr: str, stderr_path: Path) -> str:
+    detail = ""
+    for line in reversed(stderr.splitlines()):
+        candidate = line.strip()
+        if candidate.startswith("ERROR:"):
+            payload = candidate.removeprefix("ERROR:").strip()
+            try:
+                value = json.loads(payload)
+                error = value.get("error") if isinstance(value, dict) else None
+                message = error.get("message") if isinstance(error, dict) else None
+                if isinstance(message, str) and message.strip():
+                    detail = sanitize(message)
+                    break
+            except ValueError:
+                pass
+        if not detail and re.search(r"(?:error|failed|fatal)", candidate, re.IGNORECASE):
+            detail = sanitize(candidate)
+    message = f"{gate_label(mode)} falhou"
+    if detail:
+        message += f": {detail}"
+    return f"{message}. Diagnóstico: {stderr_path}"
+
+
 def invoke_agent(package: Path, repo: Path, mode: str, prompt: str, schema: Path, session_id: str, timeout_seconds: float) -> dict[str, Any]:
     if EVENTS is None:
         fail("operational event sink is unavailable")
@@ -241,7 +264,7 @@ def invoke_agent(package: Path, repo: Path, mode: str, prompt: str, schema: Path
                     result_path.write_text("{}", encoding="utf-8")
     interrupt_for_test(f"after-{mode}-effect")
     if returncode:
-        raise EffectError(f"{gate_label(mode)} agent failed")
+        raise EffectError(agent_failure_message(mode, stderr, stderr_path))
     return validate_result(result_path, mode)
 
 

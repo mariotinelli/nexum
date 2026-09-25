@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -19,8 +20,10 @@ def main() -> int:
     arguments = parser.parse_args()
 
     sandbox = "workspace-write" if arguments.mode == "develop" else "read-only"
+    configured_codex = os.environ.get("CODEX_BIN")
+    codex = configured_codex or shutil.which("codex") or "codex"
     command = [
-        os.environ.get("CODEX_BIN", "codex"),
+        codex,
         "exec",
         "--sandbox",
         sandbox,
