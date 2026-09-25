@@ -31,7 +31,15 @@ def main() -> int:
         "-",
     ]
     prompt = Path(arguments.prompt).read_text(encoding="utf-8")
-    completed = subprocess.run(command, cwd=arguments.repo, input=prompt, text=True, check=False)
+    completed = subprocess.run(
+        command,
+        cwd=arguments.repo,
+        input=prompt,
+        text=True,
+        encoding="utf-8",
+        errors="strict",
+        check=False,
+    )
     return completed.returncode
 
 
