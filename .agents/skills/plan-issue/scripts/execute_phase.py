@@ -306,7 +306,7 @@ def gate_start(state_path: Path, state: dict[str, Any], record: dict[str, Any], 
 def gate_finish(state_path: Path, state: dict[str, Any], record: dict[str, Any], gate: dict[str, Any], status: str, duration_ms: int, repo: Path, **evidence: Any) -> None:
     gate.update({"status": status, "duration_ms": duration_ms, "after_snapshot": working_snapshot(repo), "after_head": git(repo, "rev-parse", "HEAD"), **evidence})
     persist(state_path, state, "effect-observed", phase=record["number"], gate=gate["name"], status=status)
-    emit("gate-finished", phase=record["number"], gate=gate["name"], attempt=gate.get("attempt", "-"), duration_ms=duration_ms, result=status)
+    emit("gate-finished", phase=record["number"], gate=gate["name"], attempt=gate.get("attempt", "-"), duration_ms=duration_ms, result=status, details=evidence or None)
 
 
 def uncertain_report(state_path: Path, state: dict[str, Any], repo: Path, record: dict[str, Any], gate: dict[str, Any], reason: str) -> None:
@@ -388,6 +388,29 @@ def verified_phase_commit(repo: Path, state: dict[str, Any], record: dict[str, A
     return candidate
 
 
+def advance_interrupted_base(package: Path, repo: Path, state_path: Path, state: dict[str, Any], record: dict[str, Any]) -> None:
+    old_base = record["base_commit"]
+    head = git(repo, "rev-parse", "HEAD")
+    gates = record.get("gates", [])
+    if head == old_base or record.get("commit") or not gates or any(gate.get("status") != "interrupted" for gate in gates) or clean_status(repo):
+        return
+    try:
+        package_relative = package.resolve().relative_to(repo.resolve())
+    except ValueError:
+        return
+    if run(["git", "merge-base", "--is-ancestor", old_base, head], repo).returncode:
+        return
+    changed = run(["git", "diff", "--name-only", "-z", f"{old_base}..{head}", "--"], repo)
+    paths = [Path(value) for value in changed.stdout.split("\0") if value]
+    if changed.returncode or not paths or any(path != package_relative and package_relative not in path.parents for path in paths):
+        return
+    record["base_commit"] = head
+    if state["execution"].get("base_commit") == old_base:
+        state["execution"]["base_commit"] = head
+    state["execution"].pop("stop", None)
+    persist(state_path, state, "execution-tooling-base-advanced", phase=record["number"], previous_base=old_base, base_commit=head)
+
+
 def write_exhaustion_report(state_path: Path, state: dict[str, Any], record: dict[str, Any], gate_name: str, limit: int) -> Path:
     report_path = state_path.parent / "ralph" / f"phase-{record['number']}-{gate_name}-exhausted.json"
     rejected = [{key: gate[key] for key in ("name", "attempt", "status", "classification", "findings", "exit_code", "normalized_failures") if key in gate} for gate in record["gates"] if gate.get("name") == gate_name and gate.get("status") == "rejected"]
@@ -434,7 +457,8 @@ def write_final_summary(package: Path, state: dict[str, Any], outcome: str) -> P
     }
     for category, value in categories.items():
         emit("summary", result=f"{category}:{value}", report_path=path)
-    emit("developer-reminder", result="review full diff and test in browser when applicable", report_path=path)
+    if outcome == "success":
+        emit("developer-reminder", result="review full diff and test in browser when applicable", report_path=path)
     return path
 
 
@@ -461,6 +485,7 @@ def execute_phases(package: Path, repo: Path, state_path: Path, state: dict[str,
             prior_commit = head
         record = existing_phase_record(state, phase_number, prior_commit)
         record["max_gate_rejections"] = arguments.max_gate_rejections
+        advance_interrupted_base(package, repo, state_path, state, record)
         proven_commit = verified_phase_commit(repo, state, record)
         if proven_commit:
             record["commit"] = proven_commit

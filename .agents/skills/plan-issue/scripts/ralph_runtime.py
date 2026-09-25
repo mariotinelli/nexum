@@ -100,15 +100,63 @@ class EventSink:
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
-        line = " ".join(f"{key}={record[key]}" for key in ("time", "phase", "gate", "attempt", "duration_ms", "result", "report_path"))
         if self.verbose:
+            line = " ".join(f"{key}={record[key]}" for key in ("time", "phase", "gate", "attempt", "duration_ms", "result", "report_path"))
             line += f" event={record['event']}"
             if "details" in record:
                 line += f" details={json.dumps(record['details'], ensure_ascii=False, sort_keys=True)}"
+        else:
+            line = human_event(record)
+            if line is None:
+                return
         if self.color:
             color = "\033[32m" if result in {"approved", "completed", "success", "resumed"} else "\033[31m" if result in {"failed", "rejected", "interrupted"} else "\033[36m"
             line = f"{color}{line}\033[0m"
         print(line, flush=True)
+
+
+def human_event(record: dict[str, Any]) -> str | None:
+    from datetime import datetime
+
+    event = record["event"]
+    phase = record["phase"]
+    gate = record["gate"]
+    result = record["result"]
+    instant = datetime.fromisoformat(record["time"]).astimezone().strftime("%H:%M")
+    gates = {
+        "development": ("DESENVOLVIMENTO", "Gate 1"),
+        "validation": ("VALIDAÇÃO", "Gate 2"),
+        "tests": ("TESTES", "Gate 3"),
+        "integral_validation": ("VALIDAÇÃO INTEGRAL", "Validação integral"),
+        "commit": ("COMMIT", "Gate 4"),
+    }
+    if event == "phase-started":
+        return f"Fase {phase} iniciada"
+    if event == "phase-finished":
+        return f"Fase {phase} finalizada"
+    if event == "phase-resumed":
+        return f"Fase {phase} já estava finalizada; retomando a execução"
+    if gate not in gates:
+        if event == "developer-reminder":
+            return "Execução concluída. Revise o diff completo e teste no navegador quando aplicável."
+        return None
+    label, gate_name = gates[gate]
+    if event == "gate-started":
+        return f"[{label}] {gate_name} em andamento [{instant}]"
+    if event == "gate-finished":
+        status = {"completed": "finalizado", "approved": "aprovado", "rejected": "reprovado"}.get(result, result)
+        detail = ""
+        if result == "rejected":
+            values = record.get("details", {}).get("findings") or record.get("details", {}).get("normalized_failures") or []
+            if values:
+                first = values[0]
+                detail = f": {first.get('evidence', first) if isinstance(first, dict) else first}"
+        return f"[{label}] {gate_name} {status}{detail} [{instant}]"
+    if event in {"gate-uncertain", "gate-interrupted"}:
+        return f"[{label}] {gate_name} interrompido [{instant}]"
+    if event == "rejection-limit":
+        return f"[{label}] {gate_name} interrompido após {record['attempt']} reprovações [{instant}]"
+    return None
 
 
 def sanitize_value(value: Any) -> Any:
