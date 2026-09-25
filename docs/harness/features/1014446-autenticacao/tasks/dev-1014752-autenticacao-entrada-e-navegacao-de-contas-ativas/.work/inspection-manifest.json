@@ -1,0 +1,52 @@
+{
+  "instructions": [
+    "AGENTS.md",
+    ".ai/rules/index.md",
+    ".ai/rules/general.md",
+    ".ai/rules/app.md",
+    ".ai/rules/livewire.md",
+    ".ai/rules/routes.md",
+    ".ai/rules/views.md",
+    ".ai/rules/views-livewire.md",
+    ".ai/rules/tests.md",
+    ".ai/rules/feature-livewire.md"
+  ],
+  "architecture": [
+    "docs/agents/architecture.md",
+    "docs/agents/tech_stack.md",
+    "docs/agents/project_overview.md",
+    "config/auth.php",
+    "bootstrap/app.php"
+  ],
+  "adrs": [
+    "docs/agents/domain_rules.md",
+    ".ai/rules/app.md",
+    ".ai/rules/routes.md"
+  ],
+  "conventions": [
+    "docs/agents/coding_guidelines.md",
+    ".ai/rules/livewire.md",
+    ".ai/rules/views.md",
+    ".agents/skills/remsoft-ui-components/references/component-catalog.md",
+    "resources/views/components/ui/input.blade.php",
+    "resources/views/components/ui/input/password.blade.php",
+    "resources/views/components/ui/button.blade.php"
+  ],
+  "automations": [
+    "composer.json",
+    "package.json",
+    "phpunit.xml",
+    "phpunit-ci.xml",
+    ".husky/pre-push"
+  ],
+  "tests": [
+    "tests/Pest.php",
+    "tests/Feature/Livewire/Admin/Auth/LoginTest.php",
+    "tests/Browser/Livewire/Auth/LoginBrowserTest.php",
+    "tests/Feature/Livewire/Auth/LogoutTest.php",
+    "tests/Feature/Http/Middleware/EnsureUserCanAccessAdminAreaTest.php",
+    "tests/Feature/Routes/AdminAuthenticationRoutesTest.php",
+    "tests/Feature/Http/Controllers/Auth/RegisteredUserControllerTest.php",
+    "tests/Feature/Support/Navigation/SidebarMenuBuilderTest.php"
+  ]
+}

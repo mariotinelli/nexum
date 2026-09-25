@@ -19,15 +19,15 @@ Run PHP, Artisan, Composer, and Node commands through Laravel Sail.
 
 | Command | Purpose |
 |---|---|
-| `vendor/bin/sail composer install` | Install PHP dependencies. |
-| `vendor/bin/sail npm install --ignore-scripts` | Install frontend dependencies without lifecycle scripts. |
-| `vendor/bin/sail npm run build` | Build frontend assets with Vite. |
-| `vendor/bin/sail composer test` | Run the complete lint, static analysis, type coverage, coverage, and parallel test pipeline. |
-| `vendor/bin/sail artisan test --compact` | Run the Pest suite compactly; add a filename or filter for focused verification. |
-| `vendor/bin/sail bin pint --parallel` | Format PHP in parallel. |
-| `vendor/bin/sail phpstan analyse --ansi --memory-limit=-1 --debug` | Run Larastan/PHPStan static analysis. |
-| `vendor/bin/sail php -d memory_limit=-1 ./vendor/bin/pest --parallel --tia --coverage --min=90` | Run tests with TIA and enforce 90% coverage. |
-| `vendor/bin/sail php ./vendor/bin/pest --type-coverage --min=100` | Enforce 100% type coverage. |
+| `php composer install` | Install PHP dependencies. |
+| `php npm install --ignore-scripts` | Install frontend dependencies without lifecycle scripts. |
+| `php npm run build` | Build frontend assets with Vite. |
+| `php composer test` | Run the complete lint, static analysis, type coverage, coverage, and parallel test pipeline. |
+| `php artisan test --compact` | Run the Pest suite compactly; add a filename or filter for focused verification. |
+| `php bin pint --parallel` | Format PHP in parallel. |
+| `php phpstan analyse --ansi --memory-limit=-1 --debug` | Run Larastan/PHPStan static analysis. |
+| `php php -d memory_limit=-1 ./vendor/bin/pest --parallel --tia --coverage --min=90` | Run tests with TIA and enforce 90% coverage. |
+| `php php ./vendor/bin/pest --type-coverage --min=100` | Enforce 100% type coverage. |
 
 CI also runs Composer and npm audits, PHPStan, Pint in test mode, and Pest in parallel with TIA using `phpunit-ci.xml`.
 
@@ -35,7 +35,7 @@ CI also runs Composer and npm audits, PHPStan, Pint in test mode, and Pest in pa
 
 | Tool | Enforcement |
 |---|---|
-| Laravel Pint | `pint.json`; run `vendor/bin/sail bin pint --dirty --format agent` after PHP changes. |
+| Laravel Pint | `pint.json`; run `php bin pint --dirty --format agent` after PHP changes. |
 | Larastan/PHPStan | `phpstan.neon`; run static analysis through Sail. |
 | Rector | `rector.php` |
 | EditorConfig | `.editorconfig` |
@@ -67,21 +67,21 @@ CI also runs Composer and npm audits, PHPStan, Pint in test mode, and Pest in pa
 Prerequisites: PHP 8.4 through Sail, Docker, Composer, and Node.js 20+.
 
 ```sh
-vendor/bin/sail up -d
-vendor/bin/sail composer install
-vendor/bin/sail npm install --ignore-scripts
-vendor/bin/sail artisan key:generate
-vendor/bin/sail artisan migrate
-vendor/bin/sail npm run build
+php up -d
+php composer install
+php npm install --ignore-scripts
+php artisan key:generate
+php artisan migrate
+php npm run build
 ```
 
 | Symptom | Check |
 |---|---|
-| Frontend change is missing or a Vite manifest asset cannot be found | Run `vendor/bin/sail npm run build`, `vendor/bin/sail npm run dev`, or `vendor/bin/sail composer run dev`. |
-| An Artisan option or command is unclear | Run `vendor/bin/sail artisan list` or `vendor/bin/sail artisan &lt;command&gt; --help`; pass `--no-interaction` to generators. |
-| A package API is uncertain | Confirm PHP versions with `vendor/bin/sail composer show --direct` or `vendor/bin/sail composer show &lt;vendor/package&gt;`; inspect `package.json` for JavaScript versions. |
-| A route is uncertain | Run `vendor/bin/sail artisan route:list` with `--method`, `--name`, or `--path` filters. |
-| A configuration value is uncertain | Run `vendor/bin/sail artisan config:show &lt;dot.key&gt;`. |
+| Frontend change is missing or a Vite manifest asset cannot be found | Run `php npm run build`, `php npm run dev`, or `php composer run dev`. |
+| An Artisan option or command is unclear | Run `php artisan list` or `php artisan &lt;command&gt; --help`; pass `--no-interaction` to generators. |
+| A package API is uncertain | Confirm PHP versions with `php composer show --direct` or `php composer show &lt;vendor/package&gt;`; inspect `package.json` for JavaScript versions. |
+| A route is uncertain | Run `php artisan route:list` with `--method`, `--name`, or `--path` filters. |
+| A configuration value is uncertain | Run `php artisan config:show &lt;dot.key&gt;`. |
 
 ## 5. References
 
