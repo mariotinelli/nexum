@@ -29,7 +29,7 @@ Quando já existir publicação concluída e o requisito aprovado atual diferir 
 
 Quando uma mudança funcional possuir a autorização localizada corrente, leia [aplicação de revisão aprovada](references/revision-application.md). Releia cada tarefa antes da mutação, preserve tarefas concluídas e históricos anteriores, e trate criações, atualizações, cancelamentos e relações como operações retomáveis. Tarefa em andamento e cancelamento de tarefa não iniciada exigem aprovação adicional do tech lead ligada ao snapshot e à mutação exatos.
 
-**Concluído quando:** o readback prova todo o delta autorizado, preserva tarefas e relações fora dele e mantém o status de execução do pai.
+**Concluído quando:** o readback prova todo o delta autorizado, os `task.md` das filhas gerenciadas afetadas foram substituídos atomicamente sem mudar ID ou slug, tarefas e relações fora dele permanecem intactas e o pai mantém seu status de execução.
 
 ## Inspecionar o código
 
@@ -67,9 +67,11 @@ Rode `approve` informando o tech lead e o instante da decisão, depois `validate
 
 ## Preparar e publicar filhas
 
-Leia [publicação DEV e QA](references/publication.md). Derive DEV como `Task` para mãe `Feature` ou `Bug` para mãe `Bug`, QA sempre como `Deliverable`, status inicial sempre como `New` e prioridade inicial sempre como `Normal`; não pergunte ao tech lead por esses campos. Componha uma QA para o item pai e materialize a prévia final com descrições e campos completos. Obtenha a aprovação explícita do tech lead para o hash dessa prévia antes da primeira mutação. Publique pelo MCP Redmine existente e registre cada resultado no helper local; após resultado incerto, leia antes de repetir. Ao final, releia pai, filhas e relações e só conclua quando todos os campos e bloqueios aprovados estiverem conferidos.
+Se DEV, QA ou Study já foi publicado por um estado histórico v1 concluído, leia [reconciliação local](references/legacy-reconciliation.md). Esse ramo exige readback sanitizado e decisão específica do tech lead sobre a prévia exata; ele cria somente os artefatos canônicos locais e preserva o Redmine e todos os arquivos históricos.
 
-**Concluído quando:** todas as filhas possuem IDs reconciliados, cada DEV necessária bloqueia nativamente a QA, o readback integral confere e o estado de execução original do item pai permanece igual.
+Leia [publicação DEV e QA](references/publication.md). Derive DEV como `Task` para mãe `Feature` ou `Bug` para mãe `Bug`, QA sempre como `Deliverable`, status inicial sempre como `New` e prioridade inicial sempre como `Normal`; não pergunte ao tech lead por esses campos. Componha uma QA para o item pai e materialize a prévia final com descrições e campos completos. Obtenha a aprovação explícita do tech lead para o hash dessa prévia antes da primeira mutação. Publique pelo MCP Redmine existente e registre cada resultado no helper local; após resultado incerto, leia antes de repetir. Ao final, releia pai, filhas e relações e só conclua quando todos os campos e bloqueios aprovados estiverem conferidos; então materialize cada filha por ID em `tasks/<tipo>-<id>-<slug>/task.md`.
+
+**Concluído quando:** todas as filhas possuem IDs reconciliados, cada DEV necessária bloqueia nativamente a QA, o readback integral confere, o estado de execução original do item pai permanece igual e cada `task.md` canônico existe sem campos operacionais voláteis.
 
 ## Configurar dependências externas
 

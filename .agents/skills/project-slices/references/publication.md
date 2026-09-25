@@ -59,10 +59,10 @@ Aplique a [revisão editorial](../../vertical-slicing/references/task-writing.md
 Execute:
 
 ```sh
-python <project-slices>/scripts/manage_publication.py prepare .flow/slices-publication.json .work/slices-publication-plan.json --slices-state .flow/slices-state.json --preview slices/publication.md --descriptions-dir slices/descriptions --actor "<tech lead>" --at "<ISO-8601>" --reason "<motivo>"
+python <project-slices>/scripts/manage_publication.py prepare .flow/slices-publication.json .work/slices-publication-plan.json --slices-state .flow/slices-state.json --preview slices/publication.md --actor "<tech lead>" --at "<ISO-8601>" --reason "<motivo>"
 ```
 
-O helper deriva cada DEV da revisão aprovada. O título DEV é `[DEV]` seguido do título completo do item pai e do sufixo aprovado; uma entrega de API externa pode conter `[API]` depois de `[WEB]`. As descrições individuais ficam em `slices/descriptions/dev-N.md` e `qa.md`; a prévia conjunta em `slices/publication.md` mostra o conteúdo integral, campos e hashes.
+O helper deriva cada DEV da revisão aprovada. O título DEV é `[DEV]` seguido do título completo do item pai e do sufixo aprovado; uma entrega de API externa pode conter `[API]` depois de `[WEB]`. A prévia conjunta em `slices/publication.md` mostra o conteúdo integral, campos e hashes; as chaves `dev-N` e `qa` permanecem restritas ao estado interno de preparação e retomada.
 
 Mostre essa prévia ao tech lead. Revisões antes da publicação são append-only e invalidam a aprovação final anterior. Depois da confirmação explícita, execute `approve` e preserve uma cópia anterior para `validate --previous`:
 
@@ -86,11 +86,11 @@ python <project-slices>/scripts/manage_publication.py finish-create .flow/slices
 
 Um resultado `unknown` ou `in-flight` exige busca pela identidade estável `project-slices-child` no projeto e pai confirmados, abrangendo issues abertas e fechadas. Percorra todas as páginas e grave projeto, pai, identidade, escopo `all`, cada página (`offset`, `limit`, `count`), total e candidatos no snapshot sanitizado. Use `observe-create --outcome matched` somente para um candidato integralmente idêntico; use `absent` somente quando a busca completa não trouxer a identidade. Ambiguidade ou divergência para e volta ao tech lead. Uma operação `completed` nunca volta ao MCP de criação.
 
-Depois que os IDs necessários existem, preserve também os bloqueios DEV da decomposição: em toda relação, a dependência é `issue_id`, a dependente é `issue_to_id` e `relation_type` é `blocks`. Rode `begin-relation` antes do MCP e `finish-relation` depois da resposta; um resultado incerto exige leitura de relações e `observe-relation` antes de qualquer repetição. Relações equivalentes já observadas são concluídas localmente, sem nova criação.
+Depois que os IDs necessários existem, preserve também os bloqueios DEV da decomposição: em toda relação, a dependência é `issue_id`, a dependente é `issue_to_id` e `relation_type` é `blocks`. Para relações entre filhas novas, rode `begin-relation` antes do MCP e `finish-relation` depois da resposta; um resultado incerto exige leitura de relações e `observe-relation` antes de qualquer repetição. Uma relação que toca filha adotada nunca gera payload: os dois extremos devem ter sido adotados e a relação equivalente deve estar no snapshot aprovado e no readback final.
 
 Falha parcial preserva todos os IDs e relações confirmados. Em retomada, valide o estado, reconcilie primeiro cada `unknown` e continue somente operações pendentes.
 
-**Concluído quando:** cada `create:*` e `relation:*` está reconciliada como concluída uma única vez, com tentativas e observações append-only.
+**Concluído quando:** cada `create:*` e `relation:*` de filhas novas está reconciliada como concluída uma única vez, relações adotadas possuem evidência completa sem operação de mutação e tentativas e observações permanecem append-only.
 
 ## Conferir e concluir
 
@@ -102,8 +102,10 @@ Leia o item pai e todas as filhas com relações. Salve `.work/slices-publicatio
 python <project-slices>/scripts/manage_publication.py complete .flow/slices-publication.json --readback .work/slices-publication-readback.json --at "<ISO-8601>"
 ```
 
+Depois de conferir integralmente IDs, conteúdo, tracker, estimativa, pai e relações, o helper grava na mesma transação o estado concluído e uma representação humana estável por filha: `tasks/dev-<id>-<slug>/task.md` ou `tasks/qa-<id>-<slug>/task.md`. O `task.md` contém somente identidade, tipo, tracker, pai, estimativa, descrição e relações; status, responsável e datas operacionais permanecem no Redmine. A primeira materialização fixa o slug: uma releitura posterior reutiliza a pasta encontrada pelo tipo e ID. Estados históricos com `slices/descriptions/` continuam válidos, mas publicações novas não criam nem persistem esses artefatos posicionais.
+
 O fluxo preserva a Feature ou Bug pai. QA é uma filha de verificação e não aprova decomposição, conteúdo ou conclusão.
 
-**Concluído quando:** `slices-publication.json` está `completed`, contém o hash do readback e preserva o histórico completo de revisão, aprovação, IDs, tentativas, observações e progresso.
+**Concluído quando:** `slices-publication.json` está `completed`, contém o hash do readback e os hashes de todos os `task.md`, e preserva o histórico completo de revisão, aprovação, IDs, tentativas, observações e progresso. Qualquer falha ou incerteza anterior mantém somente o estado retomável, sem uma árvore canônica definitiva.
 
 Se a decomposição aprovada contém `external_blockers`, continue em [dependências externas e refinamento](dependencies.md). Essa fase acrescenta ou refina relações sem alterar esta publicação concluída nem recriar suas filhas.

@@ -276,7 +276,7 @@ def publication_evidence(
     ]
     expected_operations = {
         *(f"create:{child['key']}" for child in current["children"] if child.get("source") != "adopted"),
-        *(f"relation:{relation['key']}" for relation in current["relations"]),
+        *(f"relation:{relation['key']}" for relation in current["relations"] if not publication.relation_touches_adopted(current["children"], relation)),
     }
     if (
         len(valid) != 1
@@ -317,11 +317,12 @@ def publication_evidence(
     if len(by_id) != len(children):
         fail(f"publication readback for {feature_dir.name} has duplicate or invalid children")
     for child in current["children"]:
-        description_path = Path(child["description_path"]).absolute()
-        try:
-            description_path.relative_to((feature_dir / "slices" / "descriptions").absolute())
-        except ValueError:
-            fail(f"publication child description for {feature_dir.name} is outside its canonical layout")
+        if state["schema_version"] == 1:
+            description_path = Path(child["description_path"]).absolute()
+            try:
+                description_path.relative_to((feature_dir / "slices" / "descriptions").absolute())
+            except ValueError:
+                fail(f"publication child description for {feature_dir.name} is outside its canonical layout")
         remote_id = publication.child_remote_id(state, child["key"])
         if remote_id not in by_id:
             fail(f"publication readback for {feature_dir.name} is missing a routed child")

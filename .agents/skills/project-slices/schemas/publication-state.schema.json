@@ -1,1 +1,186 @@
-{"$schema":"https:\/\/json-schema.org\/draft\/2020-12\/schema","$id":"https:\/\/remsoft.tools\/schemas\/project-slices\/publication-state-v1.json","title":"Project Slices child publication state","type":"object","additionalProperties":false,"required":["schema_version","status","status_history","revisions","approvals","operations","readback","completed_at"],"properties":{"schema_version":{"const":1},"status":{"enum":["prepared","approved","publishing","completed"]},"status_history":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["status","recorded_at"],"properties":{"status":{"enum":["prepared","approved","publishing","completed"]},"recorded_at":{"type":"string","format":"date-time"}}}},"revisions":{"type":"array","minItems":1,"items":{"$ref":"#\/$defs\/revision"}},"approvals":{"type":"array","items":{"$ref":"#\/$defs\/approval"}},"operations":{"type":"object","additionalProperties":{"$ref":"#\/$defs\/operation"}},"readback":{"oneOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["path","sha256","observed_at"],"properties":{"path":{"type":"string","minLength":1},"sha256":{"$ref":"#\/$defs\/sha256"},"observed_at":{"type":"string","format":"date-time"}}}]},"completed_at":{"type":["string","null"],"format":"date-time"}},"$defs":{"sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},"revision":{"type":"object","required":["number","recorded_by","recorded_at","reason","slices_state_path","slices_state_sha256","slicing_revision","slicing_approval_sha256","parent_baseline","metadata_baseline","native_fields","children","relations","publication_sha256"],"properties":{"number":{"type":"integer","minimum":1},"recorded_by":{"type":"string","minLength":1},"recorded_at":{"type":"string","format":"date-time"},"reason":{"type":"string","minLength":1},"slices_state_path":{"type":"string","minLength":1},"slices_state_sha256":{"$ref":"#\/$defs\/sha256"},"slicing_revision":{"type":"integer","minimum":1},"slicing_approval_sha256":{"$ref":"#\/$defs\/sha256"},"parent_baseline":{"type":"object"},"metadata_baseline":{"type":"object"},"native_fields":{"type":"object"},"children":{"type":"array","minItems":1,"items":{"$ref":"#\/$defs\/child"}},"relations":{"type":"array","items":{"$ref":"#\/$defs\/relation"}},"semantic_baseline":{"type":["object","null"]},"existing_children_review":{"$ref":"#\/$defs\/existingChildrenReview"},"publication_sha256":{"$ref":"#\/$defs\/sha256"}}},"child":{"type":"object","additionalProperties":false,"required":["key","identity","kind","title","estimate_hours","description","attributes","payload_sha256","description_path"],"properties":{"key":{"type":"string","pattern":"^(dev-[1-9][0-9]*|qa)$"},"identity":{"$ref":"#\/$defs\/sha256"},"kind":{"enum":["dev","qa"]},"title":{"type":"string","minLength":1},"estimate_hours":{"type":"number","exclusiveMinimum":0},"description":{"type":"string","minLength":1},"attributes":{"type":"object"},"payload_sha256":{"$ref":"#\/$defs\/sha256"},"description_path":{"type":"string","minLength":1},"source":{"const":"adopted"},"remote_id":{"type":"integer","minimum":1},"adoption_evidence":{"type":"object","additionalProperties":false,"required":["snapshot_path","snapshot_sha256"],"properties":{"snapshot_path":{"type":"string","minLength":1},"snapshot_sha256":{"$ref":"#\/$defs\/sha256"}}}}},"existingChildrenReview":{"type":"object","additionalProperties":false,"required":["snapshot_path","snapshot_sha256","decisions"],"properties":{"snapshot_path":{"type":"string","minLength":1},"snapshot_sha256":{"$ref":"#\/$defs\/sha256"},"decisions":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["issue_id","disposition","target_key","accepted_divergences","decided_by","decided_at","reason","issue_sha256"],"properties":{"issue_id":{"type":"integer","minimum":1},"disposition":{"enum":["adopt","keep-external"]},"target_key":{"type":["string","null"]},"accepted_divergences":{"type":"array","uniqueItems":true,"items":{"type":"string"}},"decided_by":{"type":"string","minLength":1},"decided_at":{"type":"string","format":"date-time"},"reason":{"type":"string","minLength":1},"issue_sha256":{"$ref":"#\/$defs\/sha256"}}}}}},"relation":{"type":"object","additionalProperties":false,"required":["key","source_key","target_key","relation_type"],"properties":{"key":{"type":"string","minLength":1},"source_key":{"type":"string","pattern":"^dev-[1-9][0-9]*$"},"target_key":{"type":"string","pattern":"^(dev-[1-9][0-9]*|qa)$"},"relation_type":{"const":"blocks"}}},"approval":{"type":"object","additionalProperties":false,"required":["revision","publication_sha256","approved_by","approved_at","status"],"properties":{"revision":{"type":"integer","minimum":1},"publication_sha256":{"$ref":"#\/$defs\/sha256"},"approved_by":{"type":"string","minLength":1},"approved_at":{"type":"string","format":"date-time"},"status":{"enum":["valid","invalidated"]}}},"operation":{"type":"object","additionalProperties":false,"required":["kind","attempts","observations","status","remote_id"],"properties":{"kind":{"enum":["create","relation"]},"attempts":{"type":"array","items":{"type":"object"}},"observations":{"type":"array","items":{"type":"object"}},"status":{"enum":["pending","completed"]},"remote_id":{"type":["integer","null"],"minimum":1}}}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/project-slices/publication-state-v2.json",
+  "title": "Project Slices child publication state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "status_history", "revisions", "approvals", "operations", "readback", "completed_at"],
+  "properties": {
+    "schema_version": {"enum": [1, 2]},
+    "status": {"enum": ["prepared", "approved", "publishing", "completed"]},
+    "status_history": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "recorded_at"],
+        "properties": {
+          "status": {"enum": ["prepared", "approved", "publishing", "completed"]},
+          "recorded_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "revisions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/revision"}},
+    "approvals": {"type": "array", "items": {"$ref": "#/$defs/approval"}},
+    "operations": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/operation"}
+    },
+    "readback": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "observed_at"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "sha256": {"$ref": "#/$defs/sha256"},
+            "observed_at": {"type": "string", "format": "date-time"}
+          }
+        }
+      ]
+    },
+    "artifacts": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "remote_id", "path", "sha256"],
+            "properties": {
+              "kind": {"enum": ["dev", "qa"]},
+              "remote_id": {"type": "integer", "minimum": 1},
+              "path": {"type": "string", "minLength": 1},
+              "sha256": {"$ref": "#/$defs/sha256"}
+            }
+          }
+        }
+      ]
+    },
+    "completed_at": {"type": ["string", "null"], "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": 2}}},
+      "then": {"required": ["artifacts"]}
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "revision": {
+      "type": "object",
+      "required": ["number", "recorded_by", "recorded_at", "reason", "slices_state_path", "slices_state_sha256", "slicing_revision", "slicing_approval_sha256", "parent_baseline", "metadata_baseline", "native_fields", "children", "relations", "publication_sha256"],
+      "properties": {
+        "number": {"type": "integer", "minimum": 1},
+        "recorded_by": {"type": "string", "minLength": 1},
+        "recorded_at": {"type": "string", "format": "date-time"},
+        "reason": {"type": "string", "minLength": 1},
+        "slices_state_path": {"type": "string", "minLength": 1},
+        "slices_state_sha256": {"$ref": "#/$defs/sha256"},
+        "slicing_revision": {"type": "integer", "minimum": 1},
+        "slicing_approval_sha256": {"$ref": "#/$defs/sha256"},
+        "parent_baseline": {"type": "object"},
+        "metadata_baseline": {"type": "object"},
+        "native_fields": {"type": "object"},
+        "children": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/child"}},
+        "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+        "semantic_baseline": {"type": ["object", "null"]},
+        "existing_children_review": {"$ref": "#/$defs/existingChildrenReview"},
+        "publication_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "child": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "identity", "kind", "title", "estimate_hours", "description", "attributes", "payload_sha256"],
+      "properties": {
+        "key": {"type": "string", "pattern": "^(dev-[1-9][0-9]*|qa)$"},
+        "identity": {"$ref": "#/$defs/sha256"},
+        "kind": {"enum": ["dev", "qa"]},
+        "title": {"type": "string", "minLength": 1},
+        "estimate_hours": {"type": "number", "exclusiveMinimum": 0},
+        "description": {"type": "string", "minLength": 1},
+        "attributes": {"type": "object"},
+        "payload_sha256": {"$ref": "#/$defs/sha256"},
+        "description_path": {"type": "string", "minLength": 1},
+        "source": {"const": "adopted"},
+        "remote_id": {"type": "integer", "minimum": 1},
+        "adoption_evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["snapshot_path", "snapshot_sha256"],
+          "properties": {
+            "snapshot_path": {"type": "string", "minLength": 1},
+            "snapshot_sha256": {"$ref": "#/$defs/sha256"}
+          }
+        }
+      }
+    },
+    "existingChildrenReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_path", "snapshot_sha256", "decisions"],
+      "properties": {
+        "snapshot_path": {"type": "string", "minLength": 1},
+        "snapshot_sha256": {"$ref": "#/$defs/sha256"},
+        "decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["issue_id", "disposition", "target_key", "accepted_divergences", "decided_by", "decided_at", "reason", "issue_sha256"],
+            "properties": {
+              "issue_id": {"type": "integer", "minimum": 1},
+              "disposition": {"enum": ["adopt", "keep-external"]},
+              "target_key": {"type": ["string", "null"]},
+              "accepted_divergences": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+              "decided_by": {"type": "string", "minLength": 1},
+              "decided_at": {"type": "string", "format": "date-time"},
+              "reason": {"type": "string", "minLength": 1},
+              "issue_sha256": {"$ref": "#/$defs/sha256"}
+            }
+          }
+        }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "source_key", "target_key", "relation_type"],
+      "properties": {
+        "key": {"type": "string", "minLength": 1},
+        "source_key": {"type": "string", "pattern": "^dev-[1-9][0-9]*$"},
+        "target_key": {"type": "string", "pattern": "^(dev-[1-9][0-9]*|qa)$"},
+        "relation_type": {"const": "blocks"}
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "publication_sha256", "approved_by", "approved_at", "status"],
+      "properties": {
+        "revision": {"type": "integer", "minimum": 1},
+        "publication_sha256": {"$ref": "#/$defs/sha256"},
+        "approved_by": {"type": "string", "minLength": 1},
+        "approved_at": {"type": "string", "format": "date-time"},
+        "status": {"enum": ["valid", "invalidated"]}
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "attempts", "observations", "status", "remote_id"],
+      "properties": {
+        "kind": {"enum": ["create", "relation"]},
+        "attempts": {"type": "array", "items": {"type": "object"}},
+        "observations": {"type": "array", "items": {"type": "object"}},
+        "status": {"enum": ["pending", "completed"]},
+        "remote_id": {"type": ["integer", "null"], "minimum": 1}
+      }
+    }
+  }
+}

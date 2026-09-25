@@ -14,9 +14,9 @@ Exemplo: `#1014746 — [DEV] [WEB] [PUBLICO] Autenticação - Entrada e navegaç
 
 ## Retomar sem duplicar
 
-Trate uma adotada como origem remota observada, não como criação concluída. Preserve seu ID na revisão e use-o nas relações aprovadas. Em retomada, valide os hashes e releia antes de repetir qualquer operação ambígua; `begin-create` é exclusivo das keys novas. Filhas externas ficam fora de `children` e `operations` gerenciados e aparecem no readback apenas para provar preservação.
+Trate uma adotada como origem remota observada, não como criação concluída. Preserve seu ID na revisão e use-o nas relações já observadas. A adoção é somente leitura: não altera status, tracker, descrição, estimativa nem relações da filha. Quando um bloqueio aprovado tocar uma adotada, os dois extremos precisam ser filhas existentes adotadas e a relação precisa constar no snapshot completo; caso contrário, apresente a relação ausente como evidência de reconciliação e interrompa a adoção. Em retomada, valide os hashes e releia antes de repetir qualquer operação ambígua; `begin-create` é exclusivo das keys novas e `begin-relation` é exclusivo de relações entre keys novas. Filhas externas ficam fora de `children` e `operations` gerenciados e aparecem no readback apenas para provar preservação.
 
-**Concluído quando:** cada key adotada conserva o mesmo ID, somente keys novas possuem operação de criação e o readback mantém filhas e relações externas.
+**Concluído quando:** cada key adotada conserva o mesmo ID, somente keys novas possuem operações de criação ou relação e o readback mantém integralmente as filhas adotadas, suas relações e as filhas externas.
 
 ## Encaminhar somente QA
 

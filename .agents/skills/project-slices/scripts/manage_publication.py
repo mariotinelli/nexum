@@ -5,10 +5,13 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import os
+import re
 import sys
 import tempfile
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -454,6 +457,37 @@ def review_existing_children(plan: dict[str, Any], feature_dir: Path, parent: di
     return {"snapshot_path": str(snapshot_path.absolute()), "snapshot_sha256": file_digest(snapshot_path), "decisions": records}
 
 
+def relation_touches_adopted(children: list[dict[str, Any]], relation: dict[str, Any]) -> bool:
+    children_by_key = {child["key"]: child for child in children}
+    return any(children_by_key[key].get("source") == "adopted" for key in (relation["source_key"], relation["target_key"]))
+
+
+def validate_adopted_relation_evidence(children: list[dict[str, Any]], relations: list[dict[str, Any]], review: dict[str, Any] | None) -> None:
+    if review is None:
+        return
+    children_by_key = {child["key"]: child for child in children}
+    snapshot = load_json(Path(review["snapshot_path"]))
+    issues_by_id = {positive_int(issue.get("id"), "existing child.id"): issue for issue in snapshot["children"]}
+    for relation in relations:
+        source = children_by_key[relation["source_key"]]
+        target = children_by_key[relation["target_key"]]
+        adopted = [child for child in (source, target) if child.get("source") == "adopted"]
+        if not adopted:
+            continue
+        if len(adopted) != 2:
+            fail(f"relation {relation['key']} would mutate an adopted child; adopt both existing endpoints with the relation already present or keep the child external")
+        source_id = positive_int(source.get("remote_id"), "adopted relation source ID")
+        target_id = positive_int(target.get("remote_id"), "adopted relation target ID")
+        expected = {"issue_id": source_id, "issue_to_id": target_id, "relation_type": relation["relation_type"]}
+        observed = False
+        for issue_id in (source_id, target_id):
+            for item in issues_by_id[issue_id]["relations"]:
+                if all(item.get(field) == value for field, value in expected.items()):
+                    observed = True
+        if not observed:
+            fail(f"relation {relation['key']} is missing from the complete adoption evidence; adoption cannot create or change relations")
+
+
 def publication_digest(revision: dict[str, Any]) -> str:
     value = {
         "parent_baseline": revision["parent_baseline"],
@@ -519,6 +553,68 @@ def atomic_batch_write(files: dict[Path, bytes]) -> None:
                 pass
 
 
+def stable_slug(title: str) -> str:
+    without_labels = re.sub(r"^(?:\s*\[[^\]]+\])+\s*", "", title)
+    ascii_title = unicodedata.normalize("NFKD", without_labels).encode("ascii", "ignore").decode("ascii")
+    slug = re.sub(r"[^a-z0-9]+", "-", ascii_title.lower()).strip("-")
+    return (slug[:64].rstrip("-") or "task")
+
+
+def canonical_task_path(feature_dir: Path, kind: str, remote_id: int, title: str) -> Path:
+    tasks_dir = (feature_dir / "tasks").absolute()
+    assert_safe_write(tasks_dir / ".path-safety-check")
+    prefix = f"{kind}-{remote_id}-"
+    existing = [] if not tasks_dir.exists() else [
+        path for path in tasks_dir.iterdir()
+        if path.name.startswith(prefix)
+    ]
+    if any(path.is_symlink() or not path.is_dir() for path in existing) or len(existing) > 1:
+        fail(f"canonical task identity {kind}-{remote_id} is ambiguous or unsafe")
+    directory = existing[0] if existing else tasks_dir / f"{prefix}{stable_slug(title)}"
+    task_path = directory / "task.md"
+    assert_safe_write(task_path)
+    return task_path
+
+
+def task_markdown(issue: dict[str, Any], kind: str, all_relations: list[dict[str, Any]]) -> str:
+    issue_id = positive_int(issue.get("id"), "canonical child.id")
+    title = require_text(issue.get("subject"), "canonical child.subject")
+    tracker = issue.get("tracker")
+    if not isinstance(tracker, dict):
+        fail("canonical child tracker must be a complete object")
+    tracker_id = positive_int(tracker.get("id"), "canonical child.tracker.id")
+    tracker_name = require_text(tracker.get("name"), "canonical child.tracker.name")
+    parent_id = named_id(issue, "parent")
+    estimate = hours(issue.get("estimated_hours"), "canonical child.estimated_hours")
+    description = require_text(issue.get("description"), "canonical child.description").rstrip()
+    if not isinstance(issue.get("relations"), list):
+        fail("canonical child relations must be a complete array")
+    relation_lines: list[str] = []
+    normalized: set[tuple[int, str, int]] = set()
+    for relation in all_relations:
+        if not isinstance(relation, dict):
+            fail("canonical child relations must be structured")
+        source_id = positive_int(relation.get("issue_id"), "canonical relation.issue_id")
+        target_id = positive_int(relation.get("issue_to_id"), "canonical relation.issue_to_id")
+        relation_type = require_text(relation.get("relation_type"), "canonical relation.relation_type")
+        if issue_id in {source_id, target_id}:
+            normalized.add((source_id, relation_type, target_id))
+    for source_id, relation_type, target_id in sorted(normalized):
+        relation_lines.append(f"- `#{source_id}` {relation_type} `#{target_id}`")
+    if not relation_lines:
+        relation_lines.append("- Nenhuma.")
+    return "\n".join([
+        f"# {title}", "",
+        f"- Redmine: `#{issue_id}`",
+        f"- Tipo: `{kind.upper()}`",
+        f"- Tracker: {tracker_name} (`{tracker_id}`)",
+        f"- Item pai: `#{parent_id}`",
+        f"- Estimativa: `{estimate:g}h`", "",
+        "## Descrição", "", description, "",
+        "## Relações", "", *relation_lines, "",
+    ])
+
+
 def render_preview(revision: dict[str, Any], children: list[dict[str, Any]], relations: list[dict[str, Any]], native_fields: dict[str, Any], metadata: dict[str, Any], review: dict[str, Any] | None = None) -> str:
     feature = revision["proposal"]["feature"]
     native = children[0]["attributes"]
@@ -581,10 +677,9 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     feature_dir = slices_path.parent.parent
     state_path = contained_feature_path(feature_dir, str(Path(arguments.state).absolute().relative_to(feature_dir.absolute())).replace("\\", "/"), "publication state")
     preview_path = contained_feature_path(feature_dir, str(Path(arguments.preview).absolute().relative_to(feature_dir.absolute())).replace("\\", "/"), "publication preview")
-    descriptions_dir = contained_feature_path(feature_dir, str(Path(arguments.descriptions_dir).absolute().relative_to(feature_dir.absolute())).replace("\\", "/"), "descriptions directory")
     if state_path != (feature_dir / ".flow" / "slices-publication.json").absolute():
         fail("publication state must use .flow/slices-publication.json")
-    if preview_path != (feature_dir / "slices" / "publication.md").absolute() or descriptions_dir != (feature_dir / "slices" / "descriptions").absolute():
+    if preview_path != (feature_dir / "slices" / "publication.md").absolute():
         fail("publication output must use the canonical slices layout")
     recorded_at = require_timestamp(arguments.at, "recorded_at")
     actor = require_text(arguments.actor, "recorded_by")
@@ -604,7 +699,6 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     for child in children:
         child["attributes"] = child_attributes(child, native, parent)
         child["payload_sha256"] = digest({"attributes": child["attributes"]})
-        child["description_path"] = str((descriptions_dir / f"{child['key']}.md").absolute())
     review = review_existing_children(plan, feature_dir, parent, children, native)
     for child in children:
         child.pop("base_description", None)
@@ -616,6 +710,7 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         {"key": f"blocks:{key}:qa", "source_key": key, "target_key": "qa", "relation_type": "blocks"}
         for key in qa["blocked_by"]
     ]
+    validate_adopted_relation_evidence(children, relations, review)
     revision_record = {
         "number": 1, "recorded_by": actor, "recorded_at": recorded_at, "reason": reason,
         "slices_state_path": str(slices_path.absolute()), "slices_state_sha256": file_digest(slices_path),
@@ -637,6 +732,9 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         validate_publication_state(state)
         if state["operations"]:
             fail("a publication with remote progress cannot be revised")
+        if state["schema_version"] == 1:
+            state["schema_version"] = 2
+            state["artifacts"] = None
         for approval in state["approvals"]:
             if approval["status"] == "valid":
                 approval["status"] = "invalidated"
@@ -646,21 +744,24 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         state["status_history"].append({"status": "prepared", "recorded_at": recorded_at})
     else:
         state = {
-            "schema_version": 1, "status": "prepared",
+            "schema_version": 2, "status": "prepared",
             "status_history": [{"status": "prepared", "recorded_at": recorded_at}],
-            "revisions": [revision_record], "approvals": [], "operations": {}, "readback": None, "completed_at": None,
+            "revisions": [revision_record], "approvals": [], "operations": {}, "readback": None, "artifacts": None, "completed_at": None,
         }
     validate_publication_state(state, check_files=False)
-    outputs = {Path(child["description_path"]): child["description"].encode("utf-8") for child in children}
-    outputs[preview_path] = render_preview(revision, children, relations, native, metadata, review).encode("utf-8")
+    outputs = {preview_path: render_preview(revision, children, relations, native, metadata, review).encode("utf-8")}
     outputs[state_path] = canonical_bytes(state) + b"\n"
     atomic_batch_write(outputs)
     print(json.dumps({"status": state["status"], "revision": revision_record["number"], "publication_sha256": revision_record["publication_sha256"]}))
 
 
 def validate_publication_state(state: dict[str, Any], *, check_files: bool = True) -> None:
-    exact(state, {"schema_version", "status", "status_history", "revisions", "approvals", "operations", "readback", "completed_at"}, "publication state")
-    if state["schema_version"] != 1 or state["status"] not in {"prepared", "approved", "publishing", "completed"}:
+    version = state.get("schema_version")
+    fields = {"schema_version", "status", "status_history", "revisions", "approvals", "operations", "readback", "completed_at"}
+    if version == 2:
+        fields.add("artifacts")
+    exact(state, fields, "publication state")
+    if version not in {1, 2} or state["status"] not in {"prepared", "approved", "publishing", "completed"}:
         fail("unsupported publication state")
     if not isinstance(state["revisions"], list) or not state["revisions"]:
         fail("publication requires revision history")
@@ -688,6 +789,10 @@ def validate_publication_state(state: dict[str, Any], *, check_files: bool = Tru
         if keys.count("qa") != 1 or any(not isinstance(key, str) for key in keys) or len(keys) != len(set(keys)):
             fail("publication children require stable unique keys and exactly one QA")
         for child in revision["children"]:
+            if version == 1 and "description_path" not in child:
+                fail("legacy publication child requires its description artifact")
+            if version == 2 and revision is state["revisions"][-1] and "description_path" in child:
+                fail("new publication revisions cannot persist positional description artifacts")
             source = child.get("source", "create")
             if source not in {"create", "adopted"}:
                 fail("child source must be create or adopted")
@@ -727,12 +832,24 @@ def validate_publication_state(state: dict[str, Any], *, check_files: bool = Tru
         if revision.get("publication_sha256") != publication_digest(revision):
             fail("publication content differs from its approved hash")
     current = state["revisions"][-1]
-    for child in current["children"]:
-        path = Path(child["description_path"])
-        if check_files and (not path.is_file() or path.read_text(encoding="utf-8") != child["description"]):
-            fail("individual child description differs from its revision")
+    if version == 1:
+        for child in current["children"]:
+            path = Path(child["description_path"])
+            if check_files and (not path.is_file() or path.read_text(encoding="utf-8") != child["description"]):
+                fail("individual child description differs from its revision")
     if not isinstance(state["operations"], dict):
         fail("operations must be an object")
+    for operation_key in state["operations"]:
+        if operation_key.startswith("create:"):
+            child_key = operation_key.removeprefix("create:")
+            matches = [child for child in current["children"] if child["key"] == child_key]
+            if state["status"] != "completed" and matches and matches[0].get("source") == "adopted":
+                fail("adopted child cannot have a create operation")
+        if operation_key.startswith("relation:"):
+            relation_key = operation_key.removeprefix("relation:")
+            matches = [relation for relation in current["relations"] if relation["key"] == relation_key]
+            if state["status"] != "completed" and matches and relation_touches_adopted(current["children"], matches[0]):
+                fail("relation involving an adopted child cannot have a mutation operation")
     for approval in state["approvals"]:
         exact(approval, {"revision", "publication_sha256", "approved_by", "approved_at", "status"}, "publication approval")
         if not isinstance(approval["revision"], int) or approval["revision"] < 1 or approval["revision"] > len(state["revisions"]):
@@ -748,6 +865,34 @@ def validate_publication_state(state: dict[str, Any], *, check_files: bool = Tru
         fail("remote publication requires final approval of the current content")
     if state["status"] == "completed" and (state["readback"] is None or state["completed_at"] is None):
         fail("completed publication requires readback evidence")
+    if version == 2:
+        artifacts = state["artifacts"]
+        if state["status"] == "completed" and (not isinstance(artifacts, list) or len(artifacts) != len(current["children"])):
+            fail("completed publication requires one canonical artifact per managed child")
+        if state["status"] != "completed" and artifacts is not None:
+            fail("canonical artifacts exist before publication completion")
+        for artifact in artifacts or []:
+            exact(artifact, {"kind", "remote_id", "path", "sha256"}, "canonical task artifact")
+            if artifact["kind"] not in {"dev", "qa"}:
+                fail("canonical task artifact kind is invalid")
+            positive_int(artifact["remote_id"], "canonical task artifact remote_id")
+            artifact_path = Path(require_text(artifact["path"], "canonical task artifact path"))
+            feature_tasks = Path(current["slices_state_path"]).parent.parent / "tasks"
+            try:
+                artifact_path.absolute().relative_to(feature_tasks.absolute())
+            except ValueError:
+                fail("canonical task artifact is outside the parent tasks directory")
+            expected_prefix = f"{artifact['kind']}-{artifact['remote_id']}-"
+            if artifact_path.name != "task.md" or not artifact_path.parent.name.startswith(expected_prefix) or check_files and file_digest(artifact_path) != artifact["sha256"]:
+                fail("canonical task artifact is missing or changed")
+        if state["status"] == "completed":
+            expected_artifacts = {
+                (child["kind"], child_remote_id(state, child["key"]))
+                for child in current["children"]
+            }
+            recorded_artifacts = {(artifact["kind"], artifact["remote_id"]) for artifact in artifacts}
+            if recorded_artifacts != expected_artifacts or len({artifact["path"] for artifact in artifacts}) != len(artifacts):
+                fail("canonical task artifacts differ from the managed children")
     reject_secrets(state, "publication state")
 
 
@@ -949,6 +1094,8 @@ def command_begin_relation(arguments: argparse.Namespace) -> None:
     validate_publication_state(state)
     require_remote_authority(state)
     relation = current_relation(state, arguments.key)
+    if relation_touches_adopted(state["revisions"][-1]["children"], relation):
+        fail("relations involving adopted children must not be sent to create")
     source_id, target_id = relation_ids(state, relation)
     value = operation(state, f"relation:{arguments.key}", "relation")
     check_retry(value)
@@ -1037,6 +1184,8 @@ def command_complete(arguments: argparse.Namespace) -> None:
         if not isinstance(value, dict) or value.get("status") != "completed":
             fail("all child creates must be reconciled before completion")
     for relation in current["relations"]:
+        if relation_touches_adopted(current["children"], relation):
+            continue
         value = state["operations"].get(f"relation:{relation['key']}")
         if not isinstance(value, dict) or value.get("status") != "completed":
             fail("all blocked-by relations must be reconciled before completion")
@@ -1088,12 +1237,35 @@ def command_complete(arguments: argparse.Namespace) -> None:
         if not (present_target or present_source):
             fail("readback is missing a required DEV blocks QA relation")
     completed_at = require_timestamp(arguments.at, "completed_at")
+    feature_dir = Path(current["slices_state_path"]).parent.parent
+    artifact_files: dict[Path, bytes] = {}
+    artifacts: list[dict[str, Any]] = []
+    all_relations = [
+        relation
+        for issue in children
+        for relation in issue["relations"]
+    ]
+    for child in current["children"]:
+        remote_id = child_remote_id(state, child["key"])
+        issue = by_id[remote_id]
+        task_path = canonical_task_path(feature_dir, child["kind"], remote_id, issue["subject"])
+        content = task_markdown(issue, child["kind"], all_relations).encode("utf-8")
+        if task_path.is_file() and task_path.read_bytes() != content:
+            fail(f"canonical task artifact conflicts with existing content: {task_path}")
+        artifact_files[task_path] = content
+        artifacts.append({
+            "kind": child["kind"], "remote_id": remote_id, "path": str(task_path.absolute()),
+            "sha256": hashlib.sha256(content).hexdigest(),
+        })
     state["readback"] = {"path": str(snapshot_path.absolute()), "sha256": file_digest(snapshot_path), "observed_at": completed_at}
+    if state["schema_version"] == 2:
+        state["artifacts"] = artifacts
     state["completed_at"] = completed_at
     state["status"] = "completed"
     state["status_history"].append({"status": "completed", "recorded_at": completed_at})
-    validate_publication_state(state)
-    atomic_write(path, canonical_bytes(state) + b"\n")
+    validate_publication_state(state, check_files=False)
+    artifact_files[path] = canonical_bytes(state) + b"\n"
+    atomic_batch_write(artifact_files)
     print(json.dumps({"status": "completed", "child_ids": sorted(by_id)}))
 
 
@@ -1136,7 +1308,7 @@ def build_parser() -> argparse.ArgumentParser:
     commands = parser.add_subparsers(required=True)
     prepare = commands.add_parser("prepare")
     prepare.add_argument("state"); prepare.add_argument("plan"); prepare.add_argument("--slices-state", required=True)
-    prepare.add_argument("--preview", required=True); prepare.add_argument("--descriptions-dir", required=True)
+    prepare.add_argument("--preview", required=True)
     prepare.add_argument("--actor", required=True); prepare.add_argument("--at", required=True); prepare.add_argument("--reason", required=True)
     prepare.set_defaults(run=command_prepare)
     approve = commands.add_parser("approve")

@@ -17,8 +17,10 @@ Preserve o layout canônico do `project-flow`: `feature.md` ou `bug.md` continua
 - `slices/change-review.md` para classificação, impacto localizado e itens que permanecem válidos;
 - `slices/revision-application.md` para a prévia concreta das mutações e preservações;
 - `.flow/slices-publication.json` para revisão final, aprovação, IDs, tentativas, observações e conclusão da publicação;
+- `.flow/slices-reconciliation.json` e `slices/reconciliation.md` para a decisão e a prévia exata de uma materialização local de publicação histórica;
 - `.flow/slices-dependencies.json` para revisões, aprovações, operações e readbacks de dependências externas;
-- `slices/publication.md` e `slices/descriptions/*.md` para a prévia final e descrições individuais aprovadas.
+- `slices/publication.md` para a prévia final aprovada;
+- `tasks/dev-<id>-<slug>/task.md`, `tasks/qa-<id>-<slug>/task.md` e `tasks/study-<id>-<slug>/task.md` para as representações canônicas criadas somente depois do readback integral do respectivo fluxo.
 
 Rejeite links simbólicos em qualquer caminho gravado. Grave candidatos na mesma pasta e substitua atomicamente somente depois de validar. Preserve o estado anterior para executar a validação de transição; revisões e aprovações são append-only.
 
@@ -66,4 +68,6 @@ python <project-slices>/scripts/manage_slices.py validate .flow/slices-state.jso
 
 **Concluído quando:** a revisão aprovada, sua prévia Markdown, o hash e a atribuição sobrevivem em arquivos versionáveis fora de `.work/`, e nenhuma revisão anterior foi alterada.
 
-Depois desta aprovação local, siga [publicação DEV e QA](publication.md). O plano e snapshots remotos continuam descartáveis em `.work/`; o estado, descrições, aprovações e progresso permanecem em `.flow/` e `slices/`.
+Depois desta aprovação local, siga [publicação DEV e QA](publication.md). O plano e snapshots remotos continuam descartáveis em `.work/`; estado, aprovações e progresso permanecem em `.flow/`, e a prévia fica em `slices/` até a materialização canônica por ID em `tasks/`.
+
+Quando a publicação já foi concluída por um contrato histórico v1, siga [reconciliação local](legacy-reconciliation.md) em vez de preparar ou repetir operações remotas.

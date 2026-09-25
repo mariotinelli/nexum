@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/project-slices/reconciliation-state-v1.json",
+  "title": "Project Slices legacy publication reconciliation state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "source", "readback", "artifacts", "preview", "decision", "completed_at"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["prepared", "approved", "completed"]},
+    "source": {"$ref": "#/$defs/evidence"},
+    "readback": {"$ref": "#/$defs/fileEvidence"},
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "remote_id", "path", "sha256", "content"],
+        "properties": {
+          "kind": {"enum": ["dev", "qa", "study"]},
+          "remote_id": {"type": "integer", "minimum": 1},
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "content": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "preview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "decision_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "decision_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "decision": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["decision_sha256", "approved_by", "approved_at"],
+          "properties": {
+            "decision_sha256": {"$ref": "#/$defs/sha256"},
+            "approved_by": {"type": "string", "minLength": 1},
+            "approved_at": {"type": "string", "format": "date-time"}
+          }
+        }
+      ]
+    },
+    "completed_at": {"type": ["string", "null"], "format": "date-time"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "fileEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path", "sha256"],
+      "properties": {
+        "kind": {"enum": ["publication", "study"]},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

@@ -1,0 +1,822 @@
+{
+  "schema_version": 1,
+  "status": "approved",
+  "current_revision": 1,
+  "revisions": [
+    {
+      "number": 1,
+      "recorded_by": "Mário Tinelli",
+      "recorded_at": "2026-09-18T11:47:06.8478602-03:00",
+      "reason": "Proposta inicial após inspeção do requisito, do código e das filhas remotas",
+      "proposal_sha256": "8ffab85e08d4eed826a64f134e57b3e315936fa53278bd073397f59109690bb5",
+      "proposal": {
+        "feature": {
+          "title": "[WEB] [PUBLICO] Autenticação",
+          "artifact_path": "feature.md",
+          "state_path": ".flow/feature-state.json",
+          "issue_id": 1014446,
+          "requirement_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
+          "input_check_path": ".flow/slices-input-check.json",
+          "input_check_sha256": "ee5c959d5eeaac1b51c599820d8ae3f303bf2821e41b1c8c0a82d1d43cb588d7"
+        },
+        "inspection": [
+          {
+            "path": "app/Livewire/Admin/Auth/Login.php; routes/auth.php; routes/admin.php; app/Enums/TypeUsers.php",
+            "finding": "Leitura: login valida campos e limita tentativas, mas exclui Customer; redireciona apenas ao painel administrativo. Adaptar entrada de todos os perfis ativos e destino sem conceder novas permissões.",
+            "classification": "adapt"
+          },
+          {
+            "path": "app/Models/User.php; app/Brain/Users/Actions/DeleteUserAction.php; bootstrap/app.php; vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php; vendor/laravel/framework/src/Illuminate/Auth/SessionGuard.php; vendor/livewire/livewire/src/Mechanisms/PersistentMiddleware/PersistentMiddleware.php",
+            "finding": "Leitura: exclusão lógica já existe; provider busca usuário por consulta Eloquent tanto por sessão quanto por token, e auth é middleware persistente do Livewire. A base exclui registros apagados nas próximas requisições; falta orientação específica de reativação. Não equiparar somente a presença de SoftDeletes à entrega integral. Slice 1 assume a garantia completa nos acessos autenticados; a administração da desativação permanece em Gestão de Usuário.",
+            "classification": "adapt"
+          },
+          {
+            "path": "vendor/laravel/framework/src/Illuminate/Auth/SessionGuard.php; config/auth.php; config/session.php; app/Providers/AppServiceProvider.php; bootstrap/app.php",
+            "finding": "Leitura: rememberDuration padrão 576000 minutos (400 dias); createRecaller usa esse prazo no cookie, enquanto restauração por user() não reenfileira o cookie. Nenhuma sobrescrita de rememberDuration ou guard customizado encontrada em app/bootstrap/config. config/session.php declara padrão de 120 minutos de inatividade, separado da lembrança, com env sobrescrevível. Configuração efetiva de sessão em execução não consultada e não é usada para declarar conformidade; os 30 dias exigem adaptação explícita.",
+            "classification": "adapt"
+          },
+          {
+            "path": "app/Livewire/Auth/Logout.php; vendor/laravel/framework/src/Illuminate/Auth/SessionGuard.php::logout",
+            "finding": "Leitura: saída invalida sessão local e remove cookie, mas também troca remember_token compartilhado. Outra sessão ativa não é automaticamente encerrada, porém sua restauração por lembrança é afetada. Adaptar isolamento por navegador.",
+            "classification": "adapt"
+          },
+          {
+            "path": "routes/auth.php; app/Http/Controllers/Auth/RegisteredUserController.php",
+            "finding": "Leitura: GET e POST /register públicos continuam registrados; store contém criação/autenticação de Customer. Desabilitar acesso público, sem implementar gestão de contas.",
+            "classification": "adapt"
+          },
+          {
+            "path": "app/Support/Navigation/SidebarMenuBuilder.php; app/Support/Navigation/Definitions; routes/admin.php; app/Policies/UserPolicy.php; app/Http/Middleware/EnsureUserCanAccessAdminArea.php",
+            "finding": "Leitura: menus filtram permissões, rotas usam auth e can, políticas já existem. Há distinção entre Customer e perfis administrativos; login deve respeitar essas barreiras. Não há entrega de projetos neste corte nem autorização para ampliar políticas administrativas. Adaptar navegação ao acesso de todos os perfis, preservando autorizações.",
+            "classification": "adapt"
+          },
+          {
+            "path": "resources/views/livewire/auth/login.blade.php; resources/views/layouts/guest.blade.php; resources/views/layouts/app.blade.php; resources/views/livewire/sidebar.blade.php; resources/views/components/ui/input.blade.php; resources/views/components/ui/input/password.blade.php; resources/views/components/ui/input/checkbox.blade.php; resources/views/components/ui/input/error.blade.php; resources/views/components/ui/navbar.blade.php; resources/css/app.css; resources/js/app.js",
+            "finding": "Leitura: labels, erros role=alert, loading e layouts responsivos são reaproveitáveis. Alternância da senha está em ícones clicáveis sem botão de teclado; sidebar móvel tem animações e não declara tratamento de redução de movimento. Não foi realizada aferição visual de contraste/toque. Classificação parcial: entregar integralmente acessibilidade do login/navegação, inclusive Sair e Lembrar-me, em vez de alegar conformidade existente.",
+            "classification": "adapt"
+          },
+          {
+            "path": "tests/Feature/Livewire/Admin/Auth/LoginTest.php",
+            "finding": "Testes lidos, não executados: cobrem campos obrigatórios, login administrativo, recusa de Customer, mensagem genérica, limitação de tentativas e destinos administrativos. Não comprovam o requisito completo; a recusa de Customer é comportamento atual a adaptar.",
+            "classification": "adapt"
+          },
+          {
+            "path": "docs/harness/scopes/2026-09-09-nexum-scope/sources/design-login.md; docs/harness/scopes/2026-09-09-nexum-scope/sources/design-guide.md; docs/harness/features/1014446-autenticacao/feature.md",
+            "finding": "Requisito e fontes: entrada WEB pt-BR para todos os perfis; recuperação, perfil, gestão de contas e indicadores são entregas separadas. Snapshot Redmine consultado com children/relations e busca de filhas status=* retornou total_count=0. Pai permanece New; nenhuma filha a adotar.",
+            "classification": "existing"
+          }
+        ],
+        "requirements": [
+          {
+            "id": "R1",
+            "summary": "E-mail e senha obrigatórios; somente contas ativas entram."
+          },
+          {
+            "id": "R2",
+            "summary": "Login válido direciona ao painel existente."
+          },
+          {
+            "id": "R3",
+            "summary": "Desativação bloqueia a próxima ação de todas as sessões."
+          },
+          {
+            "id": "R4",
+            "summary": "Lembrança por 30 dias desde o login, sem renovação automática."
+          },
+          {
+            "id": "R5",
+            "summary": "Sair encerra apenas o navegador atual e sua lembrança; desativação bloqueia todos."
+          },
+          {
+            "id": "R6",
+            "summary": "Cadastro público indisponível, inclusive por rotas diretas."
+          },
+          {
+            "id": "R7",
+            "summary": "Navegação disponibiliza capacidades entregues conforme permissões."
+          },
+          {
+            "id": "CA1",
+            "summary": "Conta ativa com credenciais válidas acessa o painel."
+          },
+          {
+            "id": "CA2",
+            "summary": "Ausência de obrigatórios ou e-mail inválido permite corrigir sem autenticar."
+          },
+          {
+            "id": "CA3",
+            "summary": "Credenciais inválidas e conta inativa são recusadas; inativa recebe orientação de reativação."
+          },
+          {
+            "id": "CA4",
+            "summary": "Após desativação, a próxima ação é bloqueada em ambos os dispositivos."
+          },
+          {
+            "id": "CA5",
+            "summary": "Lembrar-me mantém acesso ao reabrir navegador dentro de 30 dias."
+          },
+          {
+            "id": "CA6",
+            "summary": "Sem sessão válida após 30 dias, lembrança não autentica; retornos não prorrogam."
+          },
+          {
+            "id": "CA7",
+            "summary": "Saída remove sessão e lembrança locais e preserva o outro navegador válido."
+          },
+          {
+            "id": "CA8",
+            "summary": "Cadastro público pela interface e rotas não é permitido."
+          },
+          {
+            "id": "CA9",
+            "summary": "Navegação não concede permissões adicionais de projetos ou administração."
+          },
+          {
+            "id": "CA10",
+            "summary": "Login e navegação utilizáveis em desktop/mobile, por teclado, com labels, foco e retorno acessível."
+          },
+          {
+            "id": "ESCOPO-A11Y",
+            "summary": "Contraste WCAG AA, nomes acessíveis, alvos de toque, hierarquia semântica e redução de movimento."
+          },
+          {
+            "id": "ESCOPO-SEG",
+            "summary": "Senhas protegidas, autorização no servidor e erros sem dados sensíveis."
+          },
+          {
+            "id": "FLUXO-REC",
+            "summary": "Entrada para recuperação de acesso acompanha a disponibilidade dessa capacidade; implementação é da Feature própria."
+          }
+        ],
+        "slices": [
+          {
+            "number": 1,
+            "title": "[DEV] [WEB] [PUBLICO] Autenticação - Entrada e navegação de contas ativas",
+            "title_suffix": "Entrada e navegação de contas ativas",
+            "api_delivery": false,
+            "estimate_hours": 2.5,
+            "estimate_exception": null,
+            "blocked_by": [],
+            "external_blockers": [],
+            "description": {
+              "delivery": "Permitir que pessoas de todos os perfis com conta ativa entrem no Nexum e naveguem pelas capacidades disponíveis e permitidas, em desktop e mobile.",
+              "limits": "Inclui login, painel existente como destino, bloqueio de contas inativas e de sessões após desativação, indisponibilidade do cadastro público e experiência acessível de login/navegação, incluindo os controles Lembrar-me e Sair. Não implementa a administração de contas, recuperação de senha, perfil, projetos ou indicadores. O comportamento temporal da lembrança e o isolamento da saída pertencem à entrega 2.",
+              "criteria": [
+                {
+                  "kind": "success",
+                  "text": "Conta ativa, de qualquer perfil, com e-mail e senha válidos acessa o painel existente. O login não altera seu perfil nem suas permissões."
+                },
+                {
+                  "kind": "error",
+                  "text": "Campos obrigatórios ausentes ou e-mail inválido exibem validação, permitem correção e não autenticam. Credenciais inválidas recusam a entrada; conta inativa é recusada com orientação para solicitar reativação."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Ao desativar uma conta com sessões abertas em dois dispositivos, a próxima ação autenticada em cada um é bloqueada, inclusive em interações da tela sem navegação completa. A desativação também impede novo login."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Cadastro público não é disponibilizado nem permite criar contas por acesso direto às rotas públicas existentes. Criação administrativa permanece sob responsabilidade de Gestão de Usuário."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Navegação exibe somente capacidades entregues e permitidas; autenticar não concede participação em projetos nem acesso administrativo adicional. Restrições são aplicadas no servidor também por acesso direto."
+                },
+                {
+                  "kind": "success",
+                  "text": "A entrada para recuperação de acesso fica disponível conforme a capacidade for entregue, sem implementar neste corte o fluxo de recuperação."
+                },
+                {
+                  "kind": "success",
+                  "text": "Login e navegação funcionam em desktop e mobile, em português, com campos e controles utilizáveis, labels associados, nomes acessíveis, ordem de teclado e foco visível. Inclui Lembrar-me, revelar senha, menus e Sair."
+                },
+                {
+                  "kind": "success",
+                  "text": "A interface atende contraste WCAG AA, hierarquia semântica, alvos de toque adequados e preferência por redução de movimento. Durante o envio apresenta carregamento; erros descritivos e resultado de sucesso são perceptíveis por tecnologias assistivas."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Senhas permanecem protegidas e não são expostas em mensagens; erros não revelam dados sensíveis. A entrada e a navegação preservam a autorização no servidor."
+                }
+              ],
+              "dependencies": "Nenhum bloqueio para iniciar: a base de login, contas, autorização e painel já existe. As capacidades das outras Features são disponibilizadas quando entregues, sem antecipar sua implementação.",
+              "traceability": [
+                "R1",
+                "R2",
+                "R3",
+                "R6",
+                "R7",
+                "CA1",
+                "CA2",
+                "CA3",
+                "CA4",
+                "CA8",
+                "CA9",
+                "CA10",
+                "ESCOPO-A11Y",
+                "ESCOPO-SEG",
+                "FLUXO-REC"
+              ]
+            }
+          },
+          {
+            "number": 2,
+            "title": "[DEV] [WEB] [PUBLICO] Autenticação - Lembrança e saída por navegador",
+            "title_suffix": "Lembrança e saída por navegador",
+            "api_delivery": false,
+            "estimate_hours": 2.5,
+            "estimate_exception": null,
+            "blocked_by": [],
+            "external_blockers": [],
+            "description": {
+              "delivery": "Manter a lembrança de acesso por 30 dias a partir do login e permitir sair apenas do navegador atual.",
+              "limits": "Inclui prazo fixo da lembrança, retorno após fechar o navegador e saída com remoção de sessão e lembrança locais. Não redefine a validade da sessão ordinária nem implementa recuperação de senha ou administração de contas. Usa o bloqueio de contas desativadas da entrega 1; a experiência acessível dos controles é coberta por ela.",
+              "criteria": [
+                {
+                  "kind": "success",
+                  "text": "Com conta ativa e Lembrar-me marcado, fechar e reabrir o navegador dentro dos 30 dias do login permite restaurar o acesso."
+                },
+                {
+                  "kind": "error",
+                  "text": "Encerrados os 30 dias, a lembrança não autentica. Sem sessão válida, o usuário precisa entrar novamente; acessos intermediários não renovam automaticamente o prazo contado desde o login."
+                },
+                {
+                  "kind": "success",
+                  "text": "Com acesso válido em dois navegadores, Sair encerra a sessão e remove a lembrança somente no navegador usado. Retornar nele exige login quando não houver nova sessão válida."
+                },
+                {
+                  "kind": "success",
+                  "text": "A saída em um navegador preserva o acesso e a lembrança ainda válidos no outro, inclusive ao fechá-lo e reabri-lo dentro do prazo."
+                },
+                {
+                  "kind": "permission",
+                  "text": "A lembrança não permite contornar desativação: conta inativa não recupera acesso; a próxima ação de cada sessão da conta desativada é bloqueada, preservando a garantia da entrega 1."
+                }
+              ],
+              "dependencies": "Nenhum bloqueio para iniciar: o login, a lembrança e a saída já têm base implementada. Coordenar a integração com a entrega 1 para verificar o comportamento completo de contas desativadas; compartilhar código não constitui bloqueio de início.",
+              "traceability": [
+                "R4",
+                "R5",
+                "CA5",
+                "CA6",
+                "CA7"
+              ]
+            }
+          }
+        ],
+        "coverage": [
+          {
+            "requirement_id": "R1",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "R2",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "R3",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "R4",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+          },
+          {
+            "requirement_id": "R5",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+          },
+          {
+            "requirement_id": "R6",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "R7",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA1",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA2",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA3",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA4",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA5",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+          },
+          {
+            "requirement_id": "CA6",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+          },
+          {
+            "requirement_id": "CA7",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+          },
+          {
+            "requirement_id": "CA8",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA9",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "CA10",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "ESCOPO-A11Y",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "ESCOPO-SEG",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          },
+          {
+            "requirement_id": "FLUXO-REC",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+          }
+        ],
+        "decisions": [
+          "Estimativas propostas: 2,5h + 2,5h = 5h de esforço humano com agentes, reaproveitando a base inspecionada e incluindo implementação, revisão e testes direcionados. Granularidade, estimativas e arestas aguardam confirmação do tech lead.",
+          "Duas entregas comportamentais; nenhuma dependência impede iniciar uma delas sobre a base atual. Integração final será verificada pela QA única da Feature.",
+          "Não criar API consumível, administração de contas ou indicadores neste fatiamento. Não alterar o status New do pai.",
+          "Inspeção estática; a execução dos testes foi tentada pelo Sail via WSL2, mas os contêineres não estavam ativos. Não há alegação de conformidade visual nem de configuração efetiva de sessão. Lacunas observadas estão atribuídas às entregas, sem incerteza impeditiva para decomposição.",
+          "Sem filhas existentes na consulta integral de 18/09/2026. Nenhuma decisão de adoção necessária."
+        ]
+      },
+      "semantic_baseline": {
+        "requirement_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
+        "semantic_model_sha256": "914b8e125aff1510030ea2e9652f0571c48f1005cf4fd7d5e24fc8cfe1cc081d",
+        "semantic_model": {
+          "requirements": [
+            {
+              "id": "R1",
+              "summary": "E-mail e senha obrigatórios; somente contas ativas entram."
+            },
+            {
+              "id": "R2",
+              "summary": "Login válido direciona ao painel existente."
+            },
+            {
+              "id": "R3",
+              "summary": "Desativação bloqueia a próxima ação de todas as sessões."
+            },
+            {
+              "id": "R4",
+              "summary": "Lembrança por 30 dias desde o login, sem renovação automática."
+            },
+            {
+              "id": "R5",
+              "summary": "Sair encerra apenas o navegador atual e sua lembrança; desativação bloqueia todos."
+            },
+            {
+              "id": "R6",
+              "summary": "Cadastro público indisponível, inclusive por rotas diretas."
+            },
+            {
+              "id": "R7",
+              "summary": "Navegação disponibiliza capacidades entregues conforme permissões."
+            },
+            {
+              "id": "CA1",
+              "summary": "Conta ativa com credenciais válidas acessa o painel."
+            },
+            {
+              "id": "CA2",
+              "summary": "Ausência de obrigatórios ou e-mail inválido permite corrigir sem autenticar."
+            },
+            {
+              "id": "CA3",
+              "summary": "Credenciais inválidas e conta inativa são recusadas; inativa recebe orientação de reativação."
+            },
+            {
+              "id": "CA4",
+              "summary": "Após desativação, a próxima ação é bloqueada em ambos os dispositivos."
+            },
+            {
+              "id": "CA5",
+              "summary": "Lembrar-me mantém acesso ao reabrir navegador dentro de 30 dias."
+            },
+            {
+              "id": "CA6",
+              "summary": "Sem sessão válida após 30 dias, lembrança não autentica; retornos não prorrogam."
+            },
+            {
+              "id": "CA7",
+              "summary": "Saída remove sessão e lembrança locais e preserva o outro navegador válido."
+            },
+            {
+              "id": "CA8",
+              "summary": "Cadastro público pela interface e rotas não é permitido."
+            },
+            {
+              "id": "CA9",
+              "summary": "Navegação não concede permissões adicionais de projetos ou administração."
+            },
+            {
+              "id": "CA10",
+              "summary": "Login e navegação utilizáveis em desktop/mobile, por teclado, com labels, foco e retorno acessível."
+            },
+            {
+              "id": "ESCOPO-A11Y",
+              "summary": "Contraste WCAG AA, nomes acessíveis, alvos de toque, hierarquia semântica e redução de movimento."
+            },
+            {
+              "id": "ESCOPO-SEG",
+              "summary": "Senhas protegidas, autorização no servidor e erros sem dados sensíveis."
+            },
+            {
+              "id": "FLUXO-REC",
+              "summary": "Entrada para recuperação de acesso acompanha a disponibilidade dessa capacidade; implementação é da Feature própria."
+            }
+          ],
+          "slices": [
+            {
+              "number": 1,
+              "title": "[DEV] [WEB] [PUBLICO] Autenticação - Entrada e navegação de contas ativas",
+              "title_suffix": "Entrada e navegação de contas ativas",
+              "api_delivery": false,
+              "estimate_hours": 2.5,
+              "estimate_exception": null,
+              "blocked_by": [],
+              "external_blockers": [],
+              "description": {
+                "delivery": "Permitir que pessoas de todos os perfis com conta ativa entrem no Nexum e naveguem pelas capacidades disponíveis e permitidas, em desktop e mobile.",
+                "limits": "Inclui login, painel existente como destino, bloqueio de contas inativas e de sessões após desativação, indisponibilidade do cadastro público e experiência acessível de login/navegação, incluindo os controles Lembrar-me e Sair. Não implementa a administração de contas, recuperação de senha, perfil, projetos ou indicadores. O comportamento temporal da lembrança e o isolamento da saída pertencem à entrega 2.",
+                "criteria": [
+                  {
+                    "kind": "success",
+                    "text": "Conta ativa, de qualquer perfil, com e-mail e senha válidos acessa o painel existente. O login não altera seu perfil nem suas permissões."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Campos obrigatórios ausentes ou e-mail inválido exibem validação, permitem correção e não autenticam. Credenciais inválidas recusam a entrada; conta inativa é recusada com orientação para solicitar reativação."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Ao desativar uma conta com sessões abertas em dois dispositivos, a próxima ação autenticada em cada um é bloqueada, inclusive em interações da tela sem navegação completa. A desativação também impede novo login."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Cadastro público não é disponibilizado nem permite criar contas por acesso direto às rotas públicas existentes. Criação administrativa permanece sob responsabilidade de Gestão de Usuário."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Navegação exibe somente capacidades entregues e permitidas; autenticar não concede participação em projetos nem acesso administrativo adicional. Restrições são aplicadas no servidor também por acesso direto."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "A entrada para recuperação de acesso fica disponível conforme a capacidade for entregue, sem implementar neste corte o fluxo de recuperação."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Login e navegação funcionam em desktop e mobile, em português, com campos e controles utilizáveis, labels associados, nomes acessíveis, ordem de teclado e foco visível. Inclui Lembrar-me, revelar senha, menus e Sair."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "A interface atende contraste WCAG AA, hierarquia semântica, alvos de toque adequados e preferência por redução de movimento. Durante o envio apresenta carregamento; erros descritivos e resultado de sucesso são perceptíveis por tecnologias assistivas."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Senhas permanecem protegidas e não são expostas em mensagens; erros não revelam dados sensíveis. A entrada e a navegação preservam a autorização no servidor."
+                  }
+                ],
+                "dependencies": "Nenhum bloqueio para iniciar: a base de login, contas, autorização e painel já existe. As capacidades das outras Features são disponibilizadas quando entregues, sem antecipar sua implementação.",
+                "traceability": [
+                  "R1",
+                  "R2",
+                  "R3",
+                  "R6",
+                  "R7",
+                  "CA1",
+                  "CA2",
+                  "CA3",
+                  "CA4",
+                  "CA8",
+                  "CA9",
+                  "CA10",
+                  "ESCOPO-A11Y",
+                  "ESCOPO-SEG",
+                  "FLUXO-REC"
+                ]
+              }
+            },
+            {
+              "number": 2,
+              "title": "[DEV] [WEB] [PUBLICO] Autenticação - Lembrança e saída por navegador",
+              "title_suffix": "Lembrança e saída por navegador",
+              "api_delivery": false,
+              "estimate_hours": 2.5,
+              "estimate_exception": null,
+              "blocked_by": [],
+              "external_blockers": [],
+              "description": {
+                "delivery": "Manter a lembrança de acesso por 30 dias a partir do login e permitir sair apenas do navegador atual.",
+                "limits": "Inclui prazo fixo da lembrança, retorno após fechar o navegador e saída com remoção de sessão e lembrança locais. Não redefine a validade da sessão ordinária nem implementa recuperação de senha ou administração de contas. Usa o bloqueio de contas desativadas da entrega 1; a experiência acessível dos controles é coberta por ela.",
+                "criteria": [
+                  {
+                    "kind": "success",
+                    "text": "Com conta ativa e Lembrar-me marcado, fechar e reabrir o navegador dentro dos 30 dias do login permite restaurar o acesso."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Encerrados os 30 dias, a lembrança não autentica. Sem sessão válida, o usuário precisa entrar novamente; acessos intermediários não renovam automaticamente o prazo contado desde o login."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Com acesso válido em dois navegadores, Sair encerra a sessão e remove a lembrança somente no navegador usado. Retornar nele exige login quando não houver nova sessão válida."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "A saída em um navegador preserva o acesso e a lembrança ainda válidos no outro, inclusive ao fechá-lo e reabri-lo dentro do prazo."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "A lembrança não permite contornar desativação: conta inativa não recupera acesso; a próxima ação de cada sessão da conta desativada é bloqueada, preservando a garantia da entrega 1."
+                  }
+                ],
+                "dependencies": "Nenhum bloqueio para iniciar: o login, a lembrança e a saída já têm base implementada. Coordenar a integração com a entrega 1 para verificar o comportamento completo de contas desativadas; compartilhar código não constitui bloqueio de início.",
+                "traceability": [
+                  "R4",
+                  "R5",
+                  "CA5",
+                  "CA6",
+                  "CA7"
+                ]
+              }
+            }
+          ],
+          "coverage": [
+            {
+              "requirement_id": "R1",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "R2",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "R3",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "R4",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+            },
+            {
+              "requirement_id": "R5",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+            },
+            {
+              "requirement_id": "R6",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "R7",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA1",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA2",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA3",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA4",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA5",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+            },
+            {
+              "requirement_id": "CA6",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+            },
+            {
+              "requirement_id": "CA7",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SessionGuard declara 576000 minutos para cookie de lembrança; Logout.php usa logout(), que troca o token compartilhado. Adaptar prazo para 30 dias sem renovação e isolamento de saída, mantendo o bloqueio de conta desativada."
+            },
+            {
+              "requirement_id": "CA8",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA9",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "CA10",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "ESCOPO-A11Y",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "ESCOPO-SEG",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            },
+            {
+              "requirement_id": "FLUXO-REC",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Login.php restringe perfis e destinos; routes/auth.php expõe cadastro público. Provider Eloquent com SoftDeletes, auth persistente, menus e políticas oferecem base parcial. Views têm labels/erros/loading, mas alternância da senha e navegação exigem completar acessibilidade. A entrega 1 assume as condições integrais deste requisito, incluindo preservação do que já funciona."
+            }
+          ],
+          "decisions": [
+            "Estimativas propostas: 2,5h + 2,5h = 5h de esforço humano com agentes, reaproveitando a base inspecionada e incluindo implementação, revisão e testes direcionados. Granularidade, estimativas e arestas aguardam confirmação do tech lead.",
+            "Duas entregas comportamentais; nenhuma dependência impede iniciar uma delas sobre a base atual. Integração final será verificada pela QA única da Feature.",
+            "Não criar API consumível, administração de contas ou indicadores neste fatiamento. Não alterar o status New do pai.",
+            "Inspeção estática; a execução dos testes foi tentada pelo Sail via WSL2, mas os contêineres não estavam ativos. Não há alegação de conformidade visual nem de configuração efetiva de sessão. Lacunas observadas estão atribuídas às entregas, sem incerteza impeditiva para decomposição.",
+            "Sem filhas existentes na consulta integral de 18/09/2026. Nenhuma decisão de adoção necessária."
+          ],
+          "study_evidence": []
+        }
+      }
+    }
+  ],
+  "approvals": [
+    {
+      "revision": 1,
+      "proposal_sha256": "8ffab85e08d4eed826a64f134e57b3e315936fa53278bd073397f59109690bb5",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-18T11:50:23.1187583-03:00",
+      "status": "valid"
+    }
+  ]
+}

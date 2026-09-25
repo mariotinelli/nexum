@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/plan-issue/redmine-readback-v1.json",
+  "title": "Sanitized Redmine planning readback",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["parent", "child"],
+  "properties": {
+    "parent": {"$ref": "#/$defs/issue"},
+    "child": {"allOf": [{"$ref": "#/$defs/issue"}, {"type": "object", "required": ["parent", "tracker", "subject", "description"]}]}
+  },
+  "$defs": {
+    "identity": {"type": "object", "required": ["id"], "properties": {"id": {"type": "integer", "minimum": 1}}},
+    "issue": {"type": "object", "required": ["id", "project"], "properties": {"id": {"type": "integer", "minimum": 1}, "project": {"$ref": "#/$defs/identity"}, "parent": {"$ref": "#/$defs/identity"}, "tracker": {"$ref": "#/$defs/identity"}, "subject": {"type": "string", "minLength": 1}, "description": {"type": "string"}, "status": {"type": "object"}}}
+  }
+}

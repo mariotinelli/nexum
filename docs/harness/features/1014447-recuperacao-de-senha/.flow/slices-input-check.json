@@ -1,0 +1,9 @@
+{
+  "status": "ready",
+  "feature_path": "C:\\Users\\maari\\Herd\\github\\nexum\\docs\\harness\\features\\1014447-recuperacao-de-senha\\feature.md",
+  "state_path": "C:\\Users\\maari\\Herd\\github\\nexum\\docs\\harness\\features\\1014447-recuperacao-de-senha\\.flow\\feature-state.json",
+  "issue_id": 1014447,
+  "requirement_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+  "remote_snapshot_sha256": "bf4d3171def15b7bcbab77d7edae1cac94093b20472c25f081ee441b697e4864",
+  "checked_at": "2026-09-21T21:33:22.546Z"
+}

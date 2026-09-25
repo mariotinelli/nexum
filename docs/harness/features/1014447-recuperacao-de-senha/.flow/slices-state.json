@@ -1,0 +1,1610 @@
+{
+  "schema_version": 1,
+  "status": "approved",
+  "current_revision": 2,
+  "revisions": [
+    {
+      "number": 1,
+      "recorded_by": "Mário Tinelli",
+      "recorded_at": "2026-09-21T21:47:22.620Z",
+      "reason": "Primeira decomposição após inspeção do requisito, do código e do pai remoto",
+      "proposal_sha256": "114256de50e8bc517342b6d45ea489170baa5f2b6464aa69997b7a164cef6797",
+      "proposal": {
+        "feature": {
+          "title": "[WEB] [PUBLICO] Recuperação de Senha",
+          "artifact_path": "feature.md",
+          "state_path": ".flow/feature-state.json",
+          "issue_id": 1014447,
+          "requirement_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+          "input_check_path": ".flow/slices-input-check.json",
+          "input_check_sha256": "be8f774772fe929419f0a6603d4073ecd30c14f7a060f92403004ed5321008cd"
+        },
+        "inspection": [
+          {
+            "path": "app/Livewire/Auth/ForgotPassword.php; config/auth.php; app/Models/User.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/DatabaseTokenRepository.php; vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php",
+            "finding": "Leitura: a solicitação valida o e-mail e converte usuário inexistente ou conta excluída logicamente em confirmação genérica. O broker limita a conta existente por 60 segundos, mas a repetição para e-mail inexistente continua retornando sucesso sem a mesma espera; o estado observável difere. Após o intervalo, a criação do token remove o anterior. Adaptar o intervalo uniforme sem revelar existência e preservar envio apenas para contas ativas.",
+            "classification": "adapt"
+          },
+          {
+            "path": "config/auth.php; database/migrations/0001_01_01_000000_create_users_table.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/DatabaseTokenRepository.php",
+            "finding": "Leitura: o repositório em banco mantém um token por e-mail, expira em 60 minutos, apaga o token depois do reset bem-sucedido e substitui o anterior quando um novo é emitido. Essa base cobre validade, uso único e invalidação por novo envio, mas sua jornada integrada precisa permanecer coberta pelos dois slices.",
+            "classification": "existing"
+          },
+          {
+            "path": "app/Livewire/Auth/ResetPassword.php; app/Providers/AppServiceProvider.php; app/Models/User.php; config/session.php; bootstrap/app.php; routes/web.php; vendor/laravel/framework/src/Illuminate/Session/Middleware/AuthenticateSession.php",
+            "finding": "Leitura: o reset valida token, e-mail, confirmação e a regra global de 8 caracteres com maiúscula, minúscula, número, símbolo e uncompromised; altera a senha, troca remember_token e retorna ao login sem autenticar. Não há middleware auth.session nem remoção das sessões persistidas do usuário; portanto, trocar senha e lembrança não comprova encerramento de todas as sessões. O driver padrão e o exemplo do projeto usam sessões em banco. Adaptar a invalidação global de acessos.",
+            "classification": "adapt"
+          },
+          {
+            "path": "app/Models/User.php; app/Livewire/Admin/Management/Users/Delete.php; app/Brain/Users/Actions/DeleteUserAction.php; vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php",
+            "finding": "Leitura: desativar usuário aplica exclusão lógica; o provider do broker consulta o modelo com seus escopos globais tanto no envio quanto na validação do reset. Assim, contas inativas não recebem instruções e uma conta desativada após a emissão deixa de ser encontrada para redefinição. Preservar esse comportamento nos cortes.",
+            "classification": "existing"
+          },
+          {
+            "path": "routes/auth.php; routes/web.php; resources/views/livewire/auth/login.blade.php; vendor/laravel/framework/src/Illuminate/Auth/Notifications/ResetPassword.php; tests/Feature/Livewire/Auth/ForgotPasswordTest.php",
+            "finding": "Leitura: as rotas compartilhadas /esqueci-minha-senha e /nova-senha/{token} ficam fora do prefixo administrativo; o login aponta para a rota compartilhada e a notificação nativa monta esse destino com token e e-mail. O teste funcional lido cobre URL compartilhada para todos os perfis, mas não foi executado.",
+            "classification": "existing"
+          },
+          {
+            "path": "resources/views/livewire/auth/forgot-password.blade.php; resources/views/livewire/auth/reset-password.blade.php; resources/views/layouts/guest.blade.php; resources/views/components/ui/input.blade.php; resources/views/components/ui/input/password.blade.php; resources/views/components/ui/button.blade.php; resources/views/components/ui/alert.blade.php; resources/css/daisyui/custom.css",
+            "finding": "Leitura: formulários responsivos, labels associados, erros descritos, alerta vivo e estado de carregamento são bases reaproveitáveis. A tela de redefinição não oferece Voltar ao login; revelar senha usa ícones clicáveis sem botão, nome acessível ou teclado; não foi feita aferição visual de contraste, alvos de toque ou redução de movimento. Entregar integralmente os requisitos de acessibilidade em cada trecho da jornada.",
+            "classification": "adapt"
+          },
+          {
+            "path": "tests/Feature/Livewire/Auth/ForgotPasswordTest.php; tests/Feature/Livewire/Auth/ResetPasswordTest.php; tests/Browser/Livewire/Auth/LoginBrowserTest.php",
+            "finding": "Testes lidos, não executados: cobrem validação mínima, resposta genérica para e-mail desconhecido, envio por perfil, reset válido e redirecionamento. Não cobrem conta inativa, igualdade do limite para e-mail inexistente, expiração/substituição/uso único, política completa, invalidação de todas as sessões ou acessibilidade integral; o browser test ainda usa o caminho administrativo antigo para recuperação.",
+            "classification": "adapt"
+          },
+          {
+            "path": "docs/harness/features/1014447-recuperacao-de-senha/feature.md; docs/harness/scopes/2026-09-09-nexum-scope/sources/design-recover-password.md; docs/harness/scopes/2026-09-09-nexum-scope/sources/design-guide.md; .work/slices-remote.json",
+            "finding": "Requisito e fontes: jornada pública em português, sem API pública, reativação ou alteração de senha autenticada. Snapshot Redmine consultado com children e relations em 21/09/2026: pai Feature #1014447 permanece New e não possui filhas nem relações a adotar.",
+            "classification": "existing"
+          }
+        ],
+        "requirements": [
+          {
+            "id": "R1",
+            "summary": "Solicitação exige e-mail válido e não revela se está cadastrado."
+          },
+          {
+            "id": "R2",
+            "summary": "Somente contas ativas recebem instruções e redefinem senha; recuperação não reativa."
+          },
+          {
+            "id": "R3",
+            "summary": "Link vale 60 minutos, permite um sucesso e novo envio invalida o anterior."
+          },
+          {
+            "id": "R4",
+            "summary": "Intervalo de 60 segundos por e-mail, com comportamento igual para contas existentes e inexistentes."
+          },
+          {
+            "id": "R5",
+            "summary": "Senha exige 8 caracteres, maiúscula, minúscula, número, símbolo, não vazada e confirmação idêntica."
+          },
+          {
+            "id": "R6",
+            "summary": "Redefinição encerra todas as sessões e remove Lembrar-me em todos os dispositivos."
+          },
+          {
+            "id": "R7",
+            "summary": "Sucesso retorna ao login sem autenticação automática."
+          },
+          {
+            "id": "CA1",
+            "summary": "Conta ativa recebe confirmação genérica e link."
+          },
+          {
+            "id": "CA2",
+            "summary": "E-mail inexistente ou conta inativa recebe a mesma confirmação sem envio."
+          },
+          {
+            "id": "CA3",
+            "summary": "E-mail ausente ou inválido apresenta validação e permite correção."
+          },
+          {
+            "id": "CA4",
+            "summary": "Link válido, conta ativa e senha válida concluem redefinição."
+          },
+          {
+            "id": "CA5",
+            "summary": "Link inválido, expirado ou utilizado impede alteração e informa o impedimento."
+          },
+          {
+            "id": "CA6",
+            "summary": "Novo envio invalida o link anterior e inicia validade própria."
+          },
+          {
+            "id": "CA7",
+            "summary": "Conta desativada após emissão não redefine nem é reativada."
+          },
+          {
+            "id": "CA8",
+            "summary": "Repetição antes de 60 segundos tem a mesma espera e retorno para qualquer e-mail; depois permite nova solicitação."
+          },
+          {
+            "id": "CA9",
+            "summary": "Senha fora das regras, vazada ou com confirmação diferente é recusada com validação."
+          },
+          {
+            "id": "CA10",
+            "summary": "Sucesso invalida sessões e lembranças, retorna ao login e troca a credencial válida."
+          },
+          {
+            "id": "CA11",
+            "summary": "Solicitação e redefinição são responsivas, operáveis por teclado e fornecem feedback acessível."
+          },
+          {
+            "id": "ESCOPO-A11Y",
+            "summary": "Contraste WCAG AA, foco, labels, nomes acessíveis, alvos de toque, semântica e redução de movimento."
+          },
+          {
+            "id": "ESCOPO-SEG",
+            "summary": "Senhas protegidas e erros sem exposição de dados sensíveis."
+          }
+        ],
+        "slices": [
+          {
+            "number": 1,
+            "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Solicitação segura de instruções",
+            "title_suffix": "Solicitação segura de instruções",
+            "api_delivery": false,
+            "estimate_hours": 3,
+            "estimate_exception": null,
+            "blocked_by": [],
+            "external_blockers": [],
+            "description": {
+              "delivery": "Ajustar a solicitação existente para enviar instruções somente a contas ativas, mantendo uma resposta indistinguível para qualquer e-mail e aplicando o mesmo intervalo de 60 segundos sem revelar cadastros.",
+              "limits": "Inclui a tela pública de solicitação, o envio do e-mail com link compartilhado e o ciclo de reenvio. Não inclui a definição da nova senha, a reativação de contas nem uma API pública.",
+              "criteria": [
+                {
+                  "kind": "success",
+                  "text": "Com e-mail válido de conta ativa, a solicitação apresenta confirmação genérica e envia instruções com link para a jornada compartilhada de redefinição."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Com e-mail inexistente ou de conta inativa, a solicitação apresenta a mesma confirmação genérica, sem enviar instruções e sem revelar a existência ou o estado da conta."
+                },
+                {
+                  "kind": "error",
+                  "text": "Sem e-mail ou com formato inválido, o formulário informa a validação, permite correção e não envia instruções."
+                },
+                {
+                  "kind": "error",
+                  "text": "Para qualquer e-mail válido, cadastrado ou não, nova solicitação antes de 60 segundos recebe o mesmo retorno e respeita a mesma espera, sem novo envio. Após o intervalo, uma nova solicitação é permitida."
+                },
+                {
+                  "kind": "success",
+                  "text": "Quando uma nova instrução é enviada após o intervalo, o link anterior deixa de permitir redefinição e o novo link inicia sua própria validade de 60 minutos."
+                },
+                {
+                  "kind": "success",
+                  "text": "Em desktop e mobile, a solicitação permanece em português e utilizável por teclado e toque, com label associado, foco visível, nome acessível, alvo adequado, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validação e confirmação são perceptíveis por tecnologias assistivas, e Voltar ao login permanece disponível."
+                },
+                {
+                  "kind": "permission",
+                  "text": "O e-mail e as mensagens não expõem senha, token, existência da conta ou outros dados sensíveis."
+                }
+              ],
+              "dependencies": "Nenhum bloqueio para iniciar: o formulário, o broker de senhas, o envio por e-mail e as rotas compartilhadas já existem. A jornada integrada será verificada com a tarefa “Recuperação de Senha - Redefinição e encerramento de acessos”.",
+              "traceability": [
+                "R1",
+                "R4",
+                "CA1",
+                "CA2",
+                "CA3",
+                "CA8"
+              ]
+            }
+          },
+          {
+            "number": 2,
+            "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Redefinição e encerramento de acessos",
+            "title_suffix": "Redefinição e encerramento de acessos",
+            "api_delivery": false,
+            "estimate_hours": 4,
+            "estimate_exception": null,
+            "blocked_by": [],
+            "external_blockers": [],
+            "description": {
+              "delivery": "Completar a redefinição existente para aceitar somente conta ativa e link válido, aplicar integralmente a política de senha e encerrar sessões e lembranças anteriores em todos os dispositivos antes de retornar ao login.",
+              "limits": "Inclui o formulário público aberto pelo link de recuperação e a invalidação global dos acessos anteriores. Não inclui login automático, alteração de senha durante uma sessão, reativação de contas ou administração de usuários.",
+              "criteria": [
+                {
+                  "kind": "success",
+                  "text": "Com conta ativa e link válido dentro de 60 minutos, uma senha com ao menos 8 caracteres, maiúscula, minúscula, número e símbolo, não conhecida em vazamentos e com confirmação idêntica é salva com sucesso."
+                },
+                {
+                  "kind": "error",
+                  "text": "Link inválido, expirado, substituído por novo envio ou já utilizado com sucesso não altera a senha e apresenta o impedimento de forma acessível."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Se a conta for desativada após a emissão do link, a redefinição é impedida, a conta permanece inativa e nenhuma permissão é concedida."
+                },
+                {
+                  "kind": "error",
+                  "text": "Senha que descumpra qualquer regra de composição, seja conhecida em vazamentos ou tenha confirmação diferente é recusada com mensagens que permitem correção sem expor dados sensíveis."
+                },
+                {
+                  "kind": "success",
+                  "text": "Após a redefinição bem-sucedida, todas as sessões e lembranças anteriores da conta deixam de permitir acesso em todos os dispositivos; a senha anterior não autentica e a nova autentica a conta ativa."
+                },
+                {
+                  "kind": "success",
+                  "text": "O sucesso retorna ao login sem autenticação automática, informa o resultado e mantém Voltar ao login disponível durante a jornada."
+                },
+                {
+                  "kind": "success",
+                  "text": "Em desktop e mobile, o formulário permanece em português e utilizável por teclado e toque, com labels associados, revelação de senha acessível, foco visível, nomes acessíveis, alvos adequados, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validações, impedimentos e sucesso são perceptíveis por tecnologias assistivas."
+                }
+              ],
+              "dependencies": "Nenhum bloqueio para iniciar: token, formulário, política de senha, contas e armazenamento de sessões já existem. Para concluir a jornada de ponta a ponta, integrar com “Recuperação de Senha - Solicitação segura de instruções”; essa integração não impede o início em paralelo.",
+              "traceability": [
+                "R2",
+                "R3",
+                "R5",
+                "R6",
+                "R7",
+                "CA4",
+                "CA5",
+                "CA6",
+                "CA7",
+                "CA9",
+                "CA10",
+                "CA11",
+                "ESCOPO-A11Y",
+                "ESCOPO-SEG"
+              ]
+            }
+          }
+        ],
+        "coverage": [
+          {
+            "requirement_id": "R1",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "ForgotPassword já valida e mascara usuário inválido; o slice 1 completa a indistinguibilidade durante a espera e preserva o envio somente para conta ativa."
+          },
+          {
+            "requirement_id": "R2",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SoftDeletes e o provider Eloquent já excluem contas inativas no envio e no reset. O slice 2 assume a garantia integral ao integrar o envio da tarefa “Solicitação segura de instruções” à redefinição, sem reativar a conta."
+          },
+          {
+            "requirement_id": "R3",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Configuração e repositório já oferecem 60 minutos, um token por e-mail e exclusão após sucesso; o slice 2 assume o ciclo integral desde o link emitido pela tarefa de solicitação até sua utilização ou recusa."
+          },
+          {
+            "requirement_id": "R4",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "O broker limita apenas usuários encontrados. O slice 1 entrega a mesma janela e o mesmo retorno também para e-mails inexistentes."
+          },
+          {
+            "requirement_id": "R5",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "ResetPassword usa a política global correta e confirmação; o slice 2 preserva e comprova todas as condições junto ao fluxo completo."
+          },
+          {
+            "requirement_id": "R6",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "O reset atual troca remember_token, mas não remove sessões persistidas nem usa auth.session. O slice 2 entrega a invalidação global."
+          },
+          {
+            "requirement_id": "R7",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "ResetPassword já redireciona ao login sem autenticar; o slice 2 preserva o comportamento e torna o resultado acessível."
+          },
+          {
+            "requirement_id": "CA1",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Envio existente para usuário ativo e URL compartilhada são base parcial; o slice 1 assume o cenário integral."
+          },
+          {
+            "requirement_id": "CA2",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Usuário ausente ou excluído já não recebe notificação e recebe mensagem genérica; o slice 1 preserva e cobre a conta inativa."
+          },
+          {
+            "requirement_id": "CA3",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Validação requerida e de formato já existe; o slice 1 preserva a correção acessível."
+          },
+          {
+            "requirement_id": "CA4",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "ResetPassword e o broker já executam o caminho válido; o slice 2 o integra às demais garantias."
+          },
+          {
+            "requirement_id": "CA5",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "O broker já rejeita token inválido, expirado ou apagado; o slice 2 completa a apresentação acessível do impedimento."
+          },
+          {
+            "requirement_id": "CA6",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Novo token já substitui o registro anterior; o slice 2 assume a comprovação integrada de que o link substituído é recusado e o novo mantém validade própria."
+          },
+          {
+            "requirement_id": "CA7",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "O provider exclui o usuário desativado na validação do reset; o slice 2 preserva e verifica o cenário completo."
+          },
+          {
+            "requirement_id": "CA8",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "A assimetria atual do throttle exige adaptação no slice 1 para qualquer e-mail válido."
+          },
+          {
+            "requirement_id": "CA9",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "A política global e confirmed já estão conectados ao reset; o slice 2 preserva mensagens corrigíveis e cobre cada regra."
+          },
+          {
+            "requirement_id": "CA10",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Troca da senha e do remember_token existe, mas sessões anteriores permanecem sem garantia de invalidação; o slice 2 entrega todo o resultado."
+          },
+          {
+            "requirement_id": "CA11",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Layouts e componentes dão base responsiva, de labels, erros e loading; o slice 2 assume a conclusão integrada da acessibilidade nas telas de solicitação e redefinição."
+          },
+          {
+            "requirement_id": "ESCOPO-A11Y",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "A revelação de senha não é operável por teclado e não houve aferição visual de contraste, toque ou movimento; o slice 2 assume a conformidade integrada de toda a jornada."
+          },
+          {
+            "requirement_id": "ESCOPO-SEG",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Broker e hash protegem token e senha; o slice 2 assume a garantia integrada de mensagens sem enumeração e ausência de exposição de dados sensíveis."
+          }
+        ],
+        "decisions": [
+          "Estimativas propostas: 3h + 4h = 7h de esforço humano com agentes, reaproveitando a base existente e incluindo implementação, revisão e testes direcionados. Granularidade, estimativas e arestas aguardam confirmação do tech lead.",
+          "Dois resultados verticais: solicitação segura e redefinição com encerramento de acessos. Nenhum bloqueio impede iniciar em paralelo; a integração de ponta a ponta é necessária para conclusão e será verificada pela QA única da Feature.",
+          "Não criar API pública, reativação, alteração de senha autenticada ou administração de usuários. Não alterar o status New do pai.",
+          "Inspeção estática em Laravel 13.31 e Livewire 4.4; testes não executados. Por orientação do tech lead, Sail não será usado. Não há alegação de conformidade visual já existente; as condições completas foram atribuídas aos slices.",
+          "Sem filhas ou relações existentes na leitura integral de 21/09/2026. Nenhuma decisão de adoção é necessária."
+        ]
+      },
+      "semantic_baseline": {
+        "requirement_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+        "semantic_model_sha256": "2a0814afb087a6bf0ee80699bc21a87f23271c3c48ef80e10e0c068efceab1c4",
+        "semantic_model": {
+          "requirements": [
+            {
+              "id": "R1",
+              "summary": "Solicitação exige e-mail válido e não revela se está cadastrado."
+            },
+            {
+              "id": "R2",
+              "summary": "Somente contas ativas recebem instruções e redefinem senha; recuperação não reativa."
+            },
+            {
+              "id": "R3",
+              "summary": "Link vale 60 minutos, permite um sucesso e novo envio invalida o anterior."
+            },
+            {
+              "id": "R4",
+              "summary": "Intervalo de 60 segundos por e-mail, com comportamento igual para contas existentes e inexistentes."
+            },
+            {
+              "id": "R5",
+              "summary": "Senha exige 8 caracteres, maiúscula, minúscula, número, símbolo, não vazada e confirmação idêntica."
+            },
+            {
+              "id": "R6",
+              "summary": "Redefinição encerra todas as sessões e remove Lembrar-me em todos os dispositivos."
+            },
+            {
+              "id": "R7",
+              "summary": "Sucesso retorna ao login sem autenticação automática."
+            },
+            {
+              "id": "CA1",
+              "summary": "Conta ativa recebe confirmação genérica e link."
+            },
+            {
+              "id": "CA2",
+              "summary": "E-mail inexistente ou conta inativa recebe a mesma confirmação sem envio."
+            },
+            {
+              "id": "CA3",
+              "summary": "E-mail ausente ou inválido apresenta validação e permite correção."
+            },
+            {
+              "id": "CA4",
+              "summary": "Link válido, conta ativa e senha válida concluem redefinição."
+            },
+            {
+              "id": "CA5",
+              "summary": "Link inválido, expirado ou utilizado impede alteração e informa o impedimento."
+            },
+            {
+              "id": "CA6",
+              "summary": "Novo envio invalida o link anterior e inicia validade própria."
+            },
+            {
+              "id": "CA7",
+              "summary": "Conta desativada após emissão não redefine nem é reativada."
+            },
+            {
+              "id": "CA8",
+              "summary": "Repetição antes de 60 segundos tem a mesma espera e retorno para qualquer e-mail; depois permite nova solicitação."
+            },
+            {
+              "id": "CA9",
+              "summary": "Senha fora das regras, vazada ou com confirmação diferente é recusada com validação."
+            },
+            {
+              "id": "CA10",
+              "summary": "Sucesso invalida sessões e lembranças, retorna ao login e troca a credencial válida."
+            },
+            {
+              "id": "CA11",
+              "summary": "Solicitação e redefinição são responsivas, operáveis por teclado e fornecem feedback acessível."
+            },
+            {
+              "id": "ESCOPO-A11Y",
+              "summary": "Contraste WCAG AA, foco, labels, nomes acessíveis, alvos de toque, semântica e redução de movimento."
+            },
+            {
+              "id": "ESCOPO-SEG",
+              "summary": "Senhas protegidas e erros sem exposição de dados sensíveis."
+            }
+          ],
+          "slices": [
+            {
+              "number": 1,
+              "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Solicitação segura de instruções",
+              "title_suffix": "Solicitação segura de instruções",
+              "api_delivery": false,
+              "estimate_hours": 3,
+              "estimate_exception": null,
+              "blocked_by": [],
+              "external_blockers": [],
+              "description": {
+                "delivery": "Ajustar a solicitação existente para enviar instruções somente a contas ativas, mantendo uma resposta indistinguível para qualquer e-mail e aplicando o mesmo intervalo de 60 segundos sem revelar cadastros.",
+                "limits": "Inclui a tela pública de solicitação, o envio do e-mail com link compartilhado e o ciclo de reenvio. Não inclui a definição da nova senha, a reativação de contas nem uma API pública.",
+                "criteria": [
+                  {
+                    "kind": "success",
+                    "text": "Com e-mail válido de conta ativa, a solicitação apresenta confirmação genérica e envia instruções com link para a jornada compartilhada de redefinição."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Com e-mail inexistente ou de conta inativa, a solicitação apresenta a mesma confirmação genérica, sem enviar instruções e sem revelar a existência ou o estado da conta."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Sem e-mail ou com formato inválido, o formulário informa a validação, permite correção e não envia instruções."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Para qualquer e-mail válido, cadastrado ou não, nova solicitação antes de 60 segundos recebe o mesmo retorno e respeita a mesma espera, sem novo envio. Após o intervalo, uma nova solicitação é permitida."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Quando uma nova instrução é enviada após o intervalo, o link anterior deixa de permitir redefinição e o novo link inicia sua própria validade de 60 minutos."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Em desktop e mobile, a solicitação permanece em português e utilizável por teclado e toque, com label associado, foco visível, nome acessível, alvo adequado, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validação e confirmação são perceptíveis por tecnologias assistivas, e Voltar ao login permanece disponível."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "O e-mail e as mensagens não expõem senha, token, existência da conta ou outros dados sensíveis."
+                  }
+                ],
+                "dependencies": "Nenhum bloqueio para iniciar: o formulário, o broker de senhas, o envio por e-mail e as rotas compartilhadas já existem. A jornada integrada será verificada com a tarefa “Recuperação de Senha - Redefinição e encerramento de acessos”.",
+                "traceability": [
+                  "R1",
+                  "R4",
+                  "CA1",
+                  "CA2",
+                  "CA3",
+                  "CA8"
+                ]
+              }
+            },
+            {
+              "number": 2,
+              "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Redefinição e encerramento de acessos",
+              "title_suffix": "Redefinição e encerramento de acessos",
+              "api_delivery": false,
+              "estimate_hours": 4,
+              "estimate_exception": null,
+              "blocked_by": [],
+              "external_blockers": [],
+              "description": {
+                "delivery": "Completar a redefinição existente para aceitar somente conta ativa e link válido, aplicar integralmente a política de senha e encerrar sessões e lembranças anteriores em todos os dispositivos antes de retornar ao login.",
+                "limits": "Inclui o formulário público aberto pelo link de recuperação e a invalidação global dos acessos anteriores. Não inclui login automático, alteração de senha durante uma sessão, reativação de contas ou administração de usuários.",
+                "criteria": [
+                  {
+                    "kind": "success",
+                    "text": "Com conta ativa e link válido dentro de 60 minutos, uma senha com ao menos 8 caracteres, maiúscula, minúscula, número e símbolo, não conhecida em vazamentos e com confirmação idêntica é salva com sucesso."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Link inválido, expirado, substituído por novo envio ou já utilizado com sucesso não altera a senha e apresenta o impedimento de forma acessível."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Se a conta for desativada após a emissão do link, a redefinição é impedida, a conta permanece inativa e nenhuma permissão é concedida."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Senha que descumpra qualquer regra de composição, seja conhecida em vazamentos ou tenha confirmação diferente é recusada com mensagens que permitem correção sem expor dados sensíveis."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Após a redefinição bem-sucedida, todas as sessões e lembranças anteriores da conta deixam de permitir acesso em todos os dispositivos; a senha anterior não autentica e a nova autentica a conta ativa."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "O sucesso retorna ao login sem autenticação automática, informa o resultado e mantém Voltar ao login disponível durante a jornada."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Em desktop e mobile, o formulário permanece em português e utilizável por teclado e toque, com labels associados, revelação de senha acessível, foco visível, nomes acessíveis, alvos adequados, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validações, impedimentos e sucesso são perceptíveis por tecnologias assistivas."
+                  }
+                ],
+                "dependencies": "Nenhum bloqueio para iniciar: token, formulário, política de senha, contas e armazenamento de sessões já existem. Para concluir a jornada de ponta a ponta, integrar com “Recuperação de Senha - Solicitação segura de instruções”; essa integração não impede o início em paralelo.",
+                "traceability": [
+                  "R2",
+                  "R3",
+                  "R5",
+                  "R6",
+                  "R7",
+                  "CA4",
+                  "CA5",
+                  "CA6",
+                  "CA7",
+                  "CA9",
+                  "CA10",
+                  "CA11",
+                  "ESCOPO-A11Y",
+                  "ESCOPO-SEG"
+                ]
+              }
+            }
+          ],
+          "coverage": [
+            {
+              "requirement_id": "R1",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "ForgotPassword já valida e mascara usuário inválido; o slice 1 completa a indistinguibilidade durante a espera e preserva o envio somente para conta ativa."
+            },
+            {
+              "requirement_id": "R2",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SoftDeletes e o provider Eloquent já excluem contas inativas no envio e no reset. O slice 2 assume a garantia integral ao integrar o envio da tarefa “Solicitação segura de instruções” à redefinição, sem reativar a conta."
+            },
+            {
+              "requirement_id": "R3",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Configuração e repositório já oferecem 60 minutos, um token por e-mail e exclusão após sucesso; o slice 2 assume o ciclo integral desde o link emitido pela tarefa de solicitação até sua utilização ou recusa."
+            },
+            {
+              "requirement_id": "R4",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "O broker limita apenas usuários encontrados. O slice 1 entrega a mesma janela e o mesmo retorno também para e-mails inexistentes."
+            },
+            {
+              "requirement_id": "R5",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "ResetPassword usa a política global correta e confirmação; o slice 2 preserva e comprova todas as condições junto ao fluxo completo."
+            },
+            {
+              "requirement_id": "R6",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "O reset atual troca remember_token, mas não remove sessões persistidas nem usa auth.session. O slice 2 entrega a invalidação global."
+            },
+            {
+              "requirement_id": "R7",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "ResetPassword já redireciona ao login sem autenticar; o slice 2 preserva o comportamento e torna o resultado acessível."
+            },
+            {
+              "requirement_id": "CA1",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Envio existente para usuário ativo e URL compartilhada são base parcial; o slice 1 assume o cenário integral."
+            },
+            {
+              "requirement_id": "CA2",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Usuário ausente ou excluído já não recebe notificação e recebe mensagem genérica; o slice 1 preserva e cobre a conta inativa."
+            },
+            {
+              "requirement_id": "CA3",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Validação requerida e de formato já existe; o slice 1 preserva a correção acessível."
+            },
+            {
+              "requirement_id": "CA4",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "ResetPassword e o broker já executam o caminho válido; o slice 2 o integra às demais garantias."
+            },
+            {
+              "requirement_id": "CA5",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "O broker já rejeita token inválido, expirado ou apagado; o slice 2 completa a apresentação acessível do impedimento."
+            },
+            {
+              "requirement_id": "CA6",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Novo token já substitui o registro anterior; o slice 2 assume a comprovação integrada de que o link substituído é recusado e o novo mantém validade própria."
+            },
+            {
+              "requirement_id": "CA7",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "O provider exclui o usuário desativado na validação do reset; o slice 2 preserva e verifica o cenário completo."
+            },
+            {
+              "requirement_id": "CA8",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "A assimetria atual do throttle exige adaptação no slice 1 para qualquer e-mail válido."
+            },
+            {
+              "requirement_id": "CA9",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "A política global e confirmed já estão conectados ao reset; o slice 2 preserva mensagens corrigíveis e cobre cada regra."
+            },
+            {
+              "requirement_id": "CA10",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Troca da senha e do remember_token existe, mas sessões anteriores permanecem sem garantia de invalidação; o slice 2 entrega todo o resultado."
+            },
+            {
+              "requirement_id": "CA11",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Layouts e componentes dão base responsiva, de labels, erros e loading; o slice 2 assume a conclusão integrada da acessibilidade nas telas de solicitação e redefinição."
+            },
+            {
+              "requirement_id": "ESCOPO-A11Y",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "A revelação de senha não é operável por teclado e não houve aferição visual de contraste, toque ou movimento; o slice 2 assume a conformidade integrada de toda a jornada."
+            },
+            {
+              "requirement_id": "ESCOPO-SEG",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Broker e hash protegem token e senha; o slice 2 assume a garantia integrada de mensagens sem enumeração e ausência de exposição de dados sensíveis."
+            }
+          ],
+          "decisions": [
+            "Estimativas propostas: 3h + 4h = 7h de esforço humano com agentes, reaproveitando a base existente e incluindo implementação, revisão e testes direcionados. Granularidade, estimativas e arestas aguardam confirmação do tech lead.",
+            "Dois resultados verticais: solicitação segura e redefinição com encerramento de acessos. Nenhum bloqueio impede iniciar em paralelo; a integração de ponta a ponta é necessária para conclusão e será verificada pela QA única da Feature.",
+            "Não criar API pública, reativação, alteração de senha autenticada ou administração de usuários. Não alterar o status New do pai.",
+            "Inspeção estática em Laravel 13.31 e Livewire 4.4; testes não executados. Por orientação do tech lead, Sail não será usado. Não há alegação de conformidade visual já existente; as condições completas foram atribuídas aos slices.",
+            "Sem filhas ou relações existentes na leitura integral de 21/09/2026. Nenhuma decisão de adoção é necessária."
+          ],
+          "study_evidence": []
+        }
+      }
+    },
+    {
+      "number": 2,
+      "recorded_by": "Mário Tinelli",
+      "recorded_at": "2026-09-21T21:48:09.945Z",
+      "reason": "Revisão semântica: concentrar substituição e validade dos links no slice proprietário do ciclo de redefinição",
+      "proposal_sha256": "796c9ce94b36727bbc158f86f169f9a1a1b68aa417c52a140a78eda16b31856e",
+      "proposal": {
+        "feature": {
+          "title": "[WEB] [PUBLICO] Recuperação de Senha",
+          "artifact_path": "feature.md",
+          "state_path": ".flow/feature-state.json",
+          "issue_id": 1014447,
+          "requirement_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+          "input_check_path": ".flow/slices-input-check.json",
+          "input_check_sha256": "be8f774772fe929419f0a6603d4073ecd30c14f7a060f92403004ed5321008cd"
+        },
+        "inspection": [
+          {
+            "path": "app/Livewire/Auth/ForgotPassword.php; config/auth.php; app/Models/User.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/DatabaseTokenRepository.php; vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php",
+            "finding": "Leitura: a solicitação valida o e-mail e converte usuário inexistente ou conta excluída logicamente em confirmação genérica. O broker limita a conta existente por 60 segundos, mas a repetição para e-mail inexistente continua retornando sucesso sem a mesma espera; o estado observável difere. Após o intervalo, a criação do token remove o anterior. Adaptar o intervalo uniforme sem revelar existência e preservar envio apenas para contas ativas.",
+            "classification": "adapt"
+          },
+          {
+            "path": "config/auth.php; database/migrations/0001_01_01_000000_create_users_table.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/DatabaseTokenRepository.php",
+            "finding": "Leitura: o repositório em banco mantém um token por e-mail, expira em 60 minutos, apaga o token depois do reset bem-sucedido e substitui o anterior quando um novo é emitido. Essa base cobre validade, uso único e invalidação por novo envio, mas sua jornada integrada precisa permanecer coberta pelos dois slices.",
+            "classification": "existing"
+          },
+          {
+            "path": "app/Livewire/Auth/ResetPassword.php; app/Providers/AppServiceProvider.php; app/Models/User.php; config/session.php; bootstrap/app.php; routes/web.php; vendor/laravel/framework/src/Illuminate/Session/Middleware/AuthenticateSession.php",
+            "finding": "Leitura: o reset valida token, e-mail, confirmação e a regra global de 8 caracteres com maiúscula, minúscula, número, símbolo e uncompromised; altera a senha, troca remember_token e retorna ao login sem autenticar. Não há middleware auth.session nem remoção das sessões persistidas do usuário; portanto, trocar senha e lembrança não comprova encerramento de todas as sessões. O driver padrão e o exemplo do projeto usam sessões em banco. Adaptar a invalidação global de acessos.",
+            "classification": "adapt"
+          },
+          {
+            "path": "app/Models/User.php; app/Livewire/Admin/Management/Users/Delete.php; app/Brain/Users/Actions/DeleteUserAction.php; vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php; vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php",
+            "finding": "Leitura: desativar usuário aplica exclusão lógica; o provider do broker consulta o modelo com seus escopos globais tanto no envio quanto na validação do reset. Assim, contas inativas não recebem instruções e uma conta desativada após a emissão deixa de ser encontrada para redefinição. Preservar esse comportamento nos cortes.",
+            "classification": "existing"
+          },
+          {
+            "path": "routes/auth.php; routes/web.php; resources/views/livewire/auth/login.blade.php; vendor/laravel/framework/src/Illuminate/Auth/Notifications/ResetPassword.php; tests/Feature/Livewire/Auth/ForgotPasswordTest.php",
+            "finding": "Leitura: as rotas compartilhadas /esqueci-minha-senha e /nova-senha/{token} ficam fora do prefixo administrativo; o login aponta para a rota compartilhada e a notificação nativa monta esse destino com token e e-mail. O teste funcional lido cobre URL compartilhada para todos os perfis, mas não foi executado.",
+            "classification": "existing"
+          },
+          {
+            "path": "resources/views/livewire/auth/forgot-password.blade.php; resources/views/livewire/auth/reset-password.blade.php; resources/views/layouts/guest.blade.php; resources/views/components/ui/input.blade.php; resources/views/components/ui/input/password.blade.php; resources/views/components/ui/button.blade.php; resources/views/components/ui/alert.blade.php; resources/css/daisyui/custom.css",
+            "finding": "Leitura: formulários responsivos, labels associados, erros descritos, alerta vivo e estado de carregamento são bases reaproveitáveis. A tela de redefinição não oferece Voltar ao login; revelar senha usa ícones clicáveis sem botão, nome acessível ou teclado; não foi feita aferição visual de contraste, alvos de toque ou redução de movimento. Entregar integralmente os requisitos de acessibilidade em cada trecho da jornada.",
+            "classification": "adapt"
+          },
+          {
+            "path": "tests/Feature/Livewire/Auth/ForgotPasswordTest.php; tests/Feature/Livewire/Auth/ResetPasswordTest.php; tests/Browser/Livewire/Auth/LoginBrowserTest.php",
+            "finding": "Testes lidos, não executados: cobrem validação mínima, resposta genérica para e-mail desconhecido, envio por perfil, reset válido e redirecionamento. Não cobrem conta inativa, igualdade do limite para e-mail inexistente, expiração/substituição/uso único, política completa, invalidação de todas as sessões ou acessibilidade integral; o browser test ainda usa o caminho administrativo antigo para recuperação.",
+            "classification": "adapt"
+          },
+          {
+            "path": "docs/harness/features/1014447-recuperacao-de-senha/feature.md; docs/harness/scopes/2026-09-09-nexum-scope/sources/design-recover-password.md; docs/harness/scopes/2026-09-09-nexum-scope/sources/design-guide.md; .work/slices-remote.json",
+            "finding": "Requisito e fontes: jornada pública em português, sem API pública, reativação ou alteração de senha autenticada. Snapshot Redmine consultado com children e relations em 21/09/2026: pai Feature #1014447 permanece New e não possui filhas nem relações a adotar.",
+            "classification": "existing"
+          }
+        ],
+        "requirements": [
+          {
+            "id": "R1",
+            "summary": "Solicitação exige e-mail válido e não revela se está cadastrado."
+          },
+          {
+            "id": "R2",
+            "summary": "Somente contas ativas recebem instruções e redefinem senha; recuperação não reativa."
+          },
+          {
+            "id": "R3",
+            "summary": "Link vale 60 minutos, permite um sucesso e novo envio invalida o anterior."
+          },
+          {
+            "id": "R4",
+            "summary": "Intervalo de 60 segundos por e-mail, com comportamento igual para contas existentes e inexistentes."
+          },
+          {
+            "id": "R5",
+            "summary": "Senha exige 8 caracteres, maiúscula, minúscula, número, símbolo, não vazada e confirmação idêntica."
+          },
+          {
+            "id": "R6",
+            "summary": "Redefinição encerra todas as sessões e remove Lembrar-me em todos os dispositivos."
+          },
+          {
+            "id": "R7",
+            "summary": "Sucesso retorna ao login sem autenticação automática."
+          },
+          {
+            "id": "CA1",
+            "summary": "Conta ativa recebe confirmação genérica e link."
+          },
+          {
+            "id": "CA2",
+            "summary": "E-mail inexistente ou conta inativa recebe a mesma confirmação sem envio."
+          },
+          {
+            "id": "CA3",
+            "summary": "E-mail ausente ou inválido apresenta validação e permite correção."
+          },
+          {
+            "id": "CA4",
+            "summary": "Link válido, conta ativa e senha válida concluem redefinição."
+          },
+          {
+            "id": "CA5",
+            "summary": "Link inválido, expirado ou utilizado impede alteração e informa o impedimento."
+          },
+          {
+            "id": "CA6",
+            "summary": "Novo envio invalida o link anterior e inicia validade própria."
+          },
+          {
+            "id": "CA7",
+            "summary": "Conta desativada após emissão não redefine nem é reativada."
+          },
+          {
+            "id": "CA8",
+            "summary": "Repetição antes de 60 segundos tem a mesma espera e retorno para qualquer e-mail; depois permite nova solicitação."
+          },
+          {
+            "id": "CA9",
+            "summary": "Senha fora das regras, vazada ou com confirmação diferente é recusada com validação."
+          },
+          {
+            "id": "CA10",
+            "summary": "Sucesso invalida sessões e lembranças, retorna ao login e troca a credencial válida."
+          },
+          {
+            "id": "CA11",
+            "summary": "Solicitação e redefinição são responsivas, operáveis por teclado e fornecem feedback acessível."
+          },
+          {
+            "id": "ESCOPO-A11Y",
+            "summary": "Contraste WCAG AA, foco, labels, nomes acessíveis, alvos de toque, semântica e redução de movimento."
+          },
+          {
+            "id": "ESCOPO-SEG",
+            "summary": "Senhas protegidas e erros sem exposição de dados sensíveis."
+          }
+        ],
+        "slices": [
+          {
+            "number": 1,
+            "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Solicitação segura de instruções",
+            "title_suffix": "Solicitação segura de instruções",
+            "api_delivery": false,
+            "estimate_hours": 3,
+            "estimate_exception": null,
+            "blocked_by": [],
+            "external_blockers": [],
+            "description": {
+              "delivery": "Ajustar a solicitação existente para enviar instruções somente a contas ativas, mantendo uma resposta indistinguível para qualquer e-mail e aplicando o mesmo intervalo de 60 segundos sem revelar cadastros.",
+              "limits": "Inclui a tela pública de solicitação, o envio do e-mail com link compartilhado e o ciclo de reenvio. Não inclui a definição da nova senha, a reativação de contas nem uma API pública.",
+              "criteria": [
+                {
+                  "kind": "success",
+                  "text": "Com e-mail válido de conta ativa, a solicitação apresenta confirmação genérica e envia instruções com link para a jornada compartilhada de redefinição."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Com e-mail inexistente ou de conta inativa, a solicitação apresenta a mesma confirmação genérica, sem enviar instruções e sem revelar a existência ou o estado da conta."
+                },
+                {
+                  "kind": "error",
+                  "text": "Sem e-mail ou com formato inválido, o formulário informa a validação, permite correção e não envia instruções."
+                },
+                {
+                  "kind": "error",
+                  "text": "Para qualquer e-mail válido, cadastrado ou não, nova solicitação antes de 60 segundos recebe o mesmo retorno e respeita a mesma espera, sem novo envio. Após o intervalo, uma nova solicitação é permitida."
+                },
+                {
+                  "kind": "success",
+                  "text": "Em desktop e mobile, a solicitação permanece em português e utilizável por teclado e toque, com label associado, foco visível, nome acessível, alvo adequado, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validação e confirmação são perceptíveis por tecnologias assistivas, e Voltar ao login permanece disponível."
+                },
+                {
+                  "kind": "permission",
+                  "text": "O e-mail e as mensagens não expõem senha, token, existência da conta ou outros dados sensíveis."
+                }
+              ],
+              "dependencies": "Nenhum bloqueio para iniciar: o formulário, o broker de senhas, o envio por e-mail e as rotas compartilhadas já existem. A jornada integrada será verificada com a tarefa “Recuperação de Senha - Redefinição e encerramento de acessos”.",
+              "traceability": [
+                "R1",
+                "R4",
+                "CA1",
+                "CA2",
+                "CA3",
+                "CA8"
+              ]
+            }
+          },
+          {
+            "number": 2,
+            "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Redefinição e encerramento de acessos",
+            "title_suffix": "Redefinição e encerramento de acessos",
+            "api_delivery": false,
+            "estimate_hours": 4,
+            "estimate_exception": null,
+            "blocked_by": [],
+            "external_blockers": [],
+            "description": {
+              "delivery": "Completar a redefinição existente para aceitar somente conta ativa e link válido, aplicar integralmente a política de senha e encerrar sessões e lembranças anteriores em todos os dispositivos antes de retornar ao login.",
+              "limits": "Inclui o formulário público aberto pelo link de recuperação e a invalidação global dos acessos anteriores. Não inclui login automático, alteração de senha durante uma sessão, reativação de contas ou administração de usuários.",
+              "criteria": [
+                {
+                  "kind": "success",
+                  "text": "Com conta ativa e link válido dentro de 60 minutos, uma senha com ao menos 8 caracteres, maiúscula, minúscula, número e símbolo, não conhecida em vazamentos e com confirmação idêntica é salva com sucesso."
+                },
+                {
+                  "kind": "error",
+                  "text": "Link inválido, expirado, substituído por novo envio ou já utilizado com sucesso não altera a senha e apresenta o impedimento de forma acessível."
+                },
+                {
+                  "kind": "permission",
+                  "text": "Se a conta for desativada após a emissão do link, a redefinição é impedida, a conta permanece inativa e nenhuma permissão é concedida."
+                },
+                {
+                  "kind": "error",
+                  "text": "Senha que descumpra qualquer regra de composição, seja conhecida em vazamentos ou tenha confirmação diferente é recusada com mensagens que permitem correção sem expor dados sensíveis."
+                },
+                {
+                  "kind": "success",
+                  "text": "Após a redefinição bem-sucedida, todas as sessões e lembranças anteriores da conta deixam de permitir acesso em todos os dispositivos; a senha anterior não autentica e a nova autentica a conta ativa."
+                },
+                {
+                  "kind": "success",
+                  "text": "O sucesso retorna ao login sem autenticação automática, informa o resultado e mantém Voltar ao login disponível durante a jornada."
+                },
+                {
+                  "kind": "success",
+                  "text": "Em desktop e mobile, o formulário permanece em português e utilizável por teclado e toque, com labels associados, revelação de senha acessível, foco visível, nomes acessíveis, alvos adequados, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validações, impedimentos e sucesso são perceptíveis por tecnologias assistivas."
+                }
+              ],
+              "dependencies": "Nenhum bloqueio para iniciar: token, formulário, política de senha, contas e armazenamento de sessões já existem. Para concluir a jornada de ponta a ponta, integrar com “Recuperação de Senha - Solicitação segura de instruções”; essa integração não impede o início em paralelo.",
+              "traceability": [
+                "R2",
+                "R3",
+                "R5",
+                "R6",
+                "R7",
+                "CA4",
+                "CA5",
+                "CA6",
+                "CA7",
+                "CA9",
+                "CA10",
+                "CA11",
+                "ESCOPO-A11Y",
+                "ESCOPO-SEG"
+              ]
+            }
+          }
+        ],
+        "coverage": [
+          {
+            "requirement_id": "R1",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "ForgotPassword já valida e mascara usuário inválido; o slice 1 completa a indistinguibilidade durante a espera e preserva o envio somente para conta ativa."
+          },
+          {
+            "requirement_id": "R2",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "SoftDeletes e o provider Eloquent já excluem contas inativas no envio e no reset. O slice 2 assume a garantia integral ao integrar o envio da tarefa “Solicitação segura de instruções” à redefinição, sem reativar a conta."
+          },
+          {
+            "requirement_id": "R3",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Configuração e repositório já oferecem 60 minutos, um token por e-mail e exclusão após sucesso; o slice 2 assume o ciclo integral desde o link emitido pela tarefa de solicitação até sua utilização ou recusa."
+          },
+          {
+            "requirement_id": "R4",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "O broker limita apenas usuários encontrados. O slice 1 entrega a mesma janela e o mesmo retorno também para e-mails inexistentes."
+          },
+          {
+            "requirement_id": "R5",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "ResetPassword usa a política global correta e confirmação; o slice 2 preserva e comprova todas as condições junto ao fluxo completo."
+          },
+          {
+            "requirement_id": "R6",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "O reset atual troca remember_token, mas não remove sessões persistidas nem usa auth.session. O slice 2 entrega a invalidação global."
+          },
+          {
+            "requirement_id": "R7",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "ResetPassword já redireciona ao login sem autenticar; o slice 2 preserva o comportamento e torna o resultado acessível."
+          },
+          {
+            "requirement_id": "CA1",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Envio existente para usuário ativo e URL compartilhada são base parcial; o slice 1 assume o cenário integral."
+          },
+          {
+            "requirement_id": "CA2",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Usuário ausente ou excluído já não recebe notificação e recebe mensagem genérica; o slice 1 preserva e cobre a conta inativa."
+          },
+          {
+            "requirement_id": "CA3",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "Validação requerida e de formato já existe; o slice 1 preserva a correção acessível."
+          },
+          {
+            "requirement_id": "CA4",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "ResetPassword e o broker já executam o caminho válido; o slice 2 o integra às demais garantias."
+          },
+          {
+            "requirement_id": "CA5",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "O broker já rejeita token inválido, expirado ou apagado; o slice 2 completa a apresentação acessível do impedimento."
+          },
+          {
+            "requirement_id": "CA6",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Novo token já substitui o registro anterior; o slice 2 assume a comprovação integrada de que o link substituído é recusado e o novo mantém validade própria."
+          },
+          {
+            "requirement_id": "CA7",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "O provider exclui o usuário desativado na validação do reset; o slice 2 preserva e verifica o cenário completo."
+          },
+          {
+            "requirement_id": "CA8",
+            "disposition": "slice",
+            "slice_numbers": [
+              1
+            ],
+            "evidence": "A assimetria atual do throttle exige adaptação no slice 1 para qualquer e-mail válido."
+          },
+          {
+            "requirement_id": "CA9",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "A política global e confirmed já estão conectados ao reset; o slice 2 preserva mensagens corrigíveis e cobre cada regra."
+          },
+          {
+            "requirement_id": "CA10",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Troca da senha e do remember_token existe, mas sessões anteriores permanecem sem garantia de invalidação; o slice 2 entrega todo o resultado."
+          },
+          {
+            "requirement_id": "CA11",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Layouts e componentes dão base responsiva, de labels, erros e loading; o slice 2 assume a conclusão integrada da acessibilidade nas telas de solicitação e redefinição."
+          },
+          {
+            "requirement_id": "ESCOPO-A11Y",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "A revelação de senha não é operável por teclado e não houve aferição visual de contraste, toque ou movimento; o slice 2 assume a conformidade integrada de toda a jornada."
+          },
+          {
+            "requirement_id": "ESCOPO-SEG",
+            "disposition": "slice",
+            "slice_numbers": [
+              2
+            ],
+            "evidence": "Broker e hash protegem token e senha; o slice 2 assume a garantia integrada de mensagens sem enumeração e ausência de exposição de dados sensíveis."
+          }
+        ],
+        "decisions": [
+          "Estimativas propostas: 3h + 4h = 7h de esforço humano com agentes, reaproveitando a base existente e incluindo implementação, revisão e testes direcionados. Granularidade, estimativas e arestas aguardam confirmação do tech lead.",
+          "Dois resultados verticais: solicitação segura e redefinição com encerramento de acessos. Nenhum bloqueio impede iniciar em paralelo; a integração de ponta a ponta é necessária para conclusão e será verificada pela QA única da Feature.",
+          "Não criar API pública, reativação, alteração de senha autenticada ou administração de usuários. Não alterar o status New do pai.",
+          "Inspeção estática em Laravel 13.31 e Livewire 4.4; testes não executados. Por orientação do tech lead, Sail não será usado. Não há alegação de conformidade visual já existente; as condições completas foram atribuídas aos slices.",
+          "Sem filhas ou relações existentes na leitura integral de 21/09/2026. Nenhuma decisão de adoção é necessária."
+        ]
+      },
+      "semantic_baseline": {
+        "requirement_sha256": "93d1a002be3b3fc0bf30b875525a20ff8f48dd59c37ac0db1da9ef101dd474cc",
+        "semantic_model_sha256": "195700edd7d42d6a5fa718e60acf8509d54ecfbb8c177da3b00d2078d4dda12b",
+        "semantic_model": {
+          "requirements": [
+            {
+              "id": "R1",
+              "summary": "Solicitação exige e-mail válido e não revela se está cadastrado."
+            },
+            {
+              "id": "R2",
+              "summary": "Somente contas ativas recebem instruções e redefinem senha; recuperação não reativa."
+            },
+            {
+              "id": "R3",
+              "summary": "Link vale 60 minutos, permite um sucesso e novo envio invalida o anterior."
+            },
+            {
+              "id": "R4",
+              "summary": "Intervalo de 60 segundos por e-mail, com comportamento igual para contas existentes e inexistentes."
+            },
+            {
+              "id": "R5",
+              "summary": "Senha exige 8 caracteres, maiúscula, minúscula, número, símbolo, não vazada e confirmação idêntica."
+            },
+            {
+              "id": "R6",
+              "summary": "Redefinição encerra todas as sessões e remove Lembrar-me em todos os dispositivos."
+            },
+            {
+              "id": "R7",
+              "summary": "Sucesso retorna ao login sem autenticação automática."
+            },
+            {
+              "id": "CA1",
+              "summary": "Conta ativa recebe confirmação genérica e link."
+            },
+            {
+              "id": "CA2",
+              "summary": "E-mail inexistente ou conta inativa recebe a mesma confirmação sem envio."
+            },
+            {
+              "id": "CA3",
+              "summary": "E-mail ausente ou inválido apresenta validação e permite correção."
+            },
+            {
+              "id": "CA4",
+              "summary": "Link válido, conta ativa e senha válida concluem redefinição."
+            },
+            {
+              "id": "CA5",
+              "summary": "Link inválido, expirado ou utilizado impede alteração e informa o impedimento."
+            },
+            {
+              "id": "CA6",
+              "summary": "Novo envio invalida o link anterior e inicia validade própria."
+            },
+            {
+              "id": "CA7",
+              "summary": "Conta desativada após emissão não redefine nem é reativada."
+            },
+            {
+              "id": "CA8",
+              "summary": "Repetição antes de 60 segundos tem a mesma espera e retorno para qualquer e-mail; depois permite nova solicitação."
+            },
+            {
+              "id": "CA9",
+              "summary": "Senha fora das regras, vazada ou com confirmação diferente é recusada com validação."
+            },
+            {
+              "id": "CA10",
+              "summary": "Sucesso invalida sessões e lembranças, retorna ao login e troca a credencial válida."
+            },
+            {
+              "id": "CA11",
+              "summary": "Solicitação e redefinição são responsivas, operáveis por teclado e fornecem feedback acessível."
+            },
+            {
+              "id": "ESCOPO-A11Y",
+              "summary": "Contraste WCAG AA, foco, labels, nomes acessíveis, alvos de toque, semântica e redução de movimento."
+            },
+            {
+              "id": "ESCOPO-SEG",
+              "summary": "Senhas protegidas e erros sem exposição de dados sensíveis."
+            }
+          ],
+          "slices": [
+            {
+              "number": 1,
+              "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Solicitação segura de instruções",
+              "title_suffix": "Solicitação segura de instruções",
+              "api_delivery": false,
+              "estimate_hours": 3,
+              "estimate_exception": null,
+              "blocked_by": [],
+              "external_blockers": [],
+              "description": {
+                "delivery": "Ajustar a solicitação existente para enviar instruções somente a contas ativas, mantendo uma resposta indistinguível para qualquer e-mail e aplicando o mesmo intervalo de 60 segundos sem revelar cadastros.",
+                "limits": "Inclui a tela pública de solicitação, o envio do e-mail com link compartilhado e o ciclo de reenvio. Não inclui a definição da nova senha, a reativação de contas nem uma API pública.",
+                "criteria": [
+                  {
+                    "kind": "success",
+                    "text": "Com e-mail válido de conta ativa, a solicitação apresenta confirmação genérica e envia instruções com link para a jornada compartilhada de redefinição."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Com e-mail inexistente ou de conta inativa, a solicitação apresenta a mesma confirmação genérica, sem enviar instruções e sem revelar a existência ou o estado da conta."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Sem e-mail ou com formato inválido, o formulário informa a validação, permite correção e não envia instruções."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Para qualquer e-mail válido, cadastrado ou não, nova solicitação antes de 60 segundos recebe o mesmo retorno e respeita a mesma espera, sem novo envio. Após o intervalo, uma nova solicitação é permitida."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Em desktop e mobile, a solicitação permanece em português e utilizável por teclado e toque, com label associado, foco visível, nome acessível, alvo adequado, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validação e confirmação são perceptíveis por tecnologias assistivas, e Voltar ao login permanece disponível."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "O e-mail e as mensagens não expõem senha, token, existência da conta ou outros dados sensíveis."
+                  }
+                ],
+                "dependencies": "Nenhum bloqueio para iniciar: o formulário, o broker de senhas, o envio por e-mail e as rotas compartilhadas já existem. A jornada integrada será verificada com a tarefa “Recuperação de Senha - Redefinição e encerramento de acessos”.",
+                "traceability": [
+                  "R1",
+                  "R4",
+                  "CA1",
+                  "CA2",
+                  "CA3",
+                  "CA8"
+                ]
+              }
+            },
+            {
+              "number": 2,
+              "title": "[DEV] [WEB] [PUBLICO] Recuperação de Senha - Redefinição e encerramento de acessos",
+              "title_suffix": "Redefinição e encerramento de acessos",
+              "api_delivery": false,
+              "estimate_hours": 4,
+              "estimate_exception": null,
+              "blocked_by": [],
+              "external_blockers": [],
+              "description": {
+                "delivery": "Completar a redefinição existente para aceitar somente conta ativa e link válido, aplicar integralmente a política de senha e encerrar sessões e lembranças anteriores em todos os dispositivos antes de retornar ao login.",
+                "limits": "Inclui o formulário público aberto pelo link de recuperação e a invalidação global dos acessos anteriores. Não inclui login automático, alteração de senha durante uma sessão, reativação de contas ou administração de usuários.",
+                "criteria": [
+                  {
+                    "kind": "success",
+                    "text": "Com conta ativa e link válido dentro de 60 minutos, uma senha com ao menos 8 caracteres, maiúscula, minúscula, número e símbolo, não conhecida em vazamentos e com confirmação idêntica é salva com sucesso."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Link inválido, expirado, substituído por novo envio ou já utilizado com sucesso não altera a senha e apresenta o impedimento de forma acessível."
+                  },
+                  {
+                    "kind": "permission",
+                    "text": "Se a conta for desativada após a emissão do link, a redefinição é impedida, a conta permanece inativa e nenhuma permissão é concedida."
+                  },
+                  {
+                    "kind": "error",
+                    "text": "Senha que descumpra qualquer regra de composição, seja conhecida em vazamentos ou tenha confirmação diferente é recusada com mensagens que permitem correção sem expor dados sensíveis."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Após a redefinição bem-sucedida, todas as sessões e lembranças anteriores da conta deixam de permitir acesso em todos os dispositivos; a senha anterior não autentica e a nova autentica a conta ativa."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "O sucesso retorna ao login sem autenticação automática, informa o resultado e mantém Voltar ao login disponível durante a jornada."
+                  },
+                  {
+                    "kind": "success",
+                    "text": "Em desktop e mobile, o formulário permanece em português e utilizável por teclado e toque, com labels associados, revelação de senha acessível, foco visível, nomes acessíveis, alvos adequados, contraste WCAG AA, hierarquia semântica e redução de movimento. Carregamento, validações, impedimentos e sucesso são perceptíveis por tecnologias assistivas."
+                  }
+                ],
+                "dependencies": "Nenhum bloqueio para iniciar: token, formulário, política de senha, contas e armazenamento de sessões já existem. Para concluir a jornada de ponta a ponta, integrar com “Recuperação de Senha - Solicitação segura de instruções”; essa integração não impede o início em paralelo.",
+                "traceability": [
+                  "R2",
+                  "R3",
+                  "R5",
+                  "R6",
+                  "R7",
+                  "CA4",
+                  "CA5",
+                  "CA6",
+                  "CA7",
+                  "CA9",
+                  "CA10",
+                  "CA11",
+                  "ESCOPO-A11Y",
+                  "ESCOPO-SEG"
+                ]
+              }
+            }
+          ],
+          "coverage": [
+            {
+              "requirement_id": "R1",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "ForgotPassword já valida e mascara usuário inválido; o slice 1 completa a indistinguibilidade durante a espera e preserva o envio somente para conta ativa."
+            },
+            {
+              "requirement_id": "R2",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "SoftDeletes e o provider Eloquent já excluem contas inativas no envio e no reset. O slice 2 assume a garantia integral ao integrar o envio da tarefa “Solicitação segura de instruções” à redefinição, sem reativar a conta."
+            },
+            {
+              "requirement_id": "R3",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Configuração e repositório já oferecem 60 minutos, um token por e-mail e exclusão após sucesso; o slice 2 assume o ciclo integral desde o link emitido pela tarefa de solicitação até sua utilização ou recusa."
+            },
+            {
+              "requirement_id": "R4",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "O broker limita apenas usuários encontrados. O slice 1 entrega a mesma janela e o mesmo retorno também para e-mails inexistentes."
+            },
+            {
+              "requirement_id": "R5",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "ResetPassword usa a política global correta e confirmação; o slice 2 preserva e comprova todas as condições junto ao fluxo completo."
+            },
+            {
+              "requirement_id": "R6",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "O reset atual troca remember_token, mas não remove sessões persistidas nem usa auth.session. O slice 2 entrega a invalidação global."
+            },
+            {
+              "requirement_id": "R7",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "ResetPassword já redireciona ao login sem autenticar; o slice 2 preserva o comportamento e torna o resultado acessível."
+            },
+            {
+              "requirement_id": "CA1",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Envio existente para usuário ativo e URL compartilhada são base parcial; o slice 1 assume o cenário integral."
+            },
+            {
+              "requirement_id": "CA2",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Usuário ausente ou excluído já não recebe notificação e recebe mensagem genérica; o slice 1 preserva e cobre a conta inativa."
+            },
+            {
+              "requirement_id": "CA3",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "Validação requerida e de formato já existe; o slice 1 preserva a correção acessível."
+            },
+            {
+              "requirement_id": "CA4",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "ResetPassword e o broker já executam o caminho válido; o slice 2 o integra às demais garantias."
+            },
+            {
+              "requirement_id": "CA5",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "O broker já rejeita token inválido, expirado ou apagado; o slice 2 completa a apresentação acessível do impedimento."
+            },
+            {
+              "requirement_id": "CA6",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Novo token já substitui o registro anterior; o slice 2 assume a comprovação integrada de que o link substituído é recusado e o novo mantém validade própria."
+            },
+            {
+              "requirement_id": "CA7",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "O provider exclui o usuário desativado na validação do reset; o slice 2 preserva e verifica o cenário completo."
+            },
+            {
+              "requirement_id": "CA8",
+              "disposition": "slice",
+              "slice_numbers": [
+                1
+              ],
+              "evidence": "A assimetria atual do throttle exige adaptação no slice 1 para qualquer e-mail válido."
+            },
+            {
+              "requirement_id": "CA9",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "A política global e confirmed já estão conectados ao reset; o slice 2 preserva mensagens corrigíveis e cobre cada regra."
+            },
+            {
+              "requirement_id": "CA10",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Troca da senha e do remember_token existe, mas sessões anteriores permanecem sem garantia de invalidação; o slice 2 entrega todo o resultado."
+            },
+            {
+              "requirement_id": "CA11",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Layouts e componentes dão base responsiva, de labels, erros e loading; o slice 2 assume a conclusão integrada da acessibilidade nas telas de solicitação e redefinição."
+            },
+            {
+              "requirement_id": "ESCOPO-A11Y",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "A revelação de senha não é operável por teclado e não houve aferição visual de contraste, toque ou movimento; o slice 2 assume a conformidade integrada de toda a jornada."
+            },
+            {
+              "requirement_id": "ESCOPO-SEG",
+              "disposition": "slice",
+              "slice_numbers": [
+                2
+              ],
+              "evidence": "Broker e hash protegem token e senha; o slice 2 assume a garantia integrada de mensagens sem enumeração e ausência de exposição de dados sensíveis."
+            }
+          ],
+          "decisions": [
+            "Estimativas propostas: 3h + 4h = 7h de esforço humano com agentes, reaproveitando a base existente e incluindo implementação, revisão e testes direcionados. Granularidade, estimativas e arestas aguardam confirmação do tech lead.",
+            "Dois resultados verticais: solicitação segura e redefinição com encerramento de acessos. Nenhum bloqueio impede iniciar em paralelo; a integração de ponta a ponta é necessária para conclusão e será verificada pela QA única da Feature.",
+            "Não criar API pública, reativação, alteração de senha autenticada ou administração de usuários. Não alterar o status New do pai.",
+            "Inspeção estática em Laravel 13.31 e Livewire 4.4; testes não executados. Por orientação do tech lead, Sail não será usado. Não há alegação de conformidade visual já existente; as condições completas foram atribuídas aos slices.",
+            "Sem filhas ou relações existentes na leitura integral de 21/09/2026. Nenhuma decisão de adoção é necessária."
+          ],
+          "study_evidence": []
+        }
+      }
+    }
+  ],
+  "approvals": [
+    {
+      "revision": 2,
+      "proposal_sha256": "796c9ce94b36727bbc158f86f169f9a1a1b68aa417c52a140a78eda16b31856e",
+      "approved_by": "Mário Tinelli",
+      "approved_at": "2026-09-21T21:50:17.307Z",
+      "status": "valid"
+    }
+  ]
+}

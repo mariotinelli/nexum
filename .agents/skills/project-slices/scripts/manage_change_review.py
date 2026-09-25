@@ -51,7 +51,9 @@ def approved_sources(slices_path: Path, publication_path: Path) -> tuple[dict[st
         from manage_publication import validate_publication_state
     except ImportError as error:
         fail(f"cannot load publication contract: {error}")
-    validate_publication_state(publication)
+    # Publication artifact hashes describe the immutable initial materialization.
+    # A completed revision application may have advanced the canonical files.
+    validate_publication_state(publication, check_files=False)
     published = publication["revisions"][-1]
     publication_approvals = [
         item for item in publication["approvals"]

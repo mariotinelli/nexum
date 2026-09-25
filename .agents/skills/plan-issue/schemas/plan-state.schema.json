@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/plan-issue/plan-state-v2.json",
+  "title": "Plan issue evidence and authority state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "repository", "issue", "alignment", "inspection", "baselines", "baseline_approvals", "revisions", "approvals", "execution", "handoff"],
+  "properties": {
+    "schema_version": {"const": 2},
+    "status": {"enum": ["prepared", "baselined", "baseline-awaiting-approval", "draft", "draft-changed", "approved", "ready", "evidence-stale", "executing", "execution-paused", "execution-uncertain", "execution-cancelled"]},
+    "repository": {"type": "object", "required": ["path", "inspected_commit", "code_fingerprint"]},
+    "issue": {"type": "object", "required": ["id", "kind", "task_path", "task_sha256", "project_id", "parent"], "properties": {"kind": {"const": "DEV"}}},
+    "alignment": {"type": "object", "required": ["origin", "remote"]},
+    "inspection": {"type": "object", "required": ["instructions", "architecture", "adrs", "conventions", "automations", "tests"]},
+    "baselines": {"type": "array", "items": {"type": "object", "required": ["number", "command", "inspected_commit", "started_at", "finished_at", "duration_ms", "result", "exit_code", "normalized_failures", "evidence_sha256"]}},
+    "baseline_approvals": {"type": "array", "items": {"type": "object", "required": ["baseline_number", "baseline_sha256", "approved_by", "approved_at"]}},
+    "revisions": {"type": "array", "items": {"type": "object", "required": ["number", "planning_path", "planning_sha256", "recorded_at", "reason", "baseline_number", "baseline_sha256", "phases"]}},
+    "approvals": {"type": "array", "items": {"type": "object", "required": ["revision", "planning_sha256", "approved_by", "approved_at", "status"]}},
+    "execution": {
+      "type": "object",
+      "required": ["started_at", "current_phase", "completed_phases", "phases"],
+      "properties": {
+        "started_at": {"type": ["string", "null"]},
+        "base_commit": {"$ref": "#/$defs/sha256"},
+        "history": {"type": "array", "items": {"type": "object", "required": ["sequence", "event", "at"]}},
+        "timeouts": {
+          "type": "object",
+          "required": ["development_seconds", "validation_seconds", "tests_seconds"],
+          "properties": {
+            "development_seconds": {"type": "number", "exclusiveMinimum": 0},
+            "validation_seconds": {"type": "number", "exclusiveMinimum": 0},
+            "tests_seconds": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+        "uncertain": {"type": "object", "required": ["phase", "gate", "head", "snapshot", "evidence_sha256", "report_path", "expected_head"]},
+        "current_phase": {"type": ["integer", "null"], "minimum": 1},
+        "completed_phases": {"type": "array", "items": {"type": "integer", "minimum": 1}, "uniqueItems": true},
+        "stop": {
+          "type": "object",
+          "required": ["reason", "phase", "gate"],
+          "properties": {
+            "reason": {"enum": ["rejection-limit-exhausted", "timeout", "cancelled", "agent-failure", "commit-operational-failure"]},
+            "phase": {"type": "integer", "minimum": 1},
+            "gate": {"enum": ["development", "validation", "tests", "integral_validation", "commit"]},
+            "report_path": {"type": "string", "minLength": 1}
+          }
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["number", "base_commit", "gates"],
+            "properties": {
+              "number": {"type": "integer", "minimum": 1},
+              "base_commit": {"$ref": "#/$defs/sha256"},
+              "max_gate_rejections": {"type": "integer", "minimum": 1},
+              "commit": {"$ref": "#/$defs/sha256"},
+              "transitions": {"type": "array", "items": {"type": "object", "required": ["from", "to", "reason"]}},
+              "gates": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "status"],
+                  "properties": {
+                    "name": {"enum": ["development", "validation", "tests", "integral_validation", "commit"]},
+                    "status": {"enum": ["running", "completed", "approved", "rejected", "invalidated", "interrupted", "uncertain", "operational-failure"]},
+                    "session_id": {"type": "string", "format": "uuid"},
+                    "attempt": {"type": "integer", "minimum": 1},
+                    "duration_ms": {"type": "integer", "minimum": 0},
+                    "timeout_seconds": {"type": "number", "exclusiveMinimum": 0},
+                    "before_snapshot": {"$ref": "#/$defs/sha256"},
+                    "after_snapshot": {"$ref": "#/$defs/sha256"},
+                    "before_head": {"$ref": "#/$defs/sha256"},
+                    "after_head": {"$ref": "#/$defs/sha256"},
+                    "verdict": {"enum": ["rejected"]},
+                    "commit": {"$ref": "#/$defs/sha256"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "handoff": {"type": ["object", "null"]}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

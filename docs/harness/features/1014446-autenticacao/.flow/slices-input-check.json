@@ -1,0 +1,9 @@
+{
+  "status": "ready",
+  "feature_path": "C:\\Users\\maari\\Herd\\github\\nexum\\docs\\harness\\features\\1014446-autenticacao\\feature.md",
+  "state_path": "C:\\Users\\maari\\Herd\\github\\nexum\\docs\\harness\\features\\1014446-autenticacao\\.flow\\feature-state.json",
+  "issue_id": 1014446,
+  "requirement_sha256": "27bd56bbf9f72baeca20c4cad1e3319edecc2d6177c5e0992b391dc9c4bf79ca",
+  "remote_snapshot_sha256": "f80af39021cba924a85e25d9ed34863aa4bd9c55118bf517a814f712fedfbfa3",
+  "checked_at": "2026-09-18T11:42:16.7189144-03:00"
+}

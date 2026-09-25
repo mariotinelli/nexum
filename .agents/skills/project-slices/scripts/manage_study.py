@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -26,7 +27,7 @@ from manage_slices import (
     validate_proposal,
     validate_state as validate_slices_state,
 )
-from manage_publication import atomic_batch_write
+from manage_publication import atomic_batch_write, canonical_task_path, task_markdown
 
 
 def fail(message: str) -> None:
@@ -94,7 +95,7 @@ def result_digest(result: dict[str, Any]) -> str:
     return digest({key: value for key, value in result.items() if key != "result_sha256"})
 
 
-def validate_revision(revision: dict[str, Any], number: int, *, check_files: bool) -> None:
+def validate_revision(revision: dict[str, Any], number: int, schema_version: int, *, check_files: bool) -> None:
     exact(revision, {
         "number", "recorded_by", "recorded_at", "reason", "input_check_path",
         "input_check_sha256", "parent_baseline", "metadata_baseline", "native_fields",
@@ -114,18 +115,22 @@ def validate_revision(revision: dict[str, Any], number: int, *, check_files: boo
             fail(f"Study {field} is invalid")
         if check_files and file_digest(Path(baseline["path"])) != baseline["sha256"]:
             fail(f"Study {field} evidence changed after preview")
-    study = exact(revision["study"], {
+    study_fields = {
         "identity", "subject", "title", "question", "expected_result", "effort_limit",
-        "estimate_hours", "description", "description_path", "attributes", "payload_sha256",
-    }, "study")
-    for field in ("identity", "subject", "title", "question", "expected_result", "effort_limit", "description", "description_path", "payload_sha256"):
+        "estimate_hours", "description", "attributes", "payload_sha256",
+    }
+    if schema_version == 1 or "description_path" in revision["study"]:
+        study_fields.add("description_path")
+    study = exact(revision["study"], study_fields, "study")
+    for field in ("identity", "subject", "title", "question", "expected_result", "effort_limit", "description", "payload_sha256"):
         require_text(study[field], f"study.{field}")
     hours(study["estimate_hours"], "study.estimate_hours")
     if study["payload_sha256"] != digest({"attributes": study["attributes"]}):
         fail("Study payload differs from its hash")
-    description_path = Path(study["description_path"])
-    if check_files and description_path.read_text(encoding="utf-8") != study["description"]:
-        fail("Study description changed after preview")
+    if "description_path" in study:
+        description_path = Path(require_text(study["description_path"], "study.description_path"))
+        if check_files and description_path.read_text(encoding="utf-8") != study["description"]:
+            fail("Study description changed after preview")
     if revision["publication_sha256"] != study_digest(revision):
         fail("Study preview differs from its hash")
 
@@ -159,17 +164,23 @@ def validate_operation(operation: Any) -> None:
 
 
 def validate_state(state: dict[str, Any], *, check_files: bool = True, previous: dict[str, Any] | None = None) -> None:
-    exact(state, {
+    schema_version = state.get("schema_version")
+    fields = {
         "schema_version", "status", "status_history", "revisions", "approvals",
         "operation", "result_history", "resumptions",
-    }, "Study state")
+    }
+    if schema_version == 2:
+        fields.update({"readback", "artifact"})
+    exact(state, fields, "Study state")
     statuses = {"prepared", "approved", "publishing", "awaiting-result", "result-recorded", "resumed"}
-    if state["schema_version"] != 1 or state["status"] not in statuses:
+    if schema_version == 2:
+        statuses.add("awaiting-confirmation")
+    if schema_version not in {1, 2} or state["status"] not in statuses:
         fail("unsupported Study state")
     if not isinstance(state["revisions"], list) or not state["revisions"]:
         fail("Study state requires revision history")
     for number, revision in enumerate(state["revisions"], start=1):
-        validate_revision(revision, number, check_files=check_files and number == len(state["revisions"]))
+        validate_revision(revision, number, schema_version, check_files=check_files and number == len(state["revisions"]))
     current = state["revisions"][-1]
     if not isinstance(state["status_history"], list) or not state["status_history"]:
         fail("Study status history is required")
@@ -199,9 +210,32 @@ def validate_state(state: dict[str, Any], *, check_files: bool = True, previous:
         fail("Study publication requires a specific tech-lead approval of the current preview")
     if state["operation"] is not None:
         validate_operation(state["operation"])
-    if state["status"] in {"awaiting-result", "result-recorded", "resumed"}:
+    if state["status"] in {"awaiting-confirmation", "awaiting-result", "result-recorded", "resumed"}:
         if state["operation"] is None or state["operation"]["status"] != "completed":
             fail("Study result flow requires a reconciled remote Study ID")
+    if schema_version == 2:
+        readback = state["readback"]
+        artifact = state["artifact"]
+        if state["status"] in {"awaiting-result", "result-recorded", "resumed"}:
+            readback = exact(readback, {"path", "sha256", "observed_at"}, "Study readback")
+            readback_path = Path(require_text(readback["path"], "Study readback.path"))
+            require_text(readback["sha256"], "Study readback.sha256")
+            require_timestamp(readback["observed_at"], "Study readback.observed_at")
+            if check_files and file_digest(readback_path) != readback["sha256"]:
+                fail("Study readback changed after canonical publication")
+            artifact = exact(artifact, {"kind", "remote_id", "path", "sha256"}, "Study artifact")
+            if artifact["kind"] != "study" or artifact["remote_id"] != state["operation"]["remote_id"]:
+                fail("canonical Study artifact has the wrong identity")
+            artifact_path = Path(require_text(artifact["path"], "Study artifact.path"))
+            feature_dir = Path(current["input_check_path"]).parent.parent
+            expected_prefix = f"study-{artifact['remote_id']}-"
+            if artifact_path.name != "task.md" or artifact_path.parent.parent != (feature_dir / "tasks").absolute() or not artifact_path.parent.name.startswith(expected_prefix):
+                fail("canonical Study artifact is outside its stable identity path")
+            require_text(artifact["sha256"], "Study artifact.sha256")
+            if check_files and file_digest(artifact_path) != artifact["sha256"]:
+                fail("canonical Study artifact changed after publication")
+        elif readback is not None or artifact is not None:
+            fail("unconfirmed Study cannot have a definitive canonical artifact")
     if not isinstance(state["result_history"], list) or len(state["result_history"]) > 1:
         fail("Study has at most one immutable result")
     for result in state["result_history"]:
@@ -242,6 +276,10 @@ def validate_state(state: dict[str, Any], *, check_files: bool = True, previous:
         for field in ("status_history", "result_history", "resumptions"):
             if state[field][:len(previous[field])] != previous[field]:
                 fail(f"Study {field} is append-only")
+        if previous.get("readback") is not None and state.get("readback") != previous["readback"]:
+            fail("Study readback was rewritten")
+        if previous.get("artifact") is not None and state.get("artifact") != previous["artifact"]:
+            fail("canonical Study artifact identity was rewritten")
         if previous["operation"] is not None:
             current_operation = state["operation"]
             if current_operation is None:
@@ -356,11 +394,10 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     identity = digest({"feature_issue_id": issue_id, "requirement_sha256": input_check["requirement_sha256"], "subject": subject})
     description = render_description(question, expected_result, effort_limit)
     description += f"\n<!-- project-slices-study:{identity} -->\n"
-    description_path = feature_dir / "slices" / "descriptions" / "study.md"
     study = {
         "identity": identity, "subject": subject, "title": title, "question": question,
         "expected_result": expected_result, "effort_limit": effort_limit, "estimate_hours": estimate,
-        "description": description, "description_path": str(description_path.absolute()),
+        "description": description,
     }
     study["attributes"] = child_attributes(study, native, parent)
     study["payload_sha256"] = digest({"attributes": study["attributes"]})
@@ -369,7 +406,11 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         "number": 1, "recorded_by": require_text(arguments.actor, "recorded_by"),
         "recorded_at": recorded_at, "reason": require_text(arguments.reason, "reason"),
         "input_check_path": str(input_path.absolute()), "input_check_sha256": file_digest(input_path),
-        "parent_baseline": {"path": str(parent_path.absolute()), "sha256": file_digest(parent_path), "issue_id": issue_id, "project_id": native["project_id"]},
+        "parent_baseline": {
+            "path": str(parent_path.absolute()), "sha256": file_digest(parent_path),
+            "issue_id": issue_id, "project_id": native["project_id"],
+            "status_id": named_id(parent, "status"), "status_name": require_text(parent["status"].get("name"), "parent.status.name"),
+        },
         "metadata_baseline": {"path": str(metadata_path.absolute()), "sha256": file_digest(metadata_path)},
         "native_fields": copy.deepcopy(native), "study": study,
     }
@@ -379,6 +420,10 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         validate_state(state)
         if state["operation"] is not None:
             fail("a Study with remote publication progress cannot be revised")
+        if state["schema_version"] == 1:
+            state["schema_version"] = 2
+            state["readback"] = None
+            state["artifact"] = None
         for approval in state["approvals"]:
             if approval["status"] == "valid":
                 approval["status"] = "invalidated"
@@ -388,10 +433,10 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         state["status_history"].append({"status": "prepared", "recorded_at": recorded_at})
     else:
         state = {
-            "schema_version": 1, "status": "prepared",
+            "schema_version": 2, "status": "prepared",
             "status_history": [{"status": "prepared", "recorded_at": recorded_at}],
             "revisions": [revision], "approvals": [], "operation": None,
-            "result_history": [], "resumptions": [],
+            "result_history": [], "resumptions": [], "readback": None, "artifact": None,
         }
     validate_state(state, check_files=False)
     preview = "\n".join([
@@ -400,7 +445,6 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         f"Hash da previa: `{revision['publication_sha256']}`", "", description,
     ])
     atomic_batch_write({
-        description_path: description.encode("utf-8"),
         preview_path: preview.encode("utf-8"),
         state_path: canonical_bytes(state) + b"\n",
     })
@@ -471,8 +515,9 @@ def command_finish_create(arguments: argparse.Namespace) -> None:
     if outcome == "completed":
         operation["remote_id"] = positive_int(arguments.issue_id, "issue_id")
         operation["status"] = "completed"
-        state["status"] = "awaiting-result"
-        state["status_history"].append({"status": "awaiting-result", "recorded_at": attempt["finished_at"]})
+        next_status = "awaiting-confirmation" if state["schema_version"] == 2 else "awaiting-result"
+        state["status"] = next_status
+        state["status_history"].append({"status": next_status, "recorded_at": attempt["finished_at"]})
     elif arguments.issue_id is not None:
         fail("only a completed Study create can record issue_id")
     validate_state(state)
@@ -482,18 +527,24 @@ def command_finish_create(arguments: argparse.Namespace) -> None:
 
 def compare_issue(study: dict[str, Any], issue: dict[str, Any], default_priority_id: int) -> None:
     attributes = study["attributes"]
-    expected = {
-        "project_id": named_id(issue, "project"), "parent_issue_id": named_id(issue, "parent"),
-        "tracker_id": named_id(issue, "tracker"), "status_id": named_id(issue, "status"),
-        "subject": issue.get("subject"), "description": issue.get("description"),
-        "estimated_hours": float(issue.get("estimated_hours")),
-        "priority_id": named_id(issue, "priority"),
+    comparisons = {
+        "project": attributes["project_id"], "parent": attributes["parent_issue_id"],
+        "tracker": attributes["tracker_id"], "status": attributes["status_id"],
+        "priority": attributes.get("priority_id", default_priority_id),
     }
-    for key in ("project_id", "parent_issue_id", "tracker_id", "status_id", "subject", "description", "estimated_hours"):
-        if expected[key] != attributes[key]:
-            fail("reconciled Study differs from the approved preview")
-    if expected["priority_id"] != attributes.get("priority_id", default_priority_id):
-        fail("reconciled Study priority differs from the approved preview")
+    for field, expected_id in comparisons.items():
+        if named_id(issue, field) != expected_id:
+            fail(f"Study {field} differs from approved native fields")
+    for field in ("subject", "description"):
+        if issue.get(field) != attributes[field]:
+            fail(f"Study {field} differs from approved stable content")
+    if hours(issue.get("estimated_hours"), "Study estimated_hours") != float(attributes["estimated_hours"]):
+        fail("Study estimated_hours differs from approved estimate")
+    if named_id(issue, "assigned_to", required=False) != attributes.get("assigned_to_id") or (issue.get("start_date") or None) != attributes.get("start_date") or (issue.get("due_date") or None) != attributes.get("due_date"):
+        fail("Study assignee or dates differ from approved content")
+    for remote_field, payload_field in (("category", "category_id"), ("fixed_version", "fixed_version_id")):
+        if named_id(issue, remote_field, required=False) != attributes.get(payload_field):
+            fail(f"Study {remote_field} does not inherit the parent value")
 
 
 def command_observe_create(arguments: argparse.Namespace) -> None:
@@ -526,8 +577,9 @@ def command_observe_create(arguments: argparse.Namespace) -> None:
         remote_id = positive_int(matches[0].get("id"), "reconciled Study id")
         operation["status"] = "completed"
         operation["remote_id"] = remote_id
-        state["status"] = "awaiting-result"
-        state["status_history"].append({"status": "awaiting-result", "recorded_at": require_timestamp(arguments.at, "observed_at")})
+        next_status = "awaiting-confirmation" if state["schema_version"] == 2 else "awaiting-result"
+        state["status"] = next_status
+        state["status_history"].append({"status": next_status, "recorded_at": require_timestamp(arguments.at, "observed_at")})
     elif outcome == "absent":
         if matches:
             fail("Study reconciliation snapshot contains the approved identity")
@@ -538,6 +590,49 @@ def command_observe_create(arguments: argparse.Namespace) -> None:
     validate_state(state)
     atomic_write(path, canonical_bytes(state) + b"\n")
     print(json.dumps({"status": state["status"], "remote_id": remote_id}))
+
+
+def command_complete(arguments: argparse.Namespace) -> None:
+    path = Path(arguments.state)
+    state = load_json(path)
+    validate_state(state)
+    if state["schema_version"] != 2 or state["status"] != "awaiting-confirmation":
+        fail("Study completion requires a reconciled remote ID awaiting full readback")
+    current = state["revisions"][-1]
+    feature_dir = path.parent.parent
+    snapshot_path = evidence_path(feature_dir, arguments.readback, "Study publication readback")
+    snapshot = load_json(snapshot_path)
+    reject_secrets(snapshot, "Study publication readback")
+    exact(snapshot, {"parent", "study"}, "Study publication readback")
+    parent = snapshot["parent"]
+    issue = snapshot["study"]
+    if not isinstance(parent, dict) or not isinstance(issue, dict):
+        fail("Study publication readback must contain structured parent and Study objects")
+    baseline = current["parent_baseline"]
+    if positive_int(parent.get("id"), "parent.id") != baseline["issue_id"] or named_id(parent, "status") != baseline["status_id"] or parent["status"].get("name") != baseline["status_name"]:
+        fail("parent execution status changed")
+    remote_id = state["operation"]["remote_id"]
+    if positive_int(issue.get("id"), "Study id") != remote_id:
+        fail("Study readback has the wrong remote identity")
+    compare_issue(current["study"], issue, current["native_fields"]["default_priority_id"])
+    relations = issue.get("relations")
+    if not isinstance(relations, list):
+        fail("Study readback requires complete relations")
+    completed_at = require_timestamp(arguments.at, "observed_at")
+    task_path = canonical_task_path(feature_dir, "study", remote_id, require_text(issue.get("subject"), "Study subject"))
+    content = task_markdown(issue, "study", relations).encode("utf-8")
+    if task_path.is_file() and task_path.read_bytes() != content:
+        fail(f"canonical Study artifact conflicts with existing content: {task_path}")
+    state["readback"] = {"path": str(snapshot_path.absolute()), "sha256": file_digest(snapshot_path), "observed_at": completed_at}
+    state["artifact"] = {
+        "kind": "study", "remote_id": remote_id, "path": str(task_path.absolute()),
+        "sha256": hashlib.sha256(content).hexdigest(),
+    }
+    state["status"] = "awaiting-result"
+    state["status_history"].append({"status": "awaiting-result", "recorded_at": completed_at})
+    validate_state(state, check_files=False)
+    atomic_batch_write({task_path: content, path: canonical_bytes(state) + b"\n"})
+    print(json.dumps({"status": "awaiting-result", "study_remote_id": remote_id, "artifact": str(task_path.absolute())}))
 
 
 def command_record_result(arguments: argparse.Namespace) -> None:
@@ -671,6 +766,8 @@ def build_parser() -> argparse.ArgumentParser:
     finish.add_argument("state"); finish.add_argument("--attempt", type=int, required=True); finish.add_argument("--outcome", required=True); finish.add_argument("--issue-id", type=int); finish.add_argument("--at", required=True); finish.set_defaults(run=command_finish_create)
     observe = commands.add_parser("observe-create")
     observe.add_argument("state"); observe.add_argument("--outcome", required=True); observe.add_argument("--snapshot", required=True); observe.add_argument("--at", required=True); observe.set_defaults(run=command_observe_create)
+    complete = commands.add_parser("complete")
+    complete.add_argument("state"); complete.add_argument("--readback", required=True); complete.add_argument("--at", required=True); complete.set_defaults(run=command_complete)
     result = commands.add_parser("record-result")
     result.add_argument("state"); result.add_argument("--result", required=True); result.add_argument("--actor", required=True); result.add_argument("--at", required=True); result.set_defaults(run=command_record_result)
     resume = commands.add_parser("resume")

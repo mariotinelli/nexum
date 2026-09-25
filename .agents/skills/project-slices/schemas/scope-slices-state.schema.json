@@ -1,1 +1,129 @@
-{"$schema":"https:\/\/json-schema.org\/draft\/2020-12\/schema","$id":"https:\/\/remsoft.tools\/schemas\/project-slices\/scope-slices-state-v1.json","title":"Project Slices scope orchestration state","type":"object","additionalProperties":false,"required":["schema_version","run_id","scope","status","items","progress","current_item_id","awaiting_decision_for","observations","continuation_decisions","resumes","started_by","started_at","completed_at"],"properties":{"schema_version":{"const":1},"run_id":{"type":"string","format":"uuid"},"scope":{"$ref":"#\/$defs\/scope"},"status":{"enum":["active","paused","completed"]},"items":{"type":"array","items":{"$ref":"#\/$defs\/item"}},"progress":{"$ref":"#\/$defs\/progress"},"current_item_id":{"type":["string","null"]},"awaiting_decision_for":{"type":["string","null"]},"observations":{"type":"array","minItems":1,"items":{"$ref":"#\/$defs\/observation"}},"continuation_decisions":{"type":"array","items":{"$ref":"#\/$defs\/decision"}},"resumes":{"type":"array","items":{"$ref":"#\/$defs\/resume"}},"started_by":{"type":"string","minLength":1},"started_at":{"type":"string","format":"date-time"},"completed_at":{"type":["string","null"],"format":"date-time"}},"$defs":{"scope":{"type":"object","additionalProperties":false,"required":["directory","state_path","internal_identity","project_id","catalog_sha256"],"properties":{"directory":{"type":"string","minLength":1},"state_path":{"enum":[".flow\/scope-state.json","scope-state.json"]},"internal_identity":{"type":"string","format":"uuid"},"project_id":{"type":["integer","string"]},"catalog_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"}}},"item":{"type":"object","additionalProperties":false,"required":["catalog_item_id","position","title","status","feature_dir","feature_state_path","issue_id","requirement_sha256","publication_evidence_sha256"],"properties":{"catalog_item_id":{"type":"string","minLength":1},"position":{"type":"integer","minimum":1},"title":{"type":"string","minLength":1},"status":{"enum":["waiting-requirements","pending","in-progress","completed"]},"feature_dir":{"type":["string","null"]},"feature_state_path":{"type":["string","null"]},"issue_id":{"type":["integer","null"]},"requirement_sha256":{"type":["string","null"],"pattern":"^[a-f0-9]{64}$"},"publication_evidence_sha256":{"type":["string","null"],"pattern":"^[a-f0-9]{64}$"},"dependency_status":{"enum":["unknown","not-required","pending","refining","ready"]},"dependency_evidence_sha256":{"type":["string","null"],"pattern":"^[a-f0-9]{64}$"}}},"progress":{"type":"object","additionalProperties":false,"required":["waiting-requirements","pending","in-progress","completed","sliced","total"],"properties":{"waiting-requirements":{"type":"integer","minimum":0},"pending":{"type":"integer","minimum":0},"in-progress":{"type":"integer","minimum":0},"completed":{"type":"integer","minimum":0},"sliced":{"type":"integer","minimum":0},"total":{"type":"integer","minimum":0}}},"observation":{"type":"object","additionalProperties":false,"required":["recorded_at","projection_sha256","items","progress"],"properties":{"recorded_at":{"type":"string","format":"date-time"},"projection_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},"items":{"type":"array","items":{"$ref":"#\/$defs\/item"}},"progress":{"$ref":"#\/$defs\/progress"}}},"decision":{"type":"object","additionalProperties":false,"required":["after_item_id","decision","progress_sha256","decided_by","decided_at"],"properties":{"after_item_id":{"type":"string","minLength":1},"decision":{"enum":["continue","stop"]},"progress_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},"decided_by":{"type":"string","minLength":1},"decided_at":{"type":"string","format":"date-time"}}},"resume":{"type":"object","additionalProperties":false,"required":["resumed_by","resumed_at"],"properties":{"resumed_by":{"type":"string","minLength":1},"resumed_at":{"type":"string","format":"date-time"}}}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/project-slices/scope-slices-state-v1.json",
+  "title": "Project Slices scope orchestration state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "scope",
+    "status",
+    "items",
+    "progress",
+    "current_item_id",
+    "awaiting_decision_for",
+    "observations",
+    "continuation_decisions",
+    "resumes",
+    "started_by",
+    "started_at",
+    "completed_at"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "run_id": { "type": "string", "format": "uuid" },
+    "scope": { "$ref": "#/$defs/scope" },
+    "status": { "enum": ["active", "paused", "completed"] },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    },
+    "progress": { "$ref": "#/$defs/progress" },
+    "current_item_id": { "type": ["string", "null"] },
+    "awaiting_decision_for": { "type": ["string", "null"] },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/observation" }
+    },
+    "continuation_decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/decision" }
+    },
+    "resumes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/resume" }
+    },
+    "started_by": { "type": "string", "minLength": 1 },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["directory", "state_path", "internal_identity", "project_id", "catalog_sha256"],
+      "properties": {
+        "directory": { "type": "string", "minLength": 1 },
+        "state_path": { "enum": [".flow/scope-state.json", "scope-state.json"] },
+        "internal_identity": { "type": "string", "format": "uuid" },
+        "project_id": { "type": ["integer", "string"] },
+        "catalog_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["catalog_item_id", "position", "title", "status", "feature_dir", "feature_state_path", "issue_id", "requirement_sha256", "publication_evidence_sha256"],
+      "properties": {
+        "catalog_item_id": { "type": "string", "minLength": 1 },
+        "position": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["waiting-requirements", "pending", "in-progress", "completed"] },
+        "feature_dir": { "type": ["string", "null"] },
+        "feature_state_path": { "type": ["string", "null"] },
+        "issue_id": { "type": ["integer", "null"] },
+        "requirement_sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "publication_evidence_sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "dependency_status": { "enum": ["unknown", "not-required", "pending", "refining", "ready"] },
+        "dependency_evidence_sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "progress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["waiting-requirements", "pending", "in-progress", "completed", "sliced", "total"],
+      "properties": {
+        "waiting-requirements": { "type": "integer", "minimum": 0 },
+        "pending": { "type": "integer", "minimum": 0 },
+        "in-progress": { "type": "integer", "minimum": 0 },
+        "completed": { "type": "integer", "minimum": 0 },
+        "sliced": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recorded_at", "projection_sha256", "items", "progress"],
+      "properties": {
+        "recorded_at": { "type": "string", "format": "date-time" },
+        "projection_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/item" } },
+        "progress": { "$ref": "#/$defs/progress" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["after_item_id", "decision", "progress_sha256", "decided_by", "decided_at"],
+      "properties": {
+        "after_item_id": { "type": "string", "minLength": 1 },
+        "decision": { "enum": ["continue", "stop"] },
+        "progress_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "decided_by": { "type": "string", "minLength": 1 },
+        "decided_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "resume": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resumed_by", "resumed_at"],
+      "properties": {
+        "resumed_by": { "type": "string", "minLength": 1 },
+        "resumed_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

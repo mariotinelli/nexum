@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -235,11 +236,92 @@ def proposal_digest(revision: dict[str, Any]) -> str:
     return digest({key: revision[key] for key in ("change_review", "publication", "preview_snapshot", "status_metadata", "status_contract", "operations", "preservation")})
 
 
+def artifact_kind(operation: dict[str, Any], publication_state: dict[str, Any]) -> str:
+    if operation["action"] == "create":
+        return "qa" if operation["attributes"]["subject"].startswith("[QA] ") else "dev"
+    child = next(
+        (item for item in publication_state["revisions"][-1]["children"] if item["key"] == operation["task_key"]),
+        None,
+    )
+    if child is None or child["kind"] not in {"dev", "qa"}:
+        fail("updated task is not a managed canonical child")
+    return child["kind"]
+
+
+def artifact_baseline(state: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    publication_state = load_json(Path(state["revisions"][-1]["publication"]["path"]))
+    return {
+        item["remote_id"]: {
+            "kind": item["kind"],
+            "path": item["path"],
+            "sha256": item["sha256"],
+        }
+        for item in publication_state.get("artifacts") or []
+    }
+
+
+def validate_artifact_updates(state: dict[str, Any], *, check_files: bool) -> None:
+    updates = state["artifact_updates"]
+    if not isinstance(updates, list):
+        fail("canonical artifact update history must be an array")
+    current = artifact_baseline(state)
+    seen_revisions: set[int] = set()
+    for update in updates:
+        exact(update, {"revision", "completed_at", "items"}, "canonical artifact update")
+        revision = positive_int(update["revision"], "canonical artifact update revision")
+        if revision > len(state["revisions"]) or revision in seen_revisions:
+            fail("canonical artifact update revision is unknown or duplicated")
+        seen_revisions.add(revision)
+        require_timestamp(update["completed_at"], "canonical artifact update completed_at")
+        if not isinstance(update["items"], list):
+            fail("canonical artifact update items must be an array")
+        seen_items: set[int] = set()
+        for item in update["items"]:
+            exact(item, {"task_key", "kind", "remote_id", "path", "previous_sha256", "sha256"}, "canonical artifact update item")
+            require_text(item["task_key"], "canonical artifact task_key")
+            if item["kind"] not in {"dev", "qa"}:
+                fail("canonical artifact update kind is invalid")
+            remote_id = positive_int(item["remote_id"], "canonical artifact remote_id")
+            if remote_id in seen_items:
+                fail("canonical artifact update duplicates a managed child")
+            seen_items.add(remote_id)
+            path = Path(require_text(item["path"], "canonical artifact path")).absolute()
+            feature_tasks = Path(state["revisions"][revision - 1]["publication"]["path"]).parent.parent / "tasks"
+            try:
+                path.relative_to(feature_tasks.absolute())
+            except ValueError:
+                fail("canonical artifact update is outside the parent tasks directory")
+            if path.name != "task.md" or not path.parent.name.startswith(f"{item['kind']}-{remote_id}-"):
+                fail("canonical artifact update has an invalid stable identity path")
+            prior = current.get(remote_id)
+            expected_previous = None if prior is None else prior["sha256"]
+            if item["previous_sha256"] != expected_previous:
+                fail("canonical artifact update does not continue the recorded content history")
+            if prior is not None and (prior["kind"] != item["kind"] or Path(prior["path"]).absolute() != path):
+                fail("canonical artifact update rewrites child identity or stable slug")
+            if not isinstance(item["sha256"], str) or len(item["sha256"]) != 64:
+                fail("canonical artifact update hash is invalid")
+            current[remote_id] = {"kind": item["kind"], "path": str(path), "sha256": item["sha256"]}
+    current_revision = state["revisions"][-1]["number"]
+    if state["status"] == "completed" and current_revision not in seen_revisions:
+        fail("completed application requires canonical artifact reconciliation")
+    if state["status"] != "completed" and current_revision in seen_revisions:
+        fail("canonical artifacts cannot precede final remote readback")
+    if check_files:
+        for item in current.values():
+            path = Path(item["path"])
+            if not path.is_file() or path.is_symlink() or file_digest(path) != item["sha256"]:
+                fail("canonical task artifact is missing, unsafe, or changed")
+
+
 def validate_state(state: dict[str, Any], previous: dict[str, Any] | None = None, *, check_files: bool = True, check_authority: bool = True) -> None:
     state.setdefault("plan_approvals", [])
-    exact(state, {"schema_version", "status", "status_history", "revisions", "approvals", "plan_approvals", "operations", "readback", "completed_at"}, "revision application state")
+    fields = {"schema_version", "status", "status_history", "revisions", "approvals", "plan_approvals", "operations", "readback", "completed_at"}
+    if state.get("schema_version") == 2:
+        fields.add("artifact_updates")
+    exact(state, fields, "revision application state")
     reject_secrets(state, "revision application state")
-    if state["schema_version"] != 1 or state["status"] not in {"prepared", "applying", "completed"}:
+    if state["schema_version"] not in {1, 2} or state["status"] not in {"prepared", "applying", "completed"}:
         fail("unsupported revision application state")
     if not isinstance(state["revisions"], list) or not state["revisions"]:
         fail("revision application requires revision history")
@@ -269,7 +351,7 @@ def validate_state(state: dict[str, Any], previous: dict[str, Any] | None = None
                 if live_review["review_sha256"] != current_review["review_sha256"]:
                     fail("application change-review authority is stale or superseded")
             publication_state = load_json(Path(revision["publication"]["path"]))
-            publication.validate_publication_state(publication_state)
+            publication.validate_publication_state(publication_state, check_files=False)
             if publication_state["status"] != "completed" or publication_state["revisions"][-1]["number"] != revision["publication"]["revision"]:
                 fail("application publication source is no longer the completed baseline")
     if not isinstance(state["approvals"], list) or not isinstance(state["operations"], dict):
@@ -306,6 +388,8 @@ def validate_state(state: dict[str, Any], previous: dict[str, Any] | None = None
                     fail("application attempt history was rewritten")
             if prior["status"] == "completed" and (current["status"] != "completed" or current["remote_id"] != prior["remote_id"]):
                 fail("completed operation identity was rewritten")
+        if previous.get("artifact_updates", []) != state.get("artifact_updates", [])[:len(previous.get("artifact_updates", []))]:
+            fail("canonical artifact update history was rewritten")
     approved_revisions: set[int] = set()
     for approval in state["plan_approvals"]:
         exact(approval, {"revision", "proposal_sha256", "approved_by", "approved_at"}, "plan approval")
@@ -317,6 +401,8 @@ def validate_state(state: dict[str, Any], previous: dict[str, Any] | None = None
         if approval["proposal_sha256"] != revision["proposal_sha256"] or approval["approved_by"] != revision["recorded_by"]:
             fail("plan approval differs from the preview or tech lead")
         require_timestamp(approval["approved_at"], "plan approved_at")
+    if state["schema_version"] == 2:
+        validate_artifact_updates(state, check_files=check_files)
 
 
 def render_preview(revision: dict[str, Any], tasks: dict[int, dict[str, Any]]) -> str:
@@ -341,7 +427,7 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     review_state, review, authorization = approved_review(review_path)
     publication_path = Path(arguments.publication_state).absolute()
     published = load_json(publication_path)
-    publication.validate_publication_state(published)
+    publication.validate_publication_state(published, check_files=False)
     publication_revision = published["revisions"][-1]
     if published["status"] != "completed" or review["baseline"]["publication_state_path"] != str(publication_path) or review["baseline"]["publication_state_sha256"] != file_digest(publication_path):
         fail("revision application publication is stale or differs from the approved change review")
@@ -415,6 +501,9 @@ def command_prepare(arguments: argparse.Namespace) -> None:
     revision["proposal_sha256"] = proposal_digest(revision)
     if state_path.exists():
         state = load_json(state_path); validate_state(state, check_authority=False)
+        if state["schema_version"] == 1:
+            state["schema_version"] = 2
+            state["artifact_updates"] = []
         current = state["revisions"][-1]
         if current["proposal_sha256"] == revision["proposal_sha256"]:
             print(json.dumps({"status": state["status"], "revision": current["number"], "proposal_sha256": current["proposal_sha256"]})); return
@@ -434,7 +523,7 @@ def command_prepare(arguments: argparse.Namespace) -> None:
         state["status"] = "prepared"
         state["readback"] = None; state["completed_at"] = None
     else:
-        state = {"schema_version": 1, "status": "prepared", "status_history": [{"status": "prepared", "recorded_at": revision["recorded_at"]}], "revisions": [revision], "approvals": [], "operations": {}, "readback": None, "completed_at": None}
+        state = {"schema_version": 2, "status": "prepared", "status_history": [{"status": "prepared", "recorded_at": revision["recorded_at"]}], "revisions": [revision], "approvals": [], "plan_approvals": [], "operations": {}, "artifact_updates": [], "readback": None, "completed_at": None}
     validate_state(state)
     atomic_write(state_path, json.dumps(state, ensure_ascii=False, indent=2).encode() + b"\n")
     atomic_write(Path(arguments.preview), render_preview(revision, tasks).encode("utf-8"))
@@ -591,6 +680,32 @@ def issue_matches(issue: dict[str, Any] | None, attributes: dict[str, Any]) -> b
     return True
 
 
+def managed_artifact_targets(state: dict[str, Any], operations: dict[str, dict[str, Any]]) -> dict[int, tuple[str, str]]:
+    current = state["revisions"][-1]
+    publication_state = load_json(Path(current["publication"]["path"]))
+    managed: dict[int, tuple[str, str]] = {}
+    review = load_json(Path(current["change_review"]["path"]))["revisions"][-1]
+    publication_children = {item["key"]: item for item in publication_state["revisions"][-1]["children"]}
+    for child in review["preservation"]["published_children"]:
+        remote_id = child.get("remote_id")
+        published_child = publication_children.get(child["key"])
+        if remote_id is not None and published_child is not None:
+            managed[remote_id] = (child["key"], published_child["kind"])
+    for revision in state["revisions"]:
+        for operation in revision["operations"]:
+            record = state["operations"].get(operation["key"])
+            if operation["action"] == "create" and record is not None and record["status"] == "completed":
+                managed[record["remote_id"]] = (operation["task_key"], artifact_kind(operation, publication_state))
+    affected: set[int] = set()
+    for operation in operations.values():
+        if operation["action"] in {"create", "update"}:
+            affected.add(state["operations"][operation["key"]]["remote_id"])
+        elif operation["action"] in RELATION_ACTIONS:
+            payload = operation_payload(operation, state)[1]
+            affected.update({payload.get("issue_id"), payload.get("issue_to_id")} - {None})
+    return {remote_id: managed[remote_id] for remote_id in affected if remote_id in managed}
+
+
 def command_finish(arguments: argparse.Namespace) -> None:
     path = Path(arguments.state); state = load_json(path); validate_state(state, check_authority=False)
     operation = current_operation(state, arguments.key); record = state["operations"].get(operation["key"])
@@ -693,9 +808,39 @@ def command_complete(arguments: argparse.Namespace) -> None:
             relation = final_relations.get(record["remote_id"])
             if relation is None or any(relation.get(field) != value for field, value in operation_payload(operation, state)[1].items()): fail("final readback lacks an affected DEV/QA blocker")
         elif operation["relation_id"] in final_relations: fail("final readback still contains an approved removed relation")
+    completed_at = require_timestamp(arguments.at, "observed_at")
+    current_artifacts = artifact_baseline(state)
+    for update in state.get("artifact_updates", []):
+        for item in update["items"]:
+            current_artifacts[item["remote_id"]] = {"kind": item["kind"], "path": item["path"], "sha256": item["sha256"]}
+    artifact_files: dict[Path, bytes] = {}
+    artifact_items: list[dict[str, Any]] = []
+    for remote_id, (task_key, kind) in sorted(managed_artifact_targets(state, operations).items()):
+        issue = copy.deepcopy(final_tasks[remote_id])
+        issue["relations"] = [relation for relation in final_relations.values() if remote_id in {relation["issue_id"], relation["issue_to_id"]}]
+        task_path = publication.canonical_task_path(path.parent.parent, kind, remote_id, require_text(issue.get("subject"), "canonical child subject"))
+        prior = current_artifacts.get(remote_id)
+        if prior is not None and (prior["kind"] != kind or Path(prior["path"]).absolute() != task_path.absolute()):
+            fail("canonical child identity or stable slug differs from the recorded artifact")
+        content = publication.task_markdown(issue, kind, list(final_relations.values())).encode("utf-8")
+        artifact_files[task_path] = content
+        artifact_items.append({
+            "task_key": task_key,
+            "kind": kind,
+            "remote_id": remote_id,
+            "path": str(task_path.absolute()),
+            "previous_sha256": None if prior is None else prior["sha256"],
+            "sha256": hashlib.sha256(content).hexdigest(),
+        })
     readback_path = change_review.freeze_evidence(readback_path, path.parent.parent / ".work" / "application-evidence")
-    state["readback"] = {"path": str(readback_path.absolute()), "sha256": file_digest(readback_path), "observed_at": require_timestamp(arguments.at, "observed_at")}; state["completed_at"] = arguments.at; state["status"] = "completed"; state["status_history"].append({"status": "completed", "recorded_at": arguments.at, "readback": copy.deepcopy(state["readback"])})
-    validate_state(state); atomic_write(path, json.dumps(state, ensure_ascii=False, indent=2).encode() + b"\n")
+    state["readback"] = {"path": str(readback_path.absolute()), "sha256": file_digest(readback_path), "observed_at": completed_at}
+    state["completed_at"] = completed_at
+    state["status"] = "completed"
+    state["status_history"].append({"status": "completed", "recorded_at": completed_at, "readback": copy.deepcopy(state["readback"])})
+    state["artifact_updates"].append({"revision": current["number"], "completed_at": completed_at, "items": artifact_items})
+    validate_state(state, check_files=False)
+    artifact_files[path] = json.dumps(state, ensure_ascii=False, indent=2).encode() + b"\n"
+    publication.atomic_batch_write(artifact_files)
     print(json.dumps({"status": "completed", "readback_sha256": state["readback"]["sha256"]}))
 
 

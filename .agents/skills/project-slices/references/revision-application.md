@@ -30,6 +30,8 @@ O helper recusa snapshot alterado desde a prévia, tarefa concluída, cancelamen
 
 Releia pai, tarefas e relações e execute `complete --readback`. O helper exige payload/status de cada mutação, evidência legível de cancelamento, bloqueios DEV→QA afetados, preservação exata de tarefas e relações não afetadas e o mesmo status do pai.
 
-**Concluído quando:** `.flow/slices-revision-application.json` está `completed`, o readback está hash-bound e os históricos anteriores de adoção/externalidade, Study, divergência e revisão semântica permanecem preservados.
+Somente depois dessa conferência integral, `complete` substitui atomicamente o `task.md` de cada filha gerenciada cujo conteúdo ou relações pertencem ao delta autorizado. O helper reutiliza o caminho encontrado por tipo e ID, preservando o ID e o slug fixado na primeira materialização, e aplica as mesmas regras de conteúdo estável da publicação inicial. Filhas concluídas, externas, adotadas mas não afetadas e todas as filhas fora do delta conservam seus arquivos byte a byte. Falha, resultado incerto, aplicação parcial, readback divergente ou artefato local alterado mantêm o `task.md` corrente intacto.
+
+**Concluído quando:** `.flow/slices-revision-application.json` está `completed`, o readback e as substituições canônicas estão hash-bound, somente os `task.md` do delta autorizado mudaram e os históricos anteriores de adoção/externalidade, Study, divergência e revisão semântica permanecem preservados.
 
 Após concluir uma aplicação, uma nova mudança do requisito pode iniciar outro ciclo nos mesmos arquivos de estado. A revisão seguinte incorpora IDs de filhas e relações criadas pelos ciclos concluídos. As evidências de requisitos, prévias, observações e readbacks são copiadas para arquivos identificados pelo conteúdo; preserve esses arquivos junto aos estados.

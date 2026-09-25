@@ -1,1 +1,20 @@
-{"$schema":"https:\/\/json-schema.org\/draft\/2020-12\/schema","$id":"https:\/\/remsoft.tools\/schemas\/project-slices\/revision-application-state-v1.json","title":"Project Slices approved revision application","type":"object","additionalProperties":false,"required":["schema_version","status","status_history","revisions","approvals","operations","readback","completed_at"],"properties":{"schema_version":{"const":1},"status":{"enum":["prepared","applying","completed"]},"status_history":{"type":"array","minItems":1,"items":{"type":"object","required":["status","recorded_at"]}},"revisions":{"type":"array","minItems":1,"items":{"type":"object","required":["number","change_review","publication","preview_snapshot","status_metadata","status_contract","operations","preservation","proposal_sha256"]}},"approvals":{"type":"array","items":{"type":"object","required":["revision","operation_key","task_key","task_snapshot_sha256","operation_sha256","approved_by","approved_at","reason"]}},"plan_approvals":{"type":"array","items":{"type":"object","required":["revision","proposal_sha256","approved_by","approved_at"]}},"operations":{"type":"object","additionalProperties":{"type":"object","required":["kind","attempts","observations","status","remote_id"]}},"readback":{"type":["object","null"]},"completed_at":{"type":["string","null"],"format":"date-time"}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://remsoft.tools/schemas/project-slices/revision-application-state-v1.json",
+  "title": "Project Slices approved revision application",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "status_history", "revisions", "approvals", "operations", "readback", "completed_at"],
+  "properties": {
+    "schema_version": {"enum": [1, 2]},
+    "status": {"enum": ["prepared", "applying", "completed"]},
+    "status_history": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["status", "recorded_at"]}},
+    "revisions": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["number", "change_review", "publication", "preview_snapshot", "status_metadata", "status_contract", "operations", "preservation", "proposal_sha256"]}},
+    "approvals": {"type": "array", "items": {"type": "object", "required": ["revision", "operation_key", "task_key", "task_snapshot_sha256", "operation_sha256", "approved_by", "approved_at", "reason"]}},
+    "plan_approvals": {"type": "array", "items": {"type": "object", "required": ["revision", "proposal_sha256", "approved_by", "approved_at"]}},
+    "operations": {"type": "object", "additionalProperties": {"type": "object", "required": ["kind", "attempts", "observations", "status", "remote_id"]}},
+    "artifact_updates": {"type": "array", "items": {"type": "object", "required": ["revision", "completed_at", "items"]}},
+    "readback": {"type": ["object", "null"]},
+    "completed_at": {"type": ["string", "null"], "format": "date-time"}
+  }
+}
