@@ -7,7 +7,16 @@ if [[ "${1:-}" != "execute" || $# -lt 4 || "${3:-}" != "--state" ]]; then
 fi
 
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-python_bin="${PYTHON:-python3}"
+if [[ -n "${PYTHON:-}" ]]; then
+  python_bin="$PYTHON"
+elif command -v python3 >/dev/null 2>&1; then
+  python_bin="python3"
+elif command -v python >/dev/null 2>&1; then
+  python_bin="python"
+else
+  echo "Ralph requires Python 3.10+; neither python3 nor python was found in PATH." >&2
+  exit 127
+fi
 planning="$2"
 state="$4"
 shift 4
