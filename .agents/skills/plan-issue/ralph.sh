@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${1:-}" != "execute" || $# -lt 4 || "${3:-}" != "--state" ]]; then
-  echo "usage: ralph.sh execute <planning.md> --state <plan-issue.json> [--max-gate-rejections N] [--dev-timeout-minutes N] [--validation-timeout-minutes N] [--tests-timeout-minutes N] [--authorize-discard SHA256 --authorized-by ACTOR] [--verbose]" >&2
+if [[ "${1:-}" != "execute" || $# -lt 2 ]]; then
+  echo "usage: ralph.sh execute <planning.md> [--max-attempts N] [--dev-timeout-minutes N] [--validation-timeout-minutes N] [--tests-timeout-minutes N] [--verbose]" >&2
   exit 64
 fi
 
@@ -17,7 +17,5 @@ else
   echo "Ralph requires Python 3.10+; neither python3 nor python was found in PATH." >&2
   exit 127
 fi
-planning="$2"
-state="$4"
-shift 4
-exec "$python_bin" "$script_dir/scripts/execute_phase.py" "$planning" --state "$state" "$@"
+shift
+exec "$python_bin" "$script_dir/scripts/execute_phase.py" "$@"

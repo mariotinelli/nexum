@@ -12,7 +12,7 @@ from pathlib import Path
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=("develop", "validate", "validate-integral"), required=True)
+    parser.add_argument("--mode", choices=("develop", "validate"), required=True)
     parser.add_argument("--prompt", required=True)
     parser.add_argument("--schema", required=True)
     parser.add_argument("--result", required=True)

@@ -4,8 +4,8 @@
 
 - Filha canônica: Redmine `#1014752`, `[DEV] [WEB] [PUBLICO] Autenticação - Entrada e navegação de contas ativas`.
 - Pai: Feature `#1014446 — Autenticação`.
-- Fonte funcional local: `task.md` da filha e `feature.md` do pai, alinhados com o readback sanitizado do Redmine e com a reconciliação legada concluída do `project-slices`.
-- Repositório inspecionado no commit `5ea83a7243ac2560cf7ececc24b5732f23249d5b` e no fingerprint persistido em `.flow/plan-issue.json`.
+- Fontes funcionais locais: `task.md` da filha e `feature.md` do pai.
+- Fontes técnicas: instruções, arquitetura, implementação e testes existentes no repositório.
 - Regras determinantes: URLs por área de usuário, `/admin/login` exclusivo da área administrativa, `/cliente/*` para clientes, recuperação de senha compartilhada fora dos prefixos e testes Pest espelhando cada classe com comportamento.
 
 ## Objetivo
@@ -43,8 +43,15 @@ Executar em quatro fases sequenciais e seguras para commit. Cada fase começa po
 
 ## Baseline
 
-- O gate `php ./vendor/bin/pest --parallel --tia --configuration=phpunit-ci.xml` foi executado diretamente com o PHP local e terminou verde, com código de saída `0`, sobre a evidência inspecionada atual.
-- Por decisão explícita do desenvolvedor em 25/09/2026, esse é o único gate do planejamento.
+Comando da suíte completa:
+
+```sh
+php ./vendor/bin/pest --parallel --tia --configuration=phpunit-ci.xml
+```
+
+Resultado inicial: verde, com código de saída `0`.
+
+Falhas conhecidas: nenhuma.
 
 ## Riscos
 

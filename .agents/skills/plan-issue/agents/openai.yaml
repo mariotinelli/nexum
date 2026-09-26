@@ -1,6 +1,6 @@
 interface:
   display_name: "Plan issue"
-  short_description: "Planeja uma filha DEV canônica"
+  short_description: "Planeja uma filha DEV para o Ralph"
   default_prompt: "Use $plan-issue para planejar a filha DEV informada sem implementá-la."
 policy:
   allow_implicit_invocation: true

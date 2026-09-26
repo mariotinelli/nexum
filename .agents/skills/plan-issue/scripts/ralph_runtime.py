@@ -43,10 +43,6 @@ def sanitize_text(value: str) -> str:
     return "\n".join(SECRET_VALUES.sub("[REDACTED]", line) for line in value.split("\n"))
 
 
-def normalized_failures(lines: list[str], returncode: int) -> list[str]:
-    return [] if returncode == 0 else [sanitize_text(line.strip()) for line in lines if line.strip()]
-
-
 class EventSink:
     """Write a safe console projection and private, structured execution records."""
 
@@ -370,7 +366,3 @@ def popen_group(command: list[str] | str, **kwargs: Any) -> subprocess.Popen[Any
     elif os.name == "nt":
         kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
     return subprocess.Popen(command, **kwargs)
-
-
-def evidence_digest(value: dict[str, Any]) -> str:
-    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()

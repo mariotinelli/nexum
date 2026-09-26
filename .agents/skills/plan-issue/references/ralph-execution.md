@@ -1,21 +1,44 @@
-# Execução multifase pelo Ralph
+# Execução pelo Ralph
 
-`ralph.sh execute <planning.md> --state <plan-issue.json>` executa todas as fases pendentes de um planejamento aprovado, na ordem. O worktree já deve existir e estar limpo após o commit manual do plano, preservando o código e as fontes inspecionadas, com baseline verde ou vermelho explicitamente aprovado. O estado `.flow/plan-issue.json` permanece ignorado pelo Git. Cada fase começa somente depois do commit da anterior; fases concluídas conservam o hash do planejamento sob o qual foram executadas, inclusive após replanejamento.
+Execute:
 
-Para cada fase, o Ralph abre uma sessão Codex nova para desenvolvimento e outra sessão nova, independente e somente leitura, para validação. Cada sessão lê instruções, arquitetura/contexto/ADRs, `task.md`, requisito pai, planejamento e fase; nenhuma usa subagentes nem acessa Redmine ou YouTrack. O Ralph executa a suíte aprovada diretamente e cria exatamente um commit por fase com `git commit --no-verify`.
+```sh
+bash <plan-issue>/ralph.sh execute <pasta-dev>/planning.md
+```
 
-Uma reprovação de validação retorna achados estruturados com severidade, critério afetado e evidência a uma sessão DEV nova e focada. Uma falha de testes é comparada ao baseline aprovado por código de saída e falhas normalizadas: somente uma correspondência exata é aceita; falhas novas, alteradas ou inconclusivas abrem uma sessão corretiva. Toda correção invalida aprovações posteriores da fase e reinicia validação e testes. Na última fase, o ciclo inclui novamente a validação integral antes do commit.
+O Ralph lê as fases e o comando da suíte diretamente de `planning.md`. Ele cria automaticamente `.flow/ralph-state.json` ao lado do plano, contendo somente a fase atual, o gate atual, fases concluídas e seus commits. Apague esse arquivo para esquecer o progresso local; isso não desfaz commits nem mudanças do Git.
 
-Depois dos testes da última fase e antes de seu commit, o Ralph abre outra sessão independente e somente leitura. Ela lê `task.md`, requisito pai, `planning.md` completo, o histórico dos commits de fase e o diff integrado desde o início da execução, incluindo a última fase ainda não commitada. Qualquer achado rejeita a validação integral e impede o commit final.
+## Gates de cada fase
 
-O estado operacional registra atomicamente a fase corrente, histórico de tentativas, transições, invalidações, cada gate, os IDs das sessões e os hashes completos dos commits antes e depois de cada efeito. Ele referencia fases por número e conserva a fonte imutável no `planning.md`, sem copiá-la. Na retomada, Ralph confere estado, `HEAD`, árvore, evidência dos gates e trailers dos commits; gates aprovados, suíte concluída e commits comprovados não são repetidos.
+1. **Desenvolvimento:** abre uma sessão nova do Codex para implementar somente a fase, sem commit.
+2. **Validação:** abre outra sessão nova e somente leitura para revisar requisito, diff, testes, segurança e padrões.
+3. **Testes:** o script executa diretamente a suíte completa declarada no baseline.
+4. **Commit:** o script executa `git commit --no-verify` e segue para a próxima fase.
 
-Cada gate e fase aceita três reprovações consecutivas por padrão. Use `--max-gate-rejections <inteiro-positivo>` para configurar outro limite; valores zero, negativos ou não inteiros são rejeitados antes da execução. Ao esgotar o limite, o Ralph não cria o commit da fase, conserva as mudanças, marca o estado como `execution-paused` e informa o caminho de um relatório JSON sanitizado sob `.flow/ralph/`. O lock exclusivo por filha impede uma segunda execução de tocar no trabalho ativo. Um lock abandonado só é recuperado quando PID e identidade de nascimento do processo comprovam que o proprietário terminou; identidade inconclusiva bloqueia a retomada.
+Uma reprovação da validação ou dos testes inicia outra sessão de desenvolvimento com o erro encontrado e repete os gates. O padrão é parar depois de três tentativas; altere com `--max-attempts N`. Falhas operacionais interrompem imediatamente e preservam as mudanças.
 
-Por padrão cada gate de agente invoca `scripts/run_codex.py`, que abre `codex exec` sem fixar modelo ou esforço. Para um runner compatível, configure `RALPH_AGENT_COMMAND_JSON` como um argv JSON; ele recebe `--mode`, `--prompt`, `--schema`, `--result` e `--repo`. `RALPH_CLOCK_VALUES` aceita milissegundos separados por vírgula para testes determinísticos. Os timeouts padrão são 60 minutos para DEV, 30 para validações e 60 para testes; `--dev-timeout-minutes`, `--validation-timeout-minutes` e `--tests-timeout-minutes` aceitam números positivos finitos e encerram a árvore de processos ao expirar.
+O executor não acessa Redmine ou YouTrack, não escolhe modelo nem esforço e não usa subagentes. `codex exec` herda a configuração normal do CLI do usuário. `RALPH_AGENT_COMMAND_JSON` pode fornecer outro runner compatível como um array JSON de argumentos.
 
-Uma sessão sem resultado que alterou a árvore produz relatório sanitizado e estado incerto. Ralph preserva o trabalho e só executa descarte quando `--authorize-discard <hash-da-evidência> --authorized-by <ator>` vincula a decisão humana à árvore ainda idêntica; validação interrompida sem diff abre sessão nova. Falha operacional de commit, cancelamento e sinais preservam código, estado e relatórios para retomada, sem chamar agente para corrigir Git.
+## Retomada e segurança mínima
 
-Por padrão, o terminal mostra somente mensagens humanas de andamento, como `Fase 1 iniciada`, `[DESENVOLVIMENTO] Gate 1 em andamento [08:48]` e `[VALIDAÇÃO] Gate 2 reprovado: <motivo> [08:55]`. O JSONL correspondente e o relatório final ficam no diretório administrativo do Git, junto com prompts, resultados e streams completos sanitizados, fora da árvore versionável e com permissões privadas quando a plataforma as suporta. A sanitização também se aplica aos logs privados de testes e agentes; conteúdo bruto transitório é descartado. `--verbose` substitui a apresentação humana pelos metadados operacionais estruturados e nunca reproduz prompts ou streams. Cores são usadas apenas quando stdout é um terminal interativo e `NO_COLOR` não está definido.
+Uma tarefa possui somente uma execução simultânea. Uma fase nova exige worktree limpo. Quando uma tentativa da fase já deixou mudanças, executar o mesmo comando novamente retoma essa fase pelo desenvolvimento. Se o processo terminou logo após o commit, um estado no gate de commit com worktree limpo reconhece o `HEAD` atual como commit da fase e continua.
 
-O resumo final enumera fases, commits, sessões, reprovações, testes e falhas idênticas ao baseline aprovado que foram ignoradas. Ele sempre lembra o desenvolvedor de revisar o diff completo e testar no navegador quando houver comportamento visível. O wrapper Bash apenas localiza e delega ao Python 3.10+: JSON, hashes, timeouts, processos e relatórios não dependem de utilitários GNU, preservando Linux, macOS, Git Bash e WSL.
+O diretório `.flow` deve estar ignorado pelo Git. Não existem hashes, fingerprints, manifests, aprovação de baseline, prova por trailer ou reconciliação de evidências. O desenvolvedor continua responsável por revisar o histórico e decidir quando apagar o estado ou desfazer trabalho.
+
+## Saída
+
+Por padrão, o terminal mostra apenas mensagens humanas:
+
+```text
+Fase 1 iniciada
+[DESENVOLVIMENTO] Gate 1 em andamento [08:48]
+[DESENVOLVIMENTO] Gate 1 finalizado [08:52]
+[VALIDAÇÃO] Gate 2 aprovado [08:55]
+[TESTES] Gate 3 aprovado [08:58]
+[COMMIT] Gate 4 finalizado [08:58]
+Fase 1 finalizada
+```
+
+Erros mostram a causa sanitizada e o caminho do diagnóstico. Prompts, stdout, stderr, testes e eventos estruturados permanecem em `.git/ralph-runtime`. Use `--verbose` para exibir os eventos técnicos no terminal.
+
+Os timeouts padrões são 60 minutos para desenvolvimento, 30 para validação e 60 para testes. Ajuste com `--dev-timeout-minutes`, `--validation-timeout-minutes` e `--tests-timeout-minutes`.
