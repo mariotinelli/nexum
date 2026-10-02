@@ -156,6 +156,16 @@ def communicate(process: subprocess.Popen[Any], timeout: float) -> tuple[str, st
 
 
 def extract_error(stderr: str) -> str:
+    decoder = json.JSONDecoder()
+    for marker in reversed(list(re.finditer(r"^\s*ERROR:\s*", stderr, re.MULTILINE))):
+        try:
+            value, _ = decoder.raw_decode(stderr[marker.end():].lstrip())
+        except ValueError:
+            continue
+        error = value.get("error") if isinstance(value, dict) else None
+        message = error.get("message") if isinstance(error, dict) else None
+        if isinstance(message, str) and message.strip():
+            return sanitize(message)
     fallback = ""
     for line in reversed(stderr.splitlines()):
         candidate = line.strip()
